@@ -10,7 +10,7 @@
   "allure:open": "allure open allure-report"
   },
   "keywords": [],
-  "author": "",
+  "author": "HrehoryJJ",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
