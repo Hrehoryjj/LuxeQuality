@@ -1,0 +1,35 @@
+import { FooterPage } from '../pages/footer.page';
+
+const footerPage = new FooterPage();
+
+describe('Footer links API validation', () => {
+    let columns: { company: string; legal: string; compare: string };
+
+    before(() => {
+        cy.fixture('testData').then((data) => {
+            columns = data.footerColumns;
+        });
+    });
+
+    beforeEach(() => {
+        footerPage.navigateTo('/');
+    });
+
+    it('TC-08: COMPANY footer links return status 200', () => {
+        footerPage.getFooterLinkHrefs(columns.company).each((href: string) => {
+            cy.request(href).its('status').should('eq', 200);
+        });
+    });
+
+    it('TC-09: LEGAL footer links return status 200', () => {
+        footerPage.getFooterLinkHrefs(columns.legal).each((href: string) => {
+            cy.request(href).its('status').should('eq', 200);
+        });
+    });
+
+    it('TC-10: COMPARE footer links return status 200', () => {
+        footerPage.getFooterLinkHrefs(columns.compare).each((href: string) => {
+            cy.request(href).its('status').should('eq', 200);
+        });
+    });
+});
