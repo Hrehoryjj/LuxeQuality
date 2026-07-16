@@ -1,0 +1,845 @@
+{
+  "stats": {
+    "suites": 9,
+    "tests": 21,
+    "passes": 4,
+    "pending": 0,
+    "failures": 11,
+    "testsRegistered": 21,
+    "passPercent": 19.047619047619047,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 6,
+    "hasSkipped": true,
+    "start": "2026-07-14T12:00:27.601Z",
+    "end": "2026-07-14T13:30:18.559Z",
+    "duration": 5390958
+  },
+  "results": [
+    {
+      "uuid": "fbabf78f-14fa-4854-8931-88522d6ce7f0",
+      "title": "",
+      "fullFile": "cypress\\e2e\\navigation.cy.ts",
+      "file": "cypress\\e2e\\navigation.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "936636d5-b956-4007-b8de-e50ac63c8f35",
+          "title": "Navigation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-01: Home Page Loads Successfully",
+              "fullTitle": "Navigation TC-01: Home Page Loads Successfully",
+              "timedOut": null,
+              "duration": 108,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.url().should('eq', 'https://telnyx.com/');\ncy.title().should('not.be.empty');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Navigation`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Navigation`\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136164:76)\n    at visitFailedByErr (http://localhost:54213/__cypress/runner/cypress_runner.js:135754:12)\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136147:13)\n    at tryCatcher (http://localhost:54213/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:54213/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:54213/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:54213/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:54213/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:54213/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:54213/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at __webpack_modules__../cypress/pages/base.page.ts.BasePage.navigateTo (webpack://task.3.cypress/./cypress/pages/base.page.ts:3:11)\n    at __webpack_modules__../cypress/pages/home.page.ts.HomePage.navigateToHome (webpack://task.3.cypress/./cypress/pages/home.page.ts:5:13)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:15:17)",
+                "diff": null
+              },
+              "uuid": "72d2bef9-b262-4800-9b85-4270a3246292",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-02: Logo Click Redirects to Home Page",
+              "fullTitle": "Navigation TC-02: Logo Click Redirects to Home Page",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage.navigateTo('/pricing');\nhomePage.clickLogo();\ncy.url().should('eq', 'https://telnyx.com/');",
+              "err": {},
+              "uuid": "e7ce6bc1-56df-4e19-a3e0-411b7fa648f0",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "TC-03: Navigation Menu Dropdown Appears on Click",
+              "fullTitle": "Navigation TC-03: Navigation Menu Dropdown Appears on Click",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var menuItem = navData[0].menuItem;\nhomePage.clickNavMenuItem(menuItem);\nhomePage.isDropdownVisible().should('be.visible');",
+              "err": {},
+              "uuid": "cf9b243b-8d99-4289-98a6-c91710e715eb",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "fullTitle": "Navigation TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var _a = navData[0], menuItem = _a.menuItem, submenuLink = _a.submenuLink;\nhomePage.clickNavMenuItem(menuItem);\nhomePage.clickSubmenuLink(submenuLink);\ncy.url().should('include', '/');",
+              "err": {},
+              "uuid": "069c1c98-3a7c-4d12-b554-ef7145c1883b",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "72d2bef9-b262-4800-9b85-4270a3246292"
+          ],
+          "pending": [],
+          "skipped": [
+            "e7ce6bc1-56df-4e19-a3e0-411b7fa648f0",
+            "cf9b243b-8d99-4289-98a6-c91710e715eb",
+            "069c1c98-3a7c-4d12-b554-ef7145c1883b"
+          ],
+          "duration": 108,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "6a33bf9e-3a9f-408f-928f-dc975691d617",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pricing.cy.ts",
+      "file": "cypress\\e2e\\pricing.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "9d786180-e344-47d8-b5d6-1e47210101b5",
+          "title": "Pricing",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-05: Pricing Page Displays Valid Price Values",
+              "fullTitle": "Pricing TC-05: Pricing Page Displays Valid Price Values",
+              "timedOut": null,
+              "duration": 111,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "pricingPage.getPriceCells().should('have.length.greaterThan', 0);\npricingPage.getPriceCells().each(function ($cell) {\n    var text = $cell.text().trim();\n    expect(text).to.match(/^\\$?\\d+(\\.\\d{1,2})?$/);\n});",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\n/pricing\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/pricing\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Pricing`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\n/pricing\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/pricing\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Pricing`\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136164:76)\n    at visitFailedByErr (http://localhost:54213/__cypress/runner/cypress_runner.js:135754:12)\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136147:13)\n    at tryCatcher (http://localhost:54213/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:54213/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:54213/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:54213/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:54213/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:54213/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:54213/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at __webpack_modules__../cypress/pages/base.page.ts.BasePage.navigateTo (webpack://task.3.cypress/./cypress/pages/base.page.ts:3:11)\n    at __webpack_modules__../cypress/pages/pricing.page.ts.PricingPage.navigateToPricing (webpack://task.3.cypress/./cypress/pages/pricing.page.ts:5:13)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/pricing.cy.ts:7:20)",
+                "diff": null
+              },
+              "uuid": "6b0642cd-7c0b-48ab-adc4-35d9c5909de2",
+              "parentUUID": "9d786180-e344-47d8-b5d6-1e47210101b5",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "6b0642cd-7c0b-48ab-adc4-35d9c5909de2"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 111,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "89e11d7a-5930-43d0-9186-e11d3cd73c9e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\ui.cy.ts",
+      "file": "cypress\\e2e\\ui.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0a4c5b7c-f8ac-485c-b90f-2589c6463e79",
+          "title": "UI",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-06: AI Chat Returns Non-Empty Response",
+              "fullTitle": "UI TC-06: AI Chat Returns Non-Empty Response",
+              "timedOut": null,
+              "duration": 105,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.fixture('testData').then(function (data) {\n    var message = \"\".concat(data.aiChat.messagePrefix).concat(Math.random());\n    homePage.typeAiChatMessage(message);\n    homePage.submitAiChatMessage();\n    homePage.getAiChatResponse().should('not.be.empty');\n});",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `UI`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `UI`\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136164:76)\n    at visitFailedByErr (http://localhost:54213/__cypress/runner/cypress_runner.js:135754:12)\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136147:13)\n    at tryCatcher (http://localhost:54213/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:54213/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:54213/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:54213/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:54213/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:54213/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:54213/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at __webpack_modules__../cypress/pages/base.page.ts.BasePage.navigateTo (webpack://task.3.cypress/./cypress/pages/base.page.ts:3:11)\n    at __webpack_modules__../cypress/pages/home.page.ts.HomePage.navigateToHome (webpack://task.3.cypress/./cypress/pages/home.page.ts:5:13)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/ui.cy.ts:7:17)",
+                "diff": null
+              },
+              "uuid": "307d993c-f4a3-41f6-a4f8-f2b4557bdbca",
+              "parentUUID": "0a4c5b7c-f8ac-485c-b90f-2589c6463e79",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-07: Contact Us Submit Button Is Clickable",
+              "fullTitle": "UI TC-07: Contact Us Submit Button Is Clickable",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage\n    .isContactUsButtonClickable()\n    .should('be.visible')\n    .and('not.be.disabled');",
+              "err": {},
+              "uuid": "f55f8fac-66dd-48c1-af76-99279631977b",
+              "parentUUID": "0a4c5b7c-f8ac-485c-b90f-2589c6463e79",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "307d993c-f4a3-41f6-a4f8-f2b4557bdbca"
+          ],
+          "pending": [],
+          "skipped": [
+            "f55f8fac-66dd-48c1-af76-99279631977b"
+          ],
+          "duration": 105,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "38dddebb-4d59-469c-a878-56a2b6d96c0e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\footer.cy.ts",
+      "file": "cypress\\e2e\\footer.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+          "title": "Footer links API validation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-08: COMPANY footer links return status 200",
+              "fullTitle": "Footer links API validation TC-08: COMPANY footer links return status 200",
+              "timedOut": null,
+              "duration": 7567,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.company).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPANY' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPANY' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:19:19)",
+                "diff": null
+              },
+              "uuid": "21ed1614-3997-4e1c-85d8-8d89c35cfb32",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-09: LEGAL footer links return status 200",
+              "fullTitle": "Footer links API validation TC-09: LEGAL footer links return status 200",
+              "timedOut": null,
+              "duration": 5017,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.legal).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'LEGAL' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'LEGAL' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:25:19)",
+                "diff": null
+              },
+              "uuid": "117bb282-3a6f-4153-a8e9-b0621406cea8",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-10: COMPARE footer links return status 200",
+              "fullTitle": "Footer links API validation TC-10: COMPARE footer links return status 200",
+              "timedOut": null,
+              "duration": 4319,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.compare).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPARE' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPARE' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:31:19)",
+                "diff": null
+              },
+              "uuid": "a1526940-2e33-4847-bd8a-f5f33fe149df",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "21ed1614-3997-4e1c-85d8-8d89c35cfb32",
+            "117bb282-3a6f-4153-a8e9-b0621406cea8",
+            "a1526940-2e33-4847-bd8a-f5f33fe149df"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 16903,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "9866afb2-45b6-48c5-bdd0-5adca0d97619",
+      "title": "",
+      "fullFile": "cypress\\e2e\\navigation.cy.ts",
+      "file": "cypress\\e2e\\navigation.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+          "title": "Navigation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-01: Home Page Loads Successfully",
+              "fullTitle": "Navigation TC-01: Home Page Loads Successfully",
+              "timedOut": null,
+              "duration": 1003,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.url().should('eq', 'https://telnyx.com/');\ncy.title().should('not.be.empty');",
+              "err": {},
+              "uuid": "b2614ed4-f18a-40dc-9b19-e7a1e2f97b6c",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-02: Logo Click Redirects to Home Page",
+              "fullTitle": "Navigation TC-02: Logo Click Redirects to Home Page",
+              "timedOut": null,
+              "duration": 2186,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage.navigateTo('/pricing');\nhomePage.clickLogo();\ncy.url().should('eq', 'https://telnyx.com/');",
+              "err": {},
+              "uuid": "739e01f4-0ba9-40f6-8663-1ee3922a675c",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-03: Navigation Menu Dropdown Appears on Click",
+              "fullTitle": "Navigation TC-03: Navigation Menu Dropdown Appears on Click",
+              "timedOut": null,
+              "duration": 4959,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const { menuItem } = navData[0];\nhomePage.clickNavMenuItem(menuItem);\nhomePage.isDropdownVisible().should('be.visible');",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (https://telnyx.com/__cypress/runner/cypress_runner.js:112791:66)\n    at ensureDescendents (https://telnyx.com/__cypress/runner/cypress_runner.js:112827:5)\n    at ensureDescendentsAndScroll (https://telnyx.com/__cypress/runner/cypress_runner.js:112833:14)\n    at ensureElIsNotCovered (https://telnyx.com/__cypress/runner/cypress_runner.js:112964:5)\n    at runAllChecks (https://telnyx.com/__cypress/runner/cypress_runner.js:113165:52)\n    at retryActionability (https://telnyx.com/__cypress/runner/cypress_runner.js:113203:16)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://telnyx.com/__cypress/runner/cypress_runner.js:154603:70)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:154503:14)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://telnyx.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://telnyx.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://telnyx.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://telnyx.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://telnyx.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at HomePage.clickNavMenuItem (webpack://task.3.cypress/./cypress/pages/home.page.ts:23:35)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:31:17)",
+                "diff": null
+              },
+              "uuid": "96de30c7-6714-4280-b483-882ca9f3e46a",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "fullTitle": "Navigation TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "timedOut": null,
+              "duration": 4432,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const { menuItem, submenuLink } = navData[0];\nhomePage.clickNavMenuItem(menuItem);\nhomePage.clickSubmenuLink(submenuLink);\ncy.url().should('include', '/');",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (https://telnyx.com/__cypress/runner/cypress_runner.js:112791:66)\n    at ensureDescendents (https://telnyx.com/__cypress/runner/cypress_runner.js:112827:5)\n    at ensureDescendentsAndScroll (https://telnyx.com/__cypress/runner/cypress_runner.js:112833:14)\n    at ensureElIsNotCovered (https://telnyx.com/__cypress/runner/cypress_runner.js:112964:5)\n    at runAllChecks (https://telnyx.com/__cypress/runner/cypress_runner.js:113165:52)\n    at retryActionability (https://telnyx.com/__cypress/runner/cypress_runner.js:113203:16)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://telnyx.com/__cypress/runner/cypress_runner.js:154603:70)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:154503:14)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://telnyx.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://telnyx.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://telnyx.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://telnyx.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://telnyx.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at HomePage.clickNavMenuItem (webpack://task.3.cypress/./cypress/pages/home.page.ts:23:35)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:37:17)",
+                "diff": null
+              },
+              "uuid": "144a99e6-b6ee-4560-97ca-42f4aac4e5b0",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "b2614ed4-f18a-40dc-9b19-e7a1e2f97b6c",
+            "739e01f4-0ba9-40f6-8663-1ee3922a675c"
+          ],
+          "failures": [
+            "96de30c7-6714-4280-b483-882ca9f3e46a",
+            "144a99e6-b6ee-4560-97ca-42f4aac4e5b0"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 12580,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "8760a9f8-def8-43a9-85b6-ad9f31368f09",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pricing.cy.ts",
+      "file": "cypress\\e2e\\pricing.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "714d03f2-6ac4-4d6b-af26-ab009ef12f5d",
+          "title": "Pricing",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-05: Pricing Page Displays Valid Price Values",
+              "fullTitle": "Pricing TC-05: Pricing Page Displays Valid Price Values",
+              "timedOut": null,
+              "duration": 4763,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "pricingPage.getPriceCells().should('have.length.greaterThan', 0);\npricingPage.getPriceCells().each(($cell) => {\n    const text = $cell.text().trim();\n    expect(text).to.match(/^\\$?\\d+(\\.\\d{1,2})?$/);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.pricing-table__cell`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.pricing-table__cell`, but never found it.\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/pricing.cy.ts:11:36)",
+                "diff": null
+              },
+              "uuid": "0a502b57-997e-424c-97d5-bb99c3564a00",
+              "parentUUID": "714d03f2-6ac4-4d6b-af26-ab009ef12f5d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "0a502b57-997e-424c-97d5-bb99c3564a00"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 4763,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "718c8f33-21dc-4d07-8cc4-3cd735939233",
+      "title": "",
+      "fullFile": "cypress\\e2e\\ui.cy.ts",
+      "file": "cypress\\e2e\\ui.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "171cd21d-57e7-4f2e-bef9-b7a1650fcd75",
+          "title": "UI",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-06: AI Chat Returns Non-Empty Response",
+              "fullTitle": "UI TC-06: AI Chat Returns Non-Empty Response",
+              "timedOut": null,
+              "duration": 6427,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.fixture('testData').then((data) => {\n    const message = `${data.aiChat.messagePrefix}${Math.random()}`;\n    homePage.typeAiChatMessage(message);\n    homePage.submitAiChatMessage();\n    homePage.getAiChatResponse().should('not.be.empty');\n});",
+              "err": {},
+              "uuid": "a28ceb7e-3cd0-41ef-9d16-2c6ff481cc6d",
+              "parentUUID": "171cd21d-57e7-4f2e-bef9-b7a1650fcd75",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-07: Contact Us Submit Button Is Clickable",
+              "fullTitle": "UI TC-07: Contact Us Submit Button Is Clickable",
+              "timedOut": null,
+              "duration": 965,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage\n    .isContactUsButtonClickable()\n    .should('be.visible')\n    .and('not.be.disabled');",
+              "err": {},
+              "uuid": "0511b266-25ff-47f9-abb5-b70c624a1204",
+              "parentUUID": "171cd21d-57e7-4f2e-bef9-b7a1650fcd75",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "a28ceb7e-3cd0-41ef-9d16-2c6ff481cc6d",
+            "0511b266-25ff-47f9-abb5-b70c624a1204"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 7392,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "3cad450f-28f8-4eef-ae15-ad86e07ca2f4",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pricing.cy.ts",
+      "file": "cypress\\e2e\\pricing.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d0fc0a0a-0f04-447b-a19a-307309798041",
+          "title": "Pricing",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-05: Pricing Page Displays Valid Price Values",
+              "fullTitle": "Pricing TC-05: Pricing Page Displays Valid Price Values",
+              "timedOut": null,
+              "duration": 5577,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "pricingPage.getPriceCells().should('have.length.greaterThan', 0);\npricingPage.getPriceCells().each(($cell) => {\n    const text = $cell.text().trim();\n    const priceNumber = parseFloat(text.replace('$', ''));\n    expect(priceNumber).to.be.a('number');\n    expect(priceNumber).to.be.greaterThan(0);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: '/^\\$\\d/' within the selector: 'div.bg-transparent > span' but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: '/^\\$\\d/' within the selector: 'div.bg-transparent > span' but never did.\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/pricing.cy.ts:11:32)",
+                "diff": null
+              },
+              "uuid": "ae37dacc-fdd1-4983-b85d-c68ab0f8f630",
+              "parentUUID": "d0fc0a0a-0f04-447b-a19a-307309798041",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "ae37dacc-fdd1-4983-b85d-c68ab0f8f630"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 5577,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    },
+    {
+      "uuid": "0e484058-34d0-4c88-882e-2c5a94b2e16f",
+      "title": "",
+      "fullFile": "cypress\\e2e\\footer.cy.ts",
+      "file": "cypress\\e2e\\footer.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "035fe2d4-e164-4763-a1dc-a00ddd7af961",
+          "title": "Footer links API validation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-08: COMPANY footer links return status 200",
+              "fullTitle": "Footer links API validation TC-08: COMPANY footer links return status 200",
+              "timedOut": null,
+              "duration": 291,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.company).each(function (href) {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Footer links API validation`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Footer links API validation`\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136164:76)\n    at visitFailedByErr (http://localhost:54213/__cypress/runner/cypress_runner.js:135754:12)\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136147:13)\n    at tryCatcher (http://localhost:54213/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:54213/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:54213/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:54213/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:54213/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:54213/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:54213/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at __webpack_modules__../cypress/pages/base.page.ts.BasePage.navigateTo (webpack://task.3.cypress/./cypress/pages/base.page.ts:3:11)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:15:19)",
+                "diff": null
+              },
+              "uuid": "9b6cba5a-8059-4a8f-97f5-788798f60ca2",
+              "parentUUID": "035fe2d4-e164-4763-a1dc-a00ddd7af961",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-09: LEGAL footer links return status 200",
+              "fullTitle": "Footer links API validation TC-09: LEGAL footer links return status 200",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.legal).each(function (href) {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {},
+              "uuid": "d8f1f39d-ba58-4a26-a539-86aeb2350a44",
+              "parentUUID": "035fe2d4-e164-4763-a1dc-a00ddd7af961",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "TC-10: COMPARE footer links return status 200",
+              "fullTitle": "Footer links API validation TC-10: COMPARE footer links return status 200",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.compare).each(function (href) {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {},
+              "uuid": "32b9fef4-c174-490e-864b-734a49dcfc25",
+              "parentUUID": "035fe2d4-e164-4763-a1dc-a00ddd7af961",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "9b6cba5a-8059-4a8f-97f5-788798f60ca2"
+          ],
+          "pending": [],
+          "skipped": [
+            "d8f1f39d-ba58-4a26-a539-86aeb2350a44",
+            "32b9fef4-c174-490e-864b-734a49dcfc25"
+          ],
+          "duration": 291,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
