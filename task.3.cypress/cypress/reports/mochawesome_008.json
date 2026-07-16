@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-07-14T13:30:12.927Z",
+    "end": "2026-07-14T13:30:18.559Z",
+    "duration": 5632,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "3cad450f-28f8-4eef-ae15-ad86e07ca2f4",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pricing.cy.ts",
+      "file": "cypress\\e2e\\pricing.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d0fc0a0a-0f04-447b-a19a-307309798041",
+          "title": "Pricing",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-05: Pricing Page Displays Valid Price Values",
+              "fullTitle": "Pricing TC-05: Pricing Page Displays Valid Price Values",
+              "timedOut": null,
+              "duration": 5577,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "pricingPage.getPriceCells().should('have.length.greaterThan', 0);\npricingPage.getPriceCells().each(($cell) => {\n    const text = $cell.text().trim();\n    const priceNumber = parseFloat(text.replace('$', ''));\n    expect(priceNumber).to.be.a('number');\n    expect(priceNumber).to.be.greaterThan(0);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: '/^\\$\\d/' within the selector: 'div.bg-transparent > span' but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: '/^\\$\\d/' within the selector: 'div.bg-transparent > span' but never did.\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/pricing.cy.ts:11:32)",
+                "diff": null
+              },
+              "uuid": "ae37dacc-fdd1-4983-b85d-c68ab0f8f630",
+              "parentUUID": "d0fc0a0a-0f04-447b-a19a-307309798041",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "ae37dacc-fdd1-4983-b85d-c68ab0f8f630"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 5577,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

@@ -29,7 +29,7 @@ describe('Navigation', () => {
     it('TC-03: Navigation Menu Dropdown Appears on Click', () => {
         const { menuItem } = navData[0]!;
         homePage.clickNavMenuItem(menuItem);
-        homePage.isDropdownVisible().should('be.visible');
+        homePage.isDropdownOpenFor(menuItem);
     });
 
     it('TC-04: Navigation Submenu Link Redirects to Correct Page', () => {

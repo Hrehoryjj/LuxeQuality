@@ -1,0 +1,167 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-07-14T12:00:29.087Z",
+    "end": "2026-07-14T12:00:29.277Z",
+    "duration": 190,
+    "testsRegistered": 4,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 3,
+    "hasSkipped": true
+  },
+  "results": [
+    {
+      "uuid": "fbabf78f-14fa-4854-8931-88522d6ce7f0",
+      "title": "",
+      "fullFile": "cypress\\e2e\\navigation.cy.ts",
+      "file": "cypress\\e2e\\navigation.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "936636d5-b956-4007-b8de-e50ac63c8f35",
+          "title": "Navigation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-01: Home Page Loads Successfully",
+              "fullTitle": "Navigation TC-01: Home Page Loads Successfully",
+              "timedOut": null,
+              "duration": 108,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.url().should('eq', 'https://telnyx.com/');\ncy.title().should('not.be.empty');",
+              "err": {
+                "message": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Navigation`",
+                "estack": "CypressError: `cy.visit()` failed trying to load:\n\n/\n\nWe failed looking for this file at the path:\n\n/Projects/LuxeQuality/LuxeQuality/task.3.cypress/\n\nThe internal Cypress web server responded with:\n\n  > 404: Not Found\n\nBecause this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `Navigation`\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136164:76)\n    at visitFailedByErr (http://localhost:54213/__cypress/runner/cypress_runner.js:135754:12)\n    at <unknown> (http://localhost:54213/__cypress/runner/cypress_runner.js:136147:13)\n    at tryCatcher (http://localhost:54213/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:54213/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:54213/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:54213/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:54213/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:54213/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:54213/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:54213/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at __webpack_modules__../cypress/pages/base.page.ts.BasePage.navigateTo (webpack://task.3.cypress/./cypress/pages/base.page.ts:3:11)\n    at __webpack_modules__../cypress/pages/home.page.ts.HomePage.navigateToHome (webpack://task.3.cypress/./cypress/pages/home.page.ts:5:13)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:15:17)",
+                "diff": null
+              },
+              "uuid": "72d2bef9-b262-4800-9b85-4270a3246292",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-02: Logo Click Redirects to Home Page",
+              "fullTitle": "Navigation TC-02: Logo Click Redirects to Home Page",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage.navigateTo('/pricing');\nhomePage.clickLogo();\ncy.url().should('eq', 'https://telnyx.com/');",
+              "err": {},
+              "uuid": "e7ce6bc1-56df-4e19-a3e0-411b7fa648f0",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "TC-03: Navigation Menu Dropdown Appears on Click",
+              "fullTitle": "Navigation TC-03: Navigation Menu Dropdown Appears on Click",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var menuItem = navData[0].menuItem;\nhomePage.clickNavMenuItem(menuItem);\nhomePage.isDropdownVisible().should('be.visible');",
+              "err": {},
+              "uuid": "cf9b243b-8d99-4289-98a6-c91710e715eb",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "fullTitle": "Navigation TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var _a = navData[0], menuItem = _a.menuItem, submenuLink = _a.submenuLink;\nhomePage.clickNavMenuItem(menuItem);\nhomePage.clickSubmenuLink(submenuLink);\ncy.url().should('include', '/');",
+              "err": {},
+              "uuid": "069c1c98-3a7c-4d12-b554-ef7145c1883b",
+              "parentUUID": "936636d5-b956-4007-b8de-e50ac63c8f35",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "72d2bef9-b262-4800-9b85-4270a3246292"
+          ],
+          "pending": [],
+          "skipped": [
+            "e7ce6bc1-56df-4e19-a3e0-411b7fa648f0",
+            "cf9b243b-8d99-4289-98a6-c91710e715eb",
+            "069c1c98-3a7c-4d12-b554-ef7145c1883b"
+          ],
+          "duration": 108,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { BasePage } from './base.page';
 export class FooterPage extends BasePage {
     protected getFooterColumnLinks(columnHeading: string) {
         return this.footerContainer
-            .contains(columnHeading)
+            .contains(new RegExp(`^${columnHeading}$`, 'i'))
             .parent()
             .find('a');
     }

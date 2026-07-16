@@ -12,6 +12,7 @@ describe('UI', () => {
             const message = `${data.aiChat.messagePrefix}${Math.random()}`;
             homePage.typeAiChatMessage(message);
             homePage.submitAiChatMessage();
+            cy.wait(3000)
             homePage.getAiChatResponse().should('not.be.empty');
         });
     });

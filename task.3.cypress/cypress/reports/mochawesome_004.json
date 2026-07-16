@@ -1,0 +1,155 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 0,
+    "pending": 0,
+    "failures": 3,
+    "start": "2026-07-14T12:49:48.967Z",
+    "end": "2026-07-14T12:50:06.100Z",
+    "duration": 17133,
+    "testsRegistered": 3,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "38dddebb-4d59-469c-a878-56a2b6d96c0e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\footer.cy.ts",
+      "file": "cypress\\e2e\\footer.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+          "title": "Footer links API validation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-08: COMPANY footer links return status 200",
+              "fullTitle": "Footer links API validation TC-08: COMPANY footer links return status 200",
+              "timedOut": null,
+              "duration": 7567,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.company).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPANY' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPANY' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:19:19)",
+                "diff": null
+              },
+              "uuid": "21ed1614-3997-4e1c-85d8-8d89c35cfb32",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-09: LEGAL footer links return status 200",
+              "fullTitle": "Footer links API validation TC-09: LEGAL footer links return status 200",
+              "timedOut": null,
+              "duration": 5017,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.legal).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'LEGAL' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'LEGAL' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:25:19)",
+                "diff": null
+              },
+              "uuid": "117bb282-3a6f-4153-a8e9-b0621406cea8",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-10: COMPARE footer links return status 200",
+              "fullTitle": "Footer links API validation TC-10: COMPARE footer links return status 200",
+              "timedOut": null,
+              "duration": 4319,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "footerPage.getFooterLinkHrefs(columns.compare).each((href) => {\n    cy.request(href).its('status').should('eq', 200);\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPARE' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find content: 'COMPARE' within the element: <footer#site-footer.pb-xxl.md:pb-xh.section-pt-contrasting.bg-tan.text-black.px-[28px].sm:px-new-xl.md:px-new-lg.lg:px-[108px].xl:px-new-xxxml> but never did.\n    at FooterPage.getFooterColumnLinks (webpack://task.3.cypress/./cypress/pages/footer.page.ts:6:13)\n    at FooterPage.getFooterLinkHrefs (webpack://task.3.cypress/./cypress/pages/footer.page.ts:12:20)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/footer.cy.ts:31:19)",
+                "diff": null
+              },
+              "uuid": "a1526940-2e33-4847-bd8a-f5f33fe149df",
+              "parentUUID": "f65b93b0-ccfb-4563-991d-6ecb307ea4ae",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "21ed1614-3997-4e1c-85d8-8d89c35cfb32",
+            "117bb282-3a6f-4153-a8e9-b0621406cea8",
+            "a1526940-2e33-4847-bd8a-f5f33fe149df"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 16903,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

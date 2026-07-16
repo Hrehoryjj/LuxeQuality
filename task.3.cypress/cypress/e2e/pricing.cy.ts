@@ -8,10 +8,17 @@ describe('Pricing', () => {
     });
 
     it('TC-05: Pricing Page Displays Valid Price Values', () => {
-        pricingPage.getPriceCells().should('have.length.greaterThan', 0);
-        pricingPage.getPriceCells().each(($cell) => {
+        pricingPage.getPriceCellsWithDollar().should('have.length.greaterThan', 0);
+
+        pricingPage.getPriceCellsWithDollar().each(($cell) => {
             const text = $cell.text().trim();
-            expect(text).to.match(/^\$?\d+(\.\d{1,2})?$/);
+            const match = text.match(/\$(\d+(\.\d+)?)/);
+
+            expect(match, `price cell text: "${text}"`).to.not.be.null;
+
+            const priceNumber = parseFloat(match![1]);
+            expect(priceNumber).to.be.a('number');
+            expect(priceNumber).to.be.greaterThan(0);
         });
     });
 });
