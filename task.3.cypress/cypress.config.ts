@@ -6,6 +6,7 @@ export default defineConfig({
   viewportHeight: 900,
   e2e: {
     baseUrl: 'https://telnyx.com',
+    experimentalMemoryManagement: true,
     setupNodeEvents(on, config) {
       allureCypress(on, config, {
         resultsDir: "allure-results",
