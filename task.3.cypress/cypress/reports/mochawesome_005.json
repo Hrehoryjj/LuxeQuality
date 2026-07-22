@@ -1,0 +1,171 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 2,
+    "pending": 0,
+    "failures": 2,
+    "start": "2026-07-14T12:50:07.588Z",
+    "end": "2026-07-14T12:50:20.724Z",
+    "duration": 13136,
+    "testsRegistered": 4,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9866afb2-45b6-48c5-bdd0-5adca0d97619",
+      "title": "",
+      "fullFile": "cypress\\e2e\\navigation.cy.ts",
+      "file": "cypress\\e2e\\navigation.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+          "title": "Navigation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "TC-01: Home Page Loads Successfully",
+              "fullTitle": "Navigation TC-01: Home Page Loads Successfully",
+              "timedOut": null,
+              "duration": 1003,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.url().should('eq', 'https://telnyx.com/');\ncy.title().should('not.be.empty');",
+              "err": {},
+              "uuid": "b2614ed4-f18a-40dc-9b19-e7a1e2f97b6c",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-02: Logo Click Redirects to Home Page",
+              "fullTitle": "Navigation TC-02: Logo Click Redirects to Home Page",
+              "timedOut": null,
+              "duration": 2186,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "homePage.navigateTo('/pricing');\nhomePage.clickLogo();\ncy.url().should('eq', 'https://telnyx.com/');",
+              "err": {},
+              "uuid": "739e01f4-0ba9-40f6-8663-1ee3922a675c",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-03: Navigation Menu Dropdown Appears on Click",
+              "fullTitle": "Navigation TC-03: Navigation Menu Dropdown Appears on Click",
+              "timedOut": null,
+              "duration": 4959,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const { menuItem } = navData[0];\nhomePage.clickNavMenuItem(menuItem);\nhomePage.isDropdownVisible().should('be.visible');",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (https://telnyx.com/__cypress/runner/cypress_runner.js:112791:66)\n    at ensureDescendents (https://telnyx.com/__cypress/runner/cypress_runner.js:112827:5)\n    at ensureDescendentsAndScroll (https://telnyx.com/__cypress/runner/cypress_runner.js:112833:14)\n    at ensureElIsNotCovered (https://telnyx.com/__cypress/runner/cypress_runner.js:112964:5)\n    at runAllChecks (https://telnyx.com/__cypress/runner/cypress_runner.js:113165:52)\n    at retryActionability (https://telnyx.com/__cypress/runner/cypress_runner.js:113203:16)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://telnyx.com/__cypress/runner/cypress_runner.js:154603:70)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:154503:14)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://telnyx.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://telnyx.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://telnyx.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://telnyx.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://telnyx.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at HomePage.clickNavMenuItem (webpack://task.3.cypress/./cypress/pages/home.page.ts:23:35)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:31:17)",
+                "diff": null
+              },
+              "uuid": "96de30c7-6714-4280-b483-882ca9f3e46a",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "fullTitle": "Navigation TC-04: Navigation Submenu Link Redirects to Correct Page",
+              "timedOut": null,
+              "duration": 4432,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const { menuItem, submenuLink } = navData[0];\nhomePage.clickNavMenuItem(menuItem);\nhomePage.clickSubmenuLink(submenuLink);\ncy.url().should('include', '/');",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because the center of this element is hidden from view:\n\n`<button type=\"button\" id=\"radix-_R_12qbivb_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\" class=\"header-md:text-black dark:header-md:text-cream header-md:py-md header-module__j_5VeW__dropdownTriggerNew group/trigger cursor-pointer flex gap-new-xxxs items-center [&amp;_svg]:translate-y-[2px] max-header-md:flex max-header-md:items-center max-header-md:justify-between max-header-md:data-[state=open]:-mb-xs max-header-md:[&amp;_svg]:w-[18px] max-header-md:[&amp;_svg]:h-[18px] header-md:outline-0 header-md:[&amp;_svg]:w-[0px] header-md:[&amp;_svg]:h-[0px] header-md:hover:[&amp;_svg]:w-[13px] header-md:hover:[&amp;_svg]:h-[13px] header-md:dark:data-[state=open]:text-cream duration-200 header-md:data-[state=open]:text-black header-md:data-[state=open]:[&amp;_svg]:w-[13px] header-md:data-[state=open]:[&amp;_svg]:h-[13px]\">...</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (https://telnyx.com/__cypress/runner/cypress_runner.js:112791:66)\n    at ensureDescendents (https://telnyx.com/__cypress/runner/cypress_runner.js:112827:5)\n    at ensureDescendentsAndScroll (https://telnyx.com/__cypress/runner/cypress_runner.js:112833:14)\n    at ensureElIsNotCovered (https://telnyx.com/__cypress/runner/cypress_runner.js:112964:5)\n    at runAllChecks (https://telnyx.com/__cypress/runner/cypress_runner.js:113165:52)\n    at retryActionability (https://telnyx.com/__cypress/runner/cypress_runner.js:113203:16)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://telnyx.com/__cypress/runner/cypress_runner.js:154603:70)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:154503:14)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://telnyx.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://telnyx.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://telnyx.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://telnyx.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://telnyx.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://telnyx.com/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at HomePage.clickNavMenuItem (webpack://task.3.cypress/./cypress/pages/home.page.ts:23:35)\n    at Context.eval (webpack://task.3.cypress/./cypress/e2e/navigation.cy.ts:37:17)",
+                "diff": null
+              },
+              "uuid": "144a99e6-b6ee-4560-97ca-42f4aac4e5b0",
+              "parentUUID": "f8a14292-06fc-4a4b-8b61-746384b5e199",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "b2614ed4-f18a-40dc-9b19-e7a1e2f97b6c",
+            "739e01f4-0ba9-40f6-8663-1ee3922a675c"
+          ],
+          "failures": [
+            "96de30c7-6714-4280-b483-882ca9f3e46a",
+            "144a99e6-b6ee-4560-97ca-42f4aac4e5b0"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 12580,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
