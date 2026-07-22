@@ -23,26 +23,8 @@ export class HomePage extends BasePage {
     clickSubmenuLink(linkText: string): void {
         this.submenuLink(linkText).click();
     }
-    protected get aiChatInput() {
-        return cy.get('input[placeholder="Type message here"]');
-    }
-    protected get aiChatSendButton() {
-        return cy.get('button[type="submit"]');
-    }
-    protected get aiChatResponse() {
-        return cy.get('.ai-chat-response');
-    }
     getTabByName(tabName: string): Cypress.Chainable<JQuery<HTMLElement>> {
         return cy.contains('button[role="tab"]', tabName);
-    }
-    typeAiChatMessage(message: string): void {
-        this.aiChatInput.clear().type(message);
-    }
-    submitAiChatMessage(): void {
-        this.aiChatSendButton.click();
-    }
-    getAiChatResponse() {
-        return this.aiChatResponse;
     }
     protected get contactUsButton() {
         return cy.get('a[href="/contact-us"]');
