@@ -32,6 +32,9 @@ export class HomePage extends BasePage {
     protected get aiChatResponse() {
         return cy.get('.ai-chat-response');
     }
+    getTabByName(tabName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.contains('button[role="tab"]', tabName);
+    }
     typeAiChatMessage(message: string): void {
         this.aiChatInput.clear().type(message);
     }

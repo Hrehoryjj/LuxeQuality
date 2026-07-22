@@ -5,12 +5,23 @@ describe('UI', () => {
     beforeEach(() => {
         homePage.navigateToHome();
     });
-
-    it('TC-06: AI Chat Returns Non-Empty Response', () => {
-        const message = faker.lorem.sentence();
-        homePage.typeAiChatMessage(message);
-        homePage.submitAiChatMessage();
-        homePage.getAiChatResponse().should('not.be.empty');
+    it('TC-06: All AI tabs are visible and clickable', () => {
+    const tabs = [
+            'Inference',
+            'Voice Agent Builder',
+            'Speech to Text',
+            'Text to Speech',
+            'Global Numbers',
+            'Agent Skills'
+        ];
+        tabs.forEach((tabName) => {
+            homePage.getTabByName(tabName)
+                .scrollIntoView()
+                .should('be.visible')
+                .click()
+                .should('have.attr', 'aria-selected', 'true') 
+                .and('have.attr', 'data-state', 'active'); 
+        });
     });
     it('TC-07: Contact Us Submit Button Is Clickable', () => {
         homePage
