@@ -4,8 +4,7 @@ export class PricingPage extends BasePage {
     navigateToPricing(): void {
         this.navigateTo('/pricing/messaging');
     }
-
     getPriceCellsWithDollar() {
-        return cy.get('div.bg-transparent:contains("$")');
+        return cy.get('#services div.bg-transparent:contains("$")');
     }
 }

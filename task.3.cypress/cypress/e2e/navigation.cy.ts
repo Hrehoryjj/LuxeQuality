@@ -29,13 +29,13 @@ describe('Navigation', () => {
     it('TC-03: Navigation Menu Dropdown Appears on Click', () => {
         const { menuItem } = navData[0]!;
         homePage.clickNavMenuItem(menuItem);
-        homePage.isDropdownOpenFor(menuItem);
+        homePage.waitForDropdownToOpen().should('be.visible');
     });
 
     it('TC-04: Navigation Submenu Link Redirects to Correct Page', () => {
         const { menuItem, submenuLink } = navData[0]!;
         homePage.clickNavMenuItem(menuItem);
         homePage.clickSubmenuLink(submenuLink);
-        cy.url().should('include', '/');
+        cy.url().should('include', '/products/voice-api');
     });
 });

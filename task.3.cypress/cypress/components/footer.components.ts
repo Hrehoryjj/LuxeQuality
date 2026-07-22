@@ -1,6 +1,6 @@
-import { BasePage } from './base.page';
+import { HomePage } from '../pages/home.page';
 
-export class FooterPage extends BasePage {
+export class FooterComponents extends HomePage {
     protected getFooterColumnLinks(columnHeading: string) {
         return this.footerContainer
             .contains(new RegExp(`^${columnHeading}$`, 'i'))
