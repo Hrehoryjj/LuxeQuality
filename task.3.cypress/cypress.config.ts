@@ -7,6 +7,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'https://telnyx.com',
     experimentalMemoryManagement: true,
+     numTestsKeptInMemory: 0,
     setupNodeEvents(on, config) {
       allureCypress(on, config, {
         resultsDir: "allure-results",
