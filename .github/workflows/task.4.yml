@@ -1,0 +1,49 @@
+name: Task 4 - Cypress + Cucumber (Telnyx)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'task.4/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'task.4/**'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: task.4
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run (cucumber specs, CI config)
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: task.4
+          config-file: cypress.ci.config.js
+          browser: chrome
+
+      - name: Merge & generate HTML report
+        if: always()
+        run: npm run posttest
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-html-report
+          path: task.4/cypress/reports/html
+
+      - name: Deploy report to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: task.4/cypress/reports/html
+          destination_dir: task.4
