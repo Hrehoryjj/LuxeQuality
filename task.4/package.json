@@ -28,10 +28,6 @@
     "html": {
       "enabled": true,
       "output": "cypress/reports/index.html"
-    },
-    "messages": {
-      "enabled": true,
-      "output": "cypress/reports/cucumber-report.ndjson"
     }
   }
 }
