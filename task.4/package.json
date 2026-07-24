@@ -5,9 +5,8 @@
   "main": "index.js",
    "scripts": {
     "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run --browser chrome ; npx cucumber-html-formatter cypress/reports/cucumber-report.ndjson cypress/reports/index.html"
+    "cypress:run": "npx cypress run --browser chrome"
   },
- 
   "keywords": [],
   "author": "",
   "license": "ISC",
