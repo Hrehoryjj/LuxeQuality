@@ -8,6 +8,7 @@ export default defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     reportDir: 'cypress/reports',
+    reportFilename: 'index',
     overwrite: true,
     html: true,
     json: false
