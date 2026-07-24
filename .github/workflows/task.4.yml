@@ -31,11 +31,11 @@ jobs:
         run: npm ci
 
       - name: Run Cypress Tests
-        run: npx cypress run --browser chrome --reporter cypress-mochawesome-reporter --reporter-options reportDir=cypress/reports,reportFilename=index,overwrite=true,html=true,json=false
+        run: npx cypress run --browser chrome --config-file cypress.config.ts
         continue-on-error: true
 
-      - name: Deploy Report to GitHub Pages
+       - name: Deploy Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: task.4/cypress/reports
+          publish_dir: ./task.4/cypress/reports

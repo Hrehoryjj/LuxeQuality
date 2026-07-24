@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "scripts": {
+    "cypress:open": "npx cypress open",
+    "cypress:run": "npx cypress run --browser chrome ; npx cucumber-html-formatter cypress/reports/cucumber-report.ndjson cypress/reports/index.html"
   },
+ 
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,9 +21,17 @@
     "cypress-mochawesome-reporter": "^4.0.2",
     "typescript": "^5.9.3"
   },
-  "cypress-cucumber-preprocessor": {
+   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
       "cypress/e2e/step_definitions/**/*.ts"
-    ]
+    ],
+    "html": {
+      "enabled": true,
+      "output": "cypress/reports/index.html"
+    },
+    "messages": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-report.ndjson"
+    }
   }
 }
