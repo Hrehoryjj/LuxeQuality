@@ -9,7 +9,7 @@ export class ContactUsPage extends BasePage {
     return cy.get(selector);
     }
     clickCookieSettings() {
-        return cy.get('button[aria-label="Cookies settings"]').click({ force: true });
+    return cy.get('#ot-sdk-btn-floating button.ot-floating-button__open').click({ force: true });
     }
     acceptConfirmChoicesButton(){
     return cy.contains('button.save-preference-btn-handler', 'Confirm My Choices');
