@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 4,
-    "start": "2026-07-27T18:38:12.913Z",
-    "end": "2026-07-27T18:39:01.241Z",
-    "duration": 48328,
+    "start": "2026-07-27T18:38:28.308Z",
+    "end": "2026-07-27T18:39:18.515Z",
+    "duration": 50207,
     "testsRegistered": 4,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "ec0cf1c0-e91b-4b7d-86f3-c8cd283700b7",
+      "uuid": "d6b9e9b7-0ecb-40e9-ada3-f82d1c86241d",
       "title": "",
       "fullFile": "cypress/e2e/features/contactUs.feature",
       "file": "cypress/e2e/features/contactUs.feature",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "91fc331d-9335-4e59-9150-83916cb1b3c4",
+          "uuid": "b15d7aad-a40d-487b-8ee1-ee544fe8aac5",
           "title": "Contact Us page",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Contact Us Submit Button Is Clickable",
               "fullTitle": "Contact Us page Contact Us Submit Button Is Clickable",
               "timedOut": null,
-              "duration": 12981,
+              "duration": 14166,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/contactUs.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "c460287b-b05f-41a0-8dee-a8acbfb8f34e",
-              "parentUUID": "91fc331d-9335-4e59-9150-83916cb1b3c4",
+              "uuid": "f8bbbb17-0a54-4a41-81fe-299ee60159b4",
+              "parentUUID": "b15d7aad-a40d-487b-8ee1-ee544fe8aac5",
               "isHook": false,
               "skipped": false
             },
@@ -60,7 +60,7 @@
               "title": "Contact Us Form Reason has two options",
               "fullTitle": "Contact Us page Contact Us Form Reason has two options",
               "timedOut": null,
-              "duration": 11488,
+              "duration": 11692,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -73,8 +73,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/contactUs.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "a4483066-ca0c-4a76-97dd-64223f6e16c0",
-              "parentUUID": "91fc331d-9335-4e59-9150-83916cb1b3c4",
+              "uuid": "ff1eea1e-948b-4f4b-bf65-53b5ca9cf7be",
+              "parentUUID": "b15d7aad-a40d-487b-8ee1-ee544fe8aac5",
               "isHook": false,
               "skipped": false
             },
@@ -82,7 +82,7 @@
               "title": "Contact Us Form fields are accepting input",
               "fullTitle": "Contact Us page Contact Us Form fields are accepting input",
               "timedOut": null,
-              "duration": 12185,
+              "duration": 12425,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -95,8 +95,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/contactUs.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "307c1b45-6048-4a21-9261-73c7912492ee",
-              "parentUUID": "91fc331d-9335-4e59-9150-83916cb1b3c4",
+              "uuid": "597bab3d-9986-4899-bb5b-8cdcb7cff9b0",
+              "parentUUID": "b15d7aad-a40d-487b-8ee1-ee544fe8aac5",
               "isHook": false,
               "skipped": false
             },
@@ -104,7 +104,7 @@
               "title": "Cookies settings are editable on Contact Us page",
               "fullTitle": "Contact Us page Cookies settings are editable on Contact Us page",
               "timedOut": null,
-              "duration": 11193,
+              "duration": 11362,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -117,8 +117,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/contactUs.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "eff50384-c1ac-43f1-a719-7dd1e6d26c3a",
-              "parentUUID": "91fc331d-9335-4e59-9150-83916cb1b3c4",
+              "uuid": "ececfeb6-99bd-4474-953a-ce4f2972e21f",
+              "parentUUID": "b15d7aad-a40d-487b-8ee1-ee544fe8aac5",
               "isHook": false,
               "skipped": false
             }
@@ -126,14 +126,14 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "c460287b-b05f-41a0-8dee-a8acbfb8f34e",
-            "a4483066-ca0c-4a76-97dd-64223f6e16c0",
-            "307c1b45-6048-4a21-9261-73c7912492ee",
-            "eff50384-c1ac-43f1-a719-7dd1e6d26c3a"
+            "f8bbbb17-0a54-4a41-81fe-299ee60159b4",
+            "ff1eea1e-948b-4f4b-bf65-53b5ca9cf7be",
+            "597bab3d-9986-4899-bb5b-8cdcb7cff9b0",
+            "ececfeb6-99bd-4474-953a-ce4f2972e21f"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 47847,
+          "duration": 49645,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

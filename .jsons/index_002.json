@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 6,
-    "start": "2026-07-27T18:40:14.145Z",
-    "end": "2026-07-27T18:41:25.742Z",
-    "duration": 71597,
+    "start": "2026-07-27T18:40:31.442Z",
+    "end": "2026-07-27T18:41:40.888Z",
+    "duration": 69446,
     "testsRegistered": 6,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "8f68047a-32cf-4f1b-a818-cac65394ecf0",
+      "uuid": "d3422ec6-237d-4738-801f-de517afaf685",
       "title": "",
       "fullFile": "cypress/e2e/features/navigation.feature",
       "file": "cypress/e2e/features/navigation.feature",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+          "uuid": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
           "title": "Homepage and navigation",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Home Page Loads Successfully",
               "fullTitle": "Homepage and navigation Home Page Loads Successfully",
               "timedOut": null,
-              "duration": 12483,
+              "duration": 12222,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "900939b0-d164-4896-ae09-76ab47e2e565",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "02a74295-2a03-4f96-b7f7-9bafce832b91",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             },
@@ -60,7 +60,7 @@
               "title": "Logo Click Redirects to Home Page",
               "fullTitle": "Homepage and navigation Logo Click Redirects to Home Page",
               "timedOut": null,
-              "duration": 13316,
+              "duration": 11304,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -73,8 +73,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "4c816779-0415-4612-af79-67dcaf01d31d",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "ed3c65b5-9f85-4ddd-889e-8c28d6c30260",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             },
@@ -82,7 +82,7 @@
               "title": "Main navigation displays all top-level menu items",
               "fullTitle": "Homepage and navigation Main navigation displays all top-level menu items",
               "timedOut": null,
-              "duration": 11421,
+              "duration": 11171,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -95,8 +95,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "724abe4e-abc0-4aa4-8439-bf185dddac6a",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "db7ffbbe-5a1c-4ed3-a29d-0fadd60d261c",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             },
@@ -104,7 +104,7 @@
               "title": "Navigation Menu Dropdown Appears on Click",
               "fullTitle": "Homepage and navigation Navigation Menu Dropdown Appears on Click",
               "timedOut": null,
-              "duration": 11266,
+              "duration": 11312,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -117,8 +117,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "b4186ca5-648f-4019-943f-7ad39e62596d",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "9d6e2ae5-0b27-451b-a90e-7a128b29e6d2",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             },
@@ -126,7 +126,7 @@
               "title": "Navigation Submenu Link Redirects to Correct Page",
               "fullTitle": "Homepage and navigation Navigation Submenu Link Redirects to Correct Page",
               "timedOut": null,
-              "duration": 11224,
+              "duration": 11341,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -139,8 +139,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "23fa1af8-c527-4d56-b1e0-68e931a70f8f",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "d33b9425-7fd0-4a28-9cd4-7a1f0a29763c",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             },
@@ -148,7 +148,7 @@
               "title": "All AI tabs are visible and clickable",
               "fullTitle": "Homepage and navigation All AI tabs are visible and clickable",
               "timedOut": null,
-              "duration": 11168,
+              "duration": 11339,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -161,8 +161,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/navigation.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "e091ed74-fa56-40b0-861b-59f97b9f4ed4",
-              "parentUUID": "471a1c2b-1169-4ee1-9ed2-ca328f7579cc",
+              "uuid": "be726a8f-bfce-45a9-a397-a1db79035610",
+              "parentUUID": "0bb0ce2f-7d9c-4a5a-b208-0247f67632da",
               "isHook": false,
               "skipped": false
             }
@@ -170,16 +170,16 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "900939b0-d164-4896-ae09-76ab47e2e565",
-            "4c816779-0415-4612-af79-67dcaf01d31d",
-            "724abe4e-abc0-4aa4-8439-bf185dddac6a",
-            "b4186ca5-648f-4019-943f-7ad39e62596d",
-            "23fa1af8-c527-4d56-b1e0-68e931a70f8f",
-            "e091ed74-fa56-40b0-861b-59f97b9f4ed4"
+            "02a74295-2a03-4f96-b7f7-9bafce832b91",
+            "ed3c65b5-9f85-4ddd-889e-8c28d6c30260",
+            "db7ffbbe-5a1c-4ed3-a29d-0fadd60d261c",
+            "9d6e2ae5-0b27-451b-a90e-7a128b29e6d2",
+            "d33b9425-7fd0-4a28-9cd4-7a1f0a29763c",
+            "be726a8f-bfce-45a9-a397-a1db79035610"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 70878,
+          "duration": 68689,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 1,
-    "start": "2026-07-27T18:41:27.323Z",
-    "end": "2026-07-27T18:41:39.292Z",
-    "duration": 11969,
+    "start": "2026-07-27T18:41:42.607Z",
+    "end": "2026-07-27T18:41:54.476Z",
+    "duration": 11869,
     "testsRegistered": 1,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "72e407cc-6339-4e3d-bc1a-921103e651c2",
+      "uuid": "89daefcc-8185-46f7-9610-051277b163c2",
       "title": "",
       "fullFile": "cypress/e2e/features/pricing.feature",
       "file": "cypress/e2e/features/pricing.feature",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "7f9973bc-a16e-4682-956d-681d2ebcae7d",
+          "uuid": "180a3f02-8f92-4468-bbda-9411c85d65b1",
           "title": "Pricing page",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Pricing Page Displays Valid Price Values",
               "fullTitle": "Pricing page Pricing Page Displays Valid Price Values",
               "timedOut": null,
-              "duration": 11870,
+              "duration": 11774,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "67733953-a5d2-4d0f-99fe-33340cdbeb99",
-              "parentUUID": "7f9973bc-a16e-4682-956d-681d2ebcae7d",
+              "uuid": "caf071cb-44b2-4c19-b650-a3389d27f7b8",
+              "parentUUID": "180a3f02-8f92-4468-bbda-9411c85d65b1",
               "isHook": false,
               "skipped": false
             }
@@ -60,11 +60,11 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "67733953-a5d2-4d0f-99fe-33340cdbeb99"
+            "caf071cb-44b2-4c19-b650-a3389d27f7b8"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 11870,
+          "duration": 11774,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

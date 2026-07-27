@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 6,
-    "start": "2026-07-27T18:39:02.915Z",
-    "end": "2026-07-27T18:40:12.537Z",
-    "duration": 69622,
+    "start": "2026-07-27T18:39:20.125Z",
+    "end": "2026-07-27T18:40:29.703Z",
+    "duration": 69578,
     "testsRegistered": 6,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "f9e512ef-ac39-4f62-b827-32fbfd4e92ad",
+      "uuid": "ea709e0f-7a72-45c8-a800-1e29fa864251",
       "title": "",
       "fullFile": "cypress/e2e/features/footer.feature",
       "file": "cypress/e2e/features/footer.feature",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+          "uuid": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
           "title": "Footer links",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "API Validation of Footer COMPANY Section Internal Links",
               "fullTitle": "Footer links API Validation of Footer COMPANY Section Internal Links",
               "timedOut": null,
-              "duration": 11964,
+              "duration": 12066,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "d25b97ff-9644-47e1-97e3-fca4c23b8b05",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "289a1554-6a64-46d4-904c-d23e6ea38be6",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             },
@@ -60,7 +60,7 @@
               "title": "API Validation of Footer LEGAL Section Internal Links",
               "fullTitle": "Footer links API Validation of Footer LEGAL Section Internal Links",
               "timedOut": null,
-              "duration": 11509,
+              "duration": 11423,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -73,8 +73,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "88d18100-bd90-479d-95c4-37423fa2dbc2",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "2a4e2b4d-6360-4df8-a4ad-b33d6cb515bf",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             },
@@ -82,7 +82,7 @@
               "title": "API Validation of Footer COMPARE Section Internal Links",
               "fullTitle": "Footer links API Validation of Footer COMPARE Section Internal Links",
               "timedOut": null,
-              "duration": 11284,
+              "duration": 11321,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -95,8 +95,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "99b4b599-f4f2-4e7a-b6e8-09f8eb4c63a6",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "7423842f-a2a3-4a03-b4fb-9533b4368d25",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             },
@@ -104,7 +104,7 @@
               "title": "Footer social icons link to the correct external profile (example #1)",
               "fullTitle": "Footer links Footer social icons link to the correct external profile (example #1)",
               "timedOut": null,
-              "duration": 11324,
+              "duration": 11360,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -117,8 +117,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "0fb7de8a-a40b-47da-b474-58f5f0df97c2",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "1fc47d0f-c097-44ce-ae28-012cd6be3459",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             },
@@ -126,7 +126,7 @@
               "title": "Footer social icons link to the correct external profile (example #2)",
               "fullTitle": "Footer links Footer social icons link to the correct external profile (example #2)",
               "timedOut": null,
-              "duration": 11391,
+              "duration": 11341,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -139,8 +139,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "0742f2c1-7556-4909-9e89-efaeebacf240",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "90b2f752-f314-4e3b-a42c-18407bd57af4",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             },
@@ -148,7 +148,7 @@
               "title": "Footer social icons link to the correct external profile (example #3)",
               "fullTitle": "Footer links Footer social icons link to the correct external profile (example #3)",
               "timedOut": null,
-              "duration": 11303,
+              "duration": 11353,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -161,8 +161,8 @@
                 "estack": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `#ot-sdk-btn-floating button.ot-floating-button__open`, but never found it.\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/footer.feature:13200:74)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)\n    at Context.thenFn (https://telnyx.com/__cypress/runner/cypress_runner.js:121222:66)\n    at Context.then (https://telnyx.com/__cypress/runner/cypress_runner.js:121473:21)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)",
                 "diff": null
               },
-              "uuid": "51e0bbe8-edc5-4a4c-bfd8-8390fa860d24",
-              "parentUUID": "ff7a3782-d0ab-4af9-b92f-5b5c0d4bb281",
+              "uuid": "f6aacb71-b567-422b-aa3a-abbc70d962e3",
+              "parentUUID": "2259495f-7271-495d-a5c5-e00d7ca30aa0",
               "isHook": false,
               "skipped": false
             }
@@ -170,16 +170,16 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "d25b97ff-9644-47e1-97e3-fca4c23b8b05",
-            "88d18100-bd90-479d-95c4-37423fa2dbc2",
-            "99b4b599-f4f2-4e7a-b6e8-09f8eb4c63a6",
-            "0fb7de8a-a40b-47da-b474-58f5f0df97c2",
-            "0742f2c1-7556-4909-9e89-efaeebacf240",
-            "51e0bbe8-edc5-4a4c-bfd8-8390fa860d24"
+            "289a1554-6a64-46d4-904c-d23e6ea38be6",
+            "2a4e2b4d-6360-4df8-a4ad-b33d6cb515bf",
+            "7423842f-a2a3-4a03-b4fb-9533b4368d25",
+            "1fc47d0f-c097-44ce-ae28-012cd6be3459",
+            "90b2f752-f314-4e3b-a42c-18407bd57af4",
+            "f6aacb71-b567-422b-aa3a-abbc70d962e3"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 68775,
+          "duration": 68864,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
