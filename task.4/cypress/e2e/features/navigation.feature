@@ -30,7 +30,7 @@ Feature: Homepage and navigation
     Given I am on the home page
     When I click on the "Products" navigation dropdown
     Then the dropdown should appear
-    And I click on "View all products"
+    And I click on "View all primitives"
     Then I should be redirected to the "/products" page
 
   @TC-07

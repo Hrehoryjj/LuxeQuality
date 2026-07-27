@@ -9,7 +9,6 @@ export class ContactUsPage extends BasePage {
     return cy.get(selector);
     }
     clickCookieSettings() {
-        cy.wait(3000);
     return cy.get('#ot-sdk-btn-floating button.ot-floating-button__open').click({ force: true });
     }
     acceptConfirmChoicesButton(){
