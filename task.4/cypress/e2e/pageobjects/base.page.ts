@@ -1,5 +1,6 @@
 export class BasePage {
     private static readonly COOKIE_BANNER_ACCEPT_BUTTON = '#onetrust-accept-btn-handler';
+    private static readonly COOKIE_FLOATING_BUTTON = '#ot-sdk-btn-floating button.ot-floating-button__open';
 
     navigateTo(url: string): void {
         cy.visit(url);
@@ -19,11 +20,12 @@ export class BasePage {
                 setTimeout(() => {
                     clearInterval(checkInterval);
                     resolve(false);
-                }, 3000);
+                }, 8000);
             });
         }).then((bannerFound) => {
             if (bannerFound) {
                 cy.get(BasePage.COOKIE_BANNER_ACCEPT_BUTTON).click();
+                cy.get(BasePage.COOKIE_FLOATING_BUTTON, { timeout: 10000 }).should('exist');
             }
         });
     }
