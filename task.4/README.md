@@ -37,7 +37,7 @@ npm test
 ```bash
 npm run report
 ```
-Open `cypress/reports/html/index.html` in a browser. It includes a pass/fail
+Open `cypress/reports/index.html` in a browser. It includes a pass/fail
 summary chart and screenshots for any failed steps.
 
 ## CI

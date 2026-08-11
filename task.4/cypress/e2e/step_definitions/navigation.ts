@@ -3,7 +3,7 @@ import { HomePage } from '../pageobjects/home.page';
 import testData from '../../fixtures/testData.json';
 const homePage = new HomePage();
 Then('the main header area with the Telnyx logo should be visible', () => {
-  cy.get('#site-header').should('be.visible');
+  homePage.getHeaderContainer().should('be.visible');
 });
 When('I click the logo', () => {
   homePage.clickLogo();

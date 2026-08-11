@@ -5,7 +5,7 @@ Feature: Contact Us page
     Given I am on the home page
     When I click on "TALK TO AN EXPERT"
     Then I should be redirected to the "/contact-us" page
-    And the "submit" button should be clickable
+    And the submit button should be clickable
 
   @TC-13
   Scenario: Contact Us Form Reason has two options
@@ -24,7 +24,8 @@ Feature: Contact Us page
   @TC-15
   Scenario: Cookies settings are editable on Contact Us page
     Given I am on the contact-us page
-    When I click the cookie settings button
+    When I see coockie settings button
+    And I click the cookie settings button
     Then the cookie settings panel should appear
     When I confirm my cookie choices
     Then the choice should be confirmed

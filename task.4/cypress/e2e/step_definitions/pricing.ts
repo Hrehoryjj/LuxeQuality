@@ -6,7 +6,7 @@ Given('I navigate to the pricing page', () => {
   pricingPage.navigateToPricing();
 });
 Then('the services table should be visible', () => {
-  cy.get('#services').should('be.visible');
+  pricingPage.getServicesTable().should('be.visible');
 });
 Then('all displayed prices should be greater than 0', () => {
   pricingPage.getPriceCellsWithDollar().should('have.length.greaterThan', 0);

@@ -14,7 +14,7 @@ When('I extract an array of URLs from all links inside the {string} column in th
     expect(extractedUrls.length).to.be.greaterThan(0);
   });
 });
-Then('the server response for every URL should return HTTP status code 200', () => {
+Then('the server response for every URL should return HTTP status code 200 or 403 if links protected by bot-detection', () => {
   extractedUrls.forEach((url) => {
     cy.request({ url, failOnStatusCode: false }).its('status').should('match', /^(200|403)$/);
   });

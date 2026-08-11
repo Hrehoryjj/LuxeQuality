@@ -3,14 +3,13 @@ import { faker } from '@faker-js/faker';
 import { ContactUsPage } from '../pageobjects/contactUs.page';
 
 const contactUsPage = new ContactUsPage();
-const FORM_FIELDS_SELECTOR = '#mktoForm_1987 input[type="text"], #mktoForm_1987 input[type="email"]';
 let generatedSymbol: string;
 
 Given('I am on the contact-us page', () => {
   contactUsPage.visitContactUs();
 });
-Then('the {string} button should be clickable', (label: string) => {
-  contactUsPage.getContactFormField('button[type="submit"]').should('be.visible').and('not.be.disabled');
+Then('the submit button should be clickable', () => {
+  contactUsPage.getSubmitButton().should('be.visible').and('not.be.disabled');
 });
 When('I click on the {string} contact reason dropdown', (label: string) => {
   contactUsPage.getReasonForContactDropdown().focus();
@@ -20,22 +19,22 @@ Then('two options should appear', () => {
 });
 When('I input a randomly generated symbol into the contact form fields', () => {
   generatedSymbol = faker.string.alpha(1).toUpperCase();
-  contactUsPage.getContactFormField(FORM_FIELDS_SELECTOR).each(($field) => {
+  contactUsPage.getFormFields().each(($field) => {
     cy.wrap($field).type(generatedSymbol);
   });
 });
 Then('the fields should accept the symbol', () => {
-  contactUsPage.getContactFormField(FORM_FIELDS_SELECTOR).each(($field) => {
+  contactUsPage.getFormFields().each(($field) => {
     cy.wrap($field).should('have.value', generatedSymbol);
   });
 });
 When('I clear the fields', () => {
-  contactUsPage.getContactFormField(FORM_FIELDS_SELECTOR).each(($field) => {
+  contactUsPage.getFormFields().each(($field) => {
     cy.wrap($field).clear();
   });
 });
 Then('the fields should be empty', () => {
-  contactUsPage.getContactFormField(FORM_FIELDS_SELECTOR).each(($field) => {
+  contactUsPage.getFormFields().each(($field) => {
     cy.wrap($field).should('have.value', '');
   });
 });
@@ -50,4 +49,10 @@ When('I confirm my cookie choices', () => {
 });
 Then('the choice should be confirmed', () => {
   contactUsPage.getCookeSettingsPanel().should('not.be.visible');
+});
+Then('the cookie settings button should be visible', () => {
+  contactUsPage.detectCoockiesettings().should('be.visible');
+});
+When('I see coockie settings button', () => {
+  contactUsPage.detectCoockiesettings().should('be.visible');
 });

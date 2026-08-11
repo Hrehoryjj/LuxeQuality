@@ -7,4 +7,7 @@ export class PricingPage extends BasePage {
     getPriceCellsWithDollar() {
         return cy.get('#services div.bg-transparent:contains("$")');
     }
+    getServicesTable() {
+        return cy.get('#services');
+    }
 }
