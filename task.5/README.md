@@ -1,54 +1,62 @@
-# Postman + newman + github actions (Simple store template)
+# Task.5 — Postman + Newman + GitHub Actions
 
-<a href="https://drive.google.com/file/d/1LQ1uG7Tt70Jubuk5loS4dMSk-1AJ5jzz/view?usp=sharing" /> Intro </a>
+This project is part of a QA automation trainee program. The goal is to test the REST API of a mock server (the "Simple store" template) using Postman tests, automate the run with Newman, and hook it up to GitHub Actions so tests run automatically on every push.
 
-## Task steps / First task
-1. Read: 
-- <a href="https://svitla.com/blog/testing-rest-api-with-postman-and-curl"> Postman & Curl & REST article </a> 
-- <a href="https://learning.postman.com/docs/writing-scripts/script-references/test-examples/">Postman tests examples (off doc)</a>
-- <a href="https://drive.google.com/file/d/1ftlfK91TXTS9GH7ufEXsGujop_LpC5ef/view?usp=sharing" /> Manual schema generation </a>
-2. Download this repo.
-3. Run `npm i` (install node.js dependencies)
-4. Run `npm run tern-on-api`(to run testing server locally )
+## What's here
 
-### Overview of local server testing
-Routes `/products`, `/orders` and `/users`. Below is a table of supported operations with `products` as example resource. The same operations are also supports for `orders/` and `users/`.
+```
+task.5/
+├── mockApi/                   # data for the local mock server
+├── package.json                # dependencies and npm scripts
+├── store.collection.json       # Postman collection with tests (products/orders/users)
+├── petstore.collection.json    # test collection for the public petstore API
+└── README.md                   # this file
+```
 
-| VERB     |Route          | Input      | Output             |
-|----------|---------------|------------|--------------------|
-| GET      | /products     | *None*     | **Array**          |
-| GET      | /products/:id |  **e.g 3** | **Object**         |
-| POST     | /products     | **object** | **Created object** |
-| PUT      | /products     | **object** | **Updated object** |
-| DELETE   | /products/:id | **e.g 3**  | **Deleted object** |
+## What's being tested
 
+The mock server emulates a simple online store REST API with three resources: `products`, `orders`, `users`. Each supports standard operations: list, get by id, create, update, delete.
 
-5. Upload `store.collection.json` in Postman app. (skip this exhibit in case you decide to use another public API ) 
-6. Make some integration tests in Postman, could be status code/JSON check and so on. ( in case with another API - write tests based on another one).
+The `store.collection.json` collection includes tests for:
+- correct response status codes (200, 201, 404, etc.)
+- pagination (`?page=&pageSize=`)
+- sorting (`?sortOrder=&sortKey=`)
+- response structure validation (JSON schema)
+- a "create → update → delete → re-fetch" scenario (verifying a deleted record can no longer be found)
 
-Examples:
-- Test pagination, by way like `http://localhost:3000/users?page=1&pageSize=2`. 
-- Test sorting, by way like `http://localhost:3000/users?sortOrder=ASC&sortKey=firstName`. You can sort an any resource response using query parameters sortOrder and sortKey.
--  Test status code for REST API (200,400 and so on).
--  Test response time.
--  Test response thanks to json schema validation.
--  Try to follow `AAA` approach (arrange, act, assert).
+## How to run the tests locally
 
-7. Save new collection with your new integration tests with the same name as `store.collection.json`. ( in case with another API - another file name for json file)
-8. Push to you github repo in main branch ( in case with local server - save local server as well )
+You'll need [Node.js](https://nodejs.org/) (any LTS version) and [Postman](https://www.postman.com/downloads/) (optional, for browsing the collection manually).
 
-###  GH actions practice / Second Task
-9. Add Github action to run `petstore.collection.json` in Github pages by <a href="https://www.linkedin.com/pulse/running-postman-collections-via-github-action-nirmala-jayasanka"> article </a> or use another GH action.
-10. Check github actions for result.
+1. Install dependencies:
+   ```bash
+   npm i
+   ```
 
+2. Start the local mock server:
+   ```bash
+   npm run tern-on-api
+   ```
+   The server starts on `http://localhost:3000`. The terminal will print a list of available routes — that's confirmation it's running.
 
-You can use another API to perform  your testing instead of local store API and `store.collection.json`. 
-- <a href="https://github.com/public-apis/public-apis"> Public API list </a>
+3. Run the tests with Newman (in a separate terminal, while the server is running):
+   ```bash
+   npx newman run store.collection.json
+   ```
+   The console will print a report of how many requests ran and how many tests passed/failed.
 
-### Usefull links (skip this)
-Examples with different actions in Postman workspace (only take a look once, no need to learn this) 
-- <a href="https://www.postman.com/postman/workspace/postman-answers"> Postman answers </a>
-- <a href="https://restfulapi.net"> REST API Tutorial </a>
+   Alternative — open `store.collection.json` in Postman (Import → select the file) and run tests manually via **Send** on each request, or through the built-in **Collection Runner**.
 
-Doc for json schema validation, to check output API response (only take a look once, no need to learn this doc) 
-- <a href="https://json-schema.org"> json schema docs </a>
+## Automated run (CI)
+
+On every push to the repository, GitHub Actions automatically:
+1. Installs dependencies
+2. Starts the local server
+3. Installs Newman
+4. Runs `store.collection.json`
+
+Results can be checked in the **Actions** tab of the GitHub repository — a green checkmark means all tests passed, a red X means something failed (check the step logs for details).
+
+Config file: `.github/workflows/newman.yml` (in the repo root).git add task.5/README.md
+git commit -m "update README for task.5"
+git push origin task.5
