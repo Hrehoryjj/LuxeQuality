@@ -54,9 +54,16 @@ export const config: WebdriverIO.Config = {
     capabilities: [{
     browserName: 'chrome',
     'goog:chromeOptions': {
-        args: ['--headless=new', '--window-size=1920,1080', '--disable-gpu']
+        args: [
+            '--headless=new',
+            '--window-size=1920,1080',
+            '--disable-gpu',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox'
+        ]
     }
-    }],
+}],
 
     //
     // ===================
@@ -92,11 +99,11 @@ export const config: WebdriverIO.Config = {
     baseUrl: 'https://telnyx.com',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 15000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 120000,
+    connectionRetryTimeout: 180000,
     //
     // Default request retries count
     connectionRetryCount: 3,

@@ -53,12 +53,12 @@ class ContactUsPage extends BasePage {
   }
   return true;
 }
-  async clickCookieSettings() {
+ async clickCookieSettings() {
   await browser.execute(() => {
     const btn = document.querySelector('.ot-floating-button__open') as HTMLElement;
     btn?.click();
   });
-  await this.cookieSettingsPanel.waitForExist({ timeout: 5000 });
+  await this.cookieSettingsPanel.waitForExist({ timeout: 10000 });
 }
   async isCookieSettingsPanelDisplayed() {
     return this.cookieSettingsPanel.isDisplayed();
