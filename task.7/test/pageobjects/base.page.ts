@@ -16,6 +16,6 @@ export default abstract class BasePage {
     if (bannerFound) {
         await acceptButton.click();
         await browser.pause(500);
-  }
-}
+    }
+   }
 }

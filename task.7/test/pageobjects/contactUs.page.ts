@@ -34,30 +34,32 @@ class ContactUsPage extends BasePage {
     const options = await this.reasonForContactDropdown.$$('option');
     return options.length;
   }
-  async allFormFieldsAcceptValue(value: string): Promise<boolean> {
-  const fields = await this.formFields;
-  const count = await fields.length;
-  if (count === 0) return false;
-  for (const field of fields) {
-    await field.waitForClickable({ timeout: 5000 });
-    await field.setValue(value);
-    await browser.pause(200);
-    const actual = await field.getValue();
-    if (actual !== value) {
-      await field.setValue(value);
-      await browser.pause(200);
-      const retryActual = await field.getValue();
-      if (retryActual !== value) return false;
+    async allFormFieldsAcceptValue(value: string): Promise<boolean> {
+        const fields = await this.formFields;
+        const count = await fields.length;
+            if (count === 0) return false;
+            for (const field of fields) {
+        await field.waitForClickable({ timeout: 5000 });
+        await field.setValue(value);
+        await browser.pause(200);
+            const actual = await field.getValue();
+            if (actual !== value) {
+            await field.setValue(value);
+            await browser.pause(200);
+                const retryActual = await field.getValue();
+                if (retryActual !== value) return false;
+            }
+        await field.clearValue();
+            }
+        return true;
     }
-    await field.clearValue();
-  }
-  return true;
-}
+
  async clickCookieSettings() {
   await browser.execute(() => {
     const btn = document.querySelector('.ot-floating-button__open') as HTMLElement;
     btn?.click();
   });
+  
   await this.cookieSettingsPanel.waitForExist({ timeout: 10000 });
 }
   async isCookieSettingsPanelDisplayed() {
