@@ -6,9 +6,11 @@ on:
   pull_request:
     branches: [main]
 
-jobs:
+jjobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     defaults:
       run:
         working-directory: task.7

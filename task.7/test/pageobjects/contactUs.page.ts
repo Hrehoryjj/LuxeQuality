@@ -35,24 +35,15 @@ class ContactUsPage extends BasePage {
     return options.length;
   }
     async allFormFieldsAcceptValue(value: string): Promise<boolean> {
-        const fields = await this.formFields;
-        const count = await fields.length;
-            if (count === 0) return false;
-            for (const field of fields) {
-        await field.waitForClickable({ timeout: 5000 });
-        await field.setValue(value);
-        await browser.pause(200);
-            const actual = await field.getValue();
-            if (actual !== value) {
-            await field.setValue(value);
-            await browser.pause(200);
-                const retryActual = await field.getValue();
-                if (retryActual !== value) return false;
-            }
-        await field.clearValue();
-            }
-        return true;
-    }
+  const fields = await this.formFields;
+  for (const field of fields) {
+    await field.setValue(value);
+    const actual = await field.getValue();
+    if (actual !== value) return false;
+    await field.clearValue();
+  }
+  return true;
+}
 
  async clickCookieSettings() {
   await browser.execute(() => {
