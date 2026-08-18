@@ -5,9 +5,6 @@ class ContactUsPage extends BasePage {
     '#mktoForm_1987 input[type="text"], #mktoForm_1987 input[type="email"]';
   private static readonly SUBMIT_BUTTON_SELECTOR = 'button[type="submit"]';
   
-  //private get cookieSettingsToggle() {
-  //   return $('.ot-floating-button__open');
-  //}
   private get confirmChoicesButton() {
     return $('button.save-preference-btn-handler*=Confirm My Choices');
   }
@@ -46,13 +43,21 @@ class ContactUsPage extends BasePage {
 }
 
  async clickCookieSettings() {
-  await browser.execute(() => {
-    const btn = document.querySelector('.ot-floating-button__open') as HTMLElement;
-    btn?.click();
-  });
-  
+  const bannerButton = $('#onetrust-pc-btn-handler');
+  const bannerVisible = await bannerButton.isExisting();
+
+  if (bannerVisible) {
+    await bannerButton.click();
+  } else {
+    await browser.execute(() => {
+      const btn = document.querySelector('.ot-floating-button__open') as HTMLElement;
+      btn?.click();
+    });
+  }
+
   await this.cookieSettingsPanel.waitForExist({ timeout: 10000 });
 }
+
   async isCookieSettingsPanelDisplayed() {
     return this.cookieSettingsPanel.isDisplayed();
   }
