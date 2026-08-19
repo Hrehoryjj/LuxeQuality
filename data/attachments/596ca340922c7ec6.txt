@@ -1,2 +1,0 @@
-stale element reference: WebDriverError: stale element reference: stale element not found in the current frame
-  (Session info: chrome=151.0.7922.108) when running "element/f.288E6D75C0F744DD360C15431531F749.d.96CF659B0B9625AD6BA8D051667B363A.e.69/text" with method "GET"
