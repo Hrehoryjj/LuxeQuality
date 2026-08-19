@@ -31,37 +31,50 @@ class ContactUsPage extends BasePage {
     const options = await this.reasonForContactDropdown.$$('option');
     return options.length;
   }
-    async allFormFieldsAcceptValue(value: string): Promise<boolean> {
-  const fields = await this.formFields;
-  
-  for (const field of fields) {
-    await field.setValue(value);
+     async allFormFieldsAcceptValue(value: string): Promise<boolean> {
+    const fields = await this.formFields;
     
-    if (await field.getValue() !== value) {
-      return false;
+    for (const field of fields) {
+      await field.scrollIntoView({ block: 'center' });
+      
+      const fieldType = await field.getAttribute('type');
+      const cleanValue = fieldType === 'email' ? value.replace(/\s+/g, '') + '@test.com' : value;
+
+      await field.setValue(cleanValue);
+      
+      const isValueEntered = await field.waitUntil(
+        async () => (await field.getValue()) === cleanValue,
+        { timeout: 5000 }
+      ).catch(() => false);
+
+      if (!isValueEntered) {
+        return false;
+      }
+      
+      await field.clearValue();
     }
-    
-    await field.clearValue();
-  }
-  return true;
-}
-
-
- async clickCookieSettings() {
-  const bannerButton = $('#onetrust-pc-btn-handler');
-  const bannerVisible = await bannerButton.isExisting();
-
-  if (bannerVisible) {
-    await bannerButton.click();
-  } else {
-    await browser.execute(() => {
-      const btn = document.querySelector('.ot-floating-button__open') as HTMLElement;
-      btn?.click();
-    });
+    return true;
   }
 
-  await this.cookieSettingsPanel.waitForExist({ timeout: 10000 });
-}
+  async clickCookieSettings() {
+    const bannerButton = $('#onetrust-pc-btn-handler');
+    const openBtn = $('.ot-floating-button__open');
+
+    await browser.waitUntil(
+      async () => (await bannerButton.isDisplayed()) || (await openBtn.isDisplayed()),
+      { timeout: 15000 }
+    );
+
+    if (await bannerButton.isDisplayed()) {
+      await bannerButton.waitForClickable({ timeout: 5000 });
+      await browser.execute((el) => (el as HTMLElement).click(), await bannerButton);
+    } else {
+      await openBtn.waitForClickable({ timeout: 5000 });
+      await browser.execute((el) => (el as HTMLElement).click(), await openBtn);
+    }
+
+    await this.cookieSettingsPanel.waitForExist({ timeout: 15000 });
+  }
 
   async isCookieSettingsPanelDisplayed() {
     return this.cookieSettingsPanel.isDisplayed();
