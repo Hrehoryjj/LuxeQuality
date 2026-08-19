@@ -56,25 +56,21 @@ class ContactUsPage extends BasePage {
     return true;
   }
 
-  async clickCookieSettings() {
-    const bannerButton = $('#onetrust-pc-btn-handler');
-    const openBtn = $('.ot-floating-button__open');
-
-    await browser.waitUntil(
-      async () => (await bannerButton.isDisplayed()) || (await openBtn.isDisplayed()),
-      { timeout: 15000 }
-    );
-
-    if (await bannerButton.isDisplayed()) {
-      await bannerButton.waitForClickable({ timeout: 5000 });
-      await browser.execute((el) => (el as HTMLElement).click(), await bannerButton);
-    } else {
-      await openBtn.waitForClickable({ timeout: 5000 });
-      await browser.execute((el) => (el as HTMLElement).click(), await openBtn);
-    }
+    async clickCookieSettings() {
+    await browser.execute(() => {
+      if (typeof (window as any).OneTrust !== 'undefined') {
+        (window as any).OneTrust.ToggleInfoDisplay();
+      } else {
+        const btn = document.querySelector('#onetrust-pc-btn-handler') || 
+                    document.querySelector('.ot-floating-button__open') ||
+                    document.querySelector('#ot-sdk-btn');
+        (btn as HTMLElement)?.click();
+      }
+    });
 
     await this.cookieSettingsPanel.waitForExist({ timeout: 15000 });
   }
+
 
   async isCookieSettingsPanelDisplayed() {
     return this.cookieSettingsPanel.isDisplayed();
