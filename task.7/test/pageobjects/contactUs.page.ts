@@ -31,7 +31,7 @@ class ContactUsPage extends BasePage {
     const options = await this.reasonForContactDropdown.$$('option');
     return options.length;
   }
-     async allFormFieldsAcceptValue(value: string): Promise<boolean> {
+  async allFormFieldsAcceptValue(value: string): Promise<boolean> {
     const fields = await this.formFields;
     
     for (const field of fields) {
@@ -50,11 +50,13 @@ class ContactUsPage extends BasePage {
       if (!isValueEntered) {
         return false;
       }
-      
+
       await field.clearValue();
+      await browser.pause(100);
     }
     return true;
   }
+
 
     async clickCookieSettings() {
     await browser.execute(() => {
