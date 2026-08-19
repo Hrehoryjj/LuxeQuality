@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": ".//button[contains(concat(\" \",@class,\" \"), \" save-preference-btn-handler \") and contains(., \"Confirm My Choices\") and not(.//button[contains(concat(\" \",@class,\" \"), \" save-preference-btn-handler \")])]"
-}
