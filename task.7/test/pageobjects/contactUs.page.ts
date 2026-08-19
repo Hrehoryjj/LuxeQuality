@@ -33,14 +33,19 @@ class ContactUsPage extends BasePage {
   }
     async allFormFieldsAcceptValue(value: string): Promise<boolean> {
   const fields = await this.formFields;
+  
   for (const field of fields) {
     await field.setValue(value);
-    const actual = await field.getValue();
-    if (actual !== value) return false;
+    
+    if (await field.getValue() !== value) {
+      return false;
+    }
+    
     await field.clearValue();
   }
   return true;
 }
+
 
  async clickCookieSettings() {
   const bannerButton = $('#onetrust-pc-btn-handler');
