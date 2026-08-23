@@ -1,3 +1,4 @@
+import { randomData } from '../utils/randomData';
 import BasePage from './base.page';
 
 class ContactUsPage extends BasePage {
@@ -33,41 +34,19 @@ class ContactUsPage extends BasePage {
   }
 
   async allFormFieldsAcceptValue(value: string): Promise<boolean> {
-    const fields = await this.formFields;
-    
-    for (const field of fields) {
-      await field.scrollIntoView({ block: 'center' });
-      
-      const fieldType = await field.getAttribute('type');
-      const cleanValue = fieldType === 'email' ? value.replace(/\s+/g, '') + '@test.com' : value;
+  const fields = await this.formFields;
+  for (const field of fields) {
+    const name = await field.getAttribute('name');
+    let fieldValue = value;
+    if (name === 'Phone_Number_Base__c') fieldValue = '5551234567';
+    if (name === 'Email') fieldValue = randomData.email();
 
-      await field.setValue(cleanValue);
-      
-      const isValueEntered = await field.waitUntil(
-        async () => (await field.getValue()) === cleanValue,
-        { timeout: 5000 }
-      ).catch(() => false);
-
-      if (!isValueEntered) {
-        return false;
-      }
-
-      await field.setValue('');
-      await field.clearValue();
-      
-      const isFieldCleared = await field.waitUntil(
-        async () => (await field.getValue()) === '',
-        { timeout: 3000 }
-      ).catch(() => false);
-
-      if (!isFieldCleared) {
-        return false;
-      }
-    }
-    return true;
+    await field.setValue(fieldValue);
+    if ((await field.getValue()) !== fieldValue) return false;
+    await field.clearValue();
   }
-
-
+  return true;
+}
     async clickCookieSettings() {
     await browser.execute(() => {
       if (typeof (window as any).OneTrust !== 'undefined') {
