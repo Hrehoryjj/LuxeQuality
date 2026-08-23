@@ -26,7 +26,7 @@ class HomePage extends BasePage {
   }
 
   private get contactUsButton() {
-    return $('a[href="/contact-us"]');
+    return $('a[href="https://telnyx.com/contact-us"].max-header-md\\:hidden');
   }
 
   private get shopLink() {
