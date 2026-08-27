@@ -20,7 +20,7 @@ The mock server emulates a simple online store REST API with three resources: `p
 The `store.collection.json` collection includes tests for:
 - correct response status codes (200, 201, 404, etc.)
 - pagination (`?page=&pageSize=`)
-- sorting (`?sortOrder=&sortKey=`)
+- sorting (`?sortKey=&sortOrder=`)
 - response structure validation (JSON schema)
 - a "create → update → delete → re-fetch" scenario (verifying a deleted record can no longer be found)
 
@@ -35,13 +35,13 @@ You'll need [Node.js](https://nodejs.org/) (any LTS version) and [Postman](https
 
 2. Start the local mock server:
    ```bash
-   npm run tern-on-api
+   npm run turn-on-api
    ```
    The server starts on `http://localhost:3000`. The terminal will print a list of available routes — that's confirmation it's running.
 
 3. Run the tests with Newman (in a separate terminal, while the server is running):
    ```bash
-   npx newman run store.collection.json
+   npm test
    ```
    The console will print a report of how many requests ran and how many tests passed/failed.
 
@@ -57,6 +57,4 @@ On every push to the repository, GitHub Actions automatically:
 
 Results can be checked in the **Actions** tab of the GitHub repository — a green checkmark means all tests passed, a red X means something failed (check the step logs for details).
 
-Config file: `.github/workflows/newman.yml` (in the repo root).git add task.5/README.md
-git commit -m "update README for task.5"
-git push origin task.5
+Config file: `.github/workflows/newman.yml` (in the repo root).
