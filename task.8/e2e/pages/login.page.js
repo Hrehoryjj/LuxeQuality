@@ -1,3 +1,5 @@
+const BasePage = require('./base.page');
+
 class LoginPage extends BasePage {
   get navLoginButton() { return '~Login'; }
   get signUpTab() { return '~button-sign-up-container'; }

@@ -34,22 +34,35 @@ class SwipePage extends BasePage {
     return found;
   }
 
-  async swipeCarouselOnce() {
-    const el = await $(this.carousel);
-    await el.waitForDisplayed({ timeout: 10000 });
-    const rect = await el.getElementRect(el.elementId);
-
-    const startX = rect.x + rect.width * 0.8;
-    const endX = rect.x + rect.width * 0.2;
-    const y = rect.y + rect.height / 2;
-
+  async scrollToTop() {
+  const { width, height } = await driver.getWindowRect();
+  for (let i = 0; i < 5; i++) {
     await driver.action('pointer')
-      .move({ x: Math.floor(startX), y: Math.floor(y) })
+      .move({ x: Math.floor(width / 2), y: Math.floor(height * 0.2) })
       .down()
-      .move({ x: Math.floor(endX), y: Math.floor(y), duration: 300 })
+      .move({ x: Math.floor(width / 2), y: Math.floor(height * 0.8), duration: 300 })
       .up()
       .perform(true);
   }
+}
+
+async swipeCarouselOnce() {
+  await this.scrollToTop();
+  const el = await $(this.carousel);
+  await el.waitForDisplayed({ timeout: 10000 });
+  const rect = await el.getElementRect(el.elementId);
+
+  const startX = rect.x + rect.width * 0.8;
+  const endX = rect.x + rect.width * 0.2;
+  const y = rect.y + rect.height / 2;
+
+  await driver.action('pointer')
+    .move({ x: Math.floor(startX), y: Math.floor(y) })
+    .down()
+    .move({ x: Math.floor(endX), y: Math.floor(y), duration: 300 })
+    .up()
+    .perform(true);
+}
 }
 
 module.exports = new SwipePage();
