@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@faker-js/faker": "^10.6.0",
+    "@faker-js/faker": "^7.6.0",
     "@wdio/allure-reporter": "^9.31.4",
     "@wdio/appium-service": "^9.31.4",
     "@wdio/browserstack-service": "^9.35.1",
