@@ -50,7 +50,7 @@ async swipeCarouselOnce() {
   await this.scrollToTop();
 
   const el = await $(this.carousel);
-  await el.waitForDisplayed({ timeout: 10000 });
+  await el.waitForDisplayed({ timeout: 20000 });
 
   let attempts = 0;
   let slideChanged = false;

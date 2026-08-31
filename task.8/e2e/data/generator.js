@@ -1,10 +1,12 @@
 const { faker } = require('@faker-js/faker');
 
-function randomEmail() {
+async function randomEmail() {
+  const { faker } = await import('@faker-js/faker');
   return faker.internet.email();
 }
 
-function randomPassword() {
+async function randomPassword() {
+  const { faker } = await import('@faker-js/faker');
   return faker.internet.password({ length: 10 });
 }
 

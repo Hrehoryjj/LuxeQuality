@@ -3,8 +3,8 @@ const { randomEmail, randomPassword } = require('../data/generator');
 
 describe('TC-05: Sign up with random credentials', () => {
   it('should successfully sign up with generated email and password', async () => {
-    const email = randomEmail();
-    const password = randomPassword();
+    const email = await randomEmail();
+    const password = await randomPassword();
 
     await LoginPage.openLoginScreen();
     await LoginPage.switchToSignUp();
