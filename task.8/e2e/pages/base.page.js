@@ -21,7 +21,7 @@ class BasePage {
     const el = await $(selector);
     return el.isDisplayed();
   }
-  async waitForDisplayed(selector, timeout = 15000) {
+   async waitUntilDisplayed(selector, timeout = 15000) {
     const el = await $(selector);
     await el.waitForDisplayed({ timeout });
     return el;

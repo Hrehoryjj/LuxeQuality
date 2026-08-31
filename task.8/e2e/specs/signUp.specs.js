@@ -10,7 +10,7 @@ describe('TC-05: Sign up with random credentials', () => {
     await LoginPage.switchToSignUp();
     await LoginPage.fillSignUpForm(email, password);
     await LoginPage.submitSignUp();
-    await LoginPage.waitForDisplayed(LoginPage.successAlertTitle, 15000);
+    await LoginPage.waitUntilDisplayed(LoginPage.successAlertTitle, 15000);
 
     const alertVisible = await LoginPage.isDisplayed(LoginPage.successAlertTitle);
     expect(alertVisible).toBe(true);

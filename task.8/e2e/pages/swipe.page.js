@@ -48,20 +48,31 @@ class SwipePage extends BasePage {
 
 async swipeCarouselOnce() {
   await this.scrollToTop();
+
   const el = await $(this.carousel);
   await el.waitForDisplayed({ timeout: 10000 });
-  const rect = await el.getElementRect(el.elementId);
 
-  const startX = rect.x + rect.width * 0.8;
-  const endX = rect.x + rect.width * 0.2;
-  const y = rect.y + rect.height / 2;
+  let attempts = 0;
+  let slideChanged = false;
 
-  await driver.action('pointer')
-    .move({ x: Math.floor(startX), y: Math.floor(y) })
-    .down()
-    .move({ x: Math.floor(endX), y: Math.floor(y), duration: 300 })
-    .up()
-    .perform(true);
+  while (attempts < 3 && !slideChanged) {
+    const rect = await el.getElementRect(el.elementId);
+    const startX = rect.x + rect.width * 0.8;
+    const endX = rect.x + rect.width * 0.2;
+    const y = rect.y + rect.height / 2;
+
+    await driver.action('pointer')
+      .move({ x: Math.floor(startX), y: Math.floor(y) })
+      .down()
+      .move({ x: Math.floor(endX), y: Math.floor(y), duration: 300 })
+      .up()
+      .perform(true);
+
+    slideChanged = await this.isDisplayed(this.slide2Text).catch(() => false);
+    attempts++;
+  }
+
+  return slideChanged;
 }
 }
 
