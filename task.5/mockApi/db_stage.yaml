@@ -17,6 +17,11 @@ products:
     price: 30
     sku: 999921312423312
     description: awesome
+  - name: Updated product name
+    price: 25
+    sku: 9999999999999
+    description: A test product created for automated testing.
+    id: "4"
 orders:
   - id: 1
     name: order1
@@ -27,6 +32,9 @@ orders:
   - id: 3
     name: order2
     sku: 999921312423312
+  - name: Updated order name
+    sku: 9999999999999
+    id: "4"
 users:
   - id: 1
     firstName: Alice
