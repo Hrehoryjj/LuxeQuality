@@ -1,5 +1,3 @@
-const { faker } = require('@faker-js/faker');
-
 async function randomEmail() {
   const { faker } = await import('@faker-js/faker');
   return faker.internet.email();
