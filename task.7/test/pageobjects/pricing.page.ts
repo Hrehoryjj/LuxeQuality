@@ -1,15 +1,21 @@
-import { $$, $ } from '@wdio/globals';
 import BasePage from './base.page';
 
 class PricingPage extends BasePage {
+  private static readonly SERVICES_TABLE = 'div[data-state="active"] table';
+private static readonly PRICE_CELLS = 'div[data-state="active"] table tbody td div.bg-transparent';
+
+  private static readonly MESSAGING_API_LINK = 'a[href="/pricing/messaging"]';
+
   private get messagingApiLink() {
-    return $('a[href="/pricing/messaging"]');
+    return $(PricingPage.MESSAGING_API_LINK);
   }
+
   private get servicesTable() {
-    return $('#services');
+    return $(PricingPage.SERVICES_TABLE);
   }
+
   private get priceCellsWithDollar() {
-    return $$('#services div.bg-transparent');
+    return $$(PricingPage.PRICE_CELLS);
   }
 
   async navigateToPricing() {
@@ -25,29 +31,14 @@ class PricingPage extends BasePage {
     return this.servicesTable.isDisplayed();
   }
 
-   async getPriceCellsValues(): Promise<number[]> {
-    await browser.waitUntil(
-      async () => {
-        const cells = await this.priceCellsWithDollar;
-        if ((await cells.length) === 0) return false;
-        
-        const firstText = await cells[0].getText();
-        return firstText.includes('$');
-      },
-      { timeout: 15000, interval: 500 }
-    ).catch(() => {});
-
+  async getPriceCellsValues(): Promise<number[]> {
     const cells = await this.priceCellsWithDollar;
     const values: number[] = [];
-    
-    for (const field of cells) {
-      const text = await field.getText();
+    for (const cell of cells) {
+      const text = await cell.getText();
       if (text.includes('$')) {
-        const cleanedText = text.replace('$', '').trim();
-        const parsed = parseFloat(cleanedText);
-        if (!isNaN(parsed)) {
-          values.push(parsed);
-        }
+        const cleanPrice = text.replace('$', '').split(' ')[0].trim();
+        values.push(parseFloat(cleanPrice));
       }
     }
     return values;

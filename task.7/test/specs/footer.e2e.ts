@@ -15,7 +15,7 @@ describe('Footer', () => {
     }
   });
 
-  it('TC-12: LEGAL section links should return HTTP 200', async () => {
+  it('TC-12: LEGAL section links should return HTTP 200 or 403', async () => {
     const links = await homePage.getFooterColumnLinks('LEGAL');
     expect(links.length).toBeGreaterThan(0);
     for (const url of links) {

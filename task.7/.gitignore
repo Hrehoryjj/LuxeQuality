@@ -6,3 +6,4 @@ allure-report/
 *.log
 dist/
 .DS_Store
+errorShots/
