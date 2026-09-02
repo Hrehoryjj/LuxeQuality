@@ -27,8 +27,10 @@ export const config: Partial<WebdriverIO.Config> = {
 
     afterTest: async function (test, _context, { passed }) {
         if (!passed) {
-            const fileName = `errorShots/${test.parent}-${test.title}.png`.replace(/\s+/g, '_');
-            await browser.saveScreenshot(fileName);
+            const safeName = `${test.parent}-${test.title}`
+                .replace(/[:"/\\|?*<>]/g, '')
+                .replace(/\s+/g, '_');
+            await browser.saveScreenshot(`errorShots/${safeName}.png`);
         }
     },
 };
