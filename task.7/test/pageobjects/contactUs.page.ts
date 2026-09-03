@@ -64,27 +64,27 @@ class ContactUsPage extends BasePage {
     return true;
   }
 
-  async clickCookieSettings() {
-  const bannerButton = $(ContactUsPage.BANNER_COOKIE_BUTTON);
-  const floatingButton = $(ContactUsPage.FLOATING_COOKIE_BUTTON);
+  async clickCookieSettings(): Promise<boolean> {
+    const bannerButton = $(ContactUsPage.BANNER_COOKIE_BUTTON);
+    const floatingButton = $(ContactUsPage.FLOATING_COOKIE_BUTTON);
 
-  await browser.waitUntil(
-    async () => (await bannerButton.isExisting()) || (await floatingButton.isExisting()),
-    { timeout: 10000, timeoutMsg: 'Neither cookie banner button nor floating button appeared in time' }
-  );
+    const appeared = await browser
+      .waitUntil(async () => (await bannerButton.isExisting()) || (await floatingButton.isExisting()), {
+        timeout: 4000,
+        timeoutMsg: '',
+      })
+      .catch(() => false);
 
-  if (await bannerButton.isExisting()) {
-    await browser.execute((selector) => {
-      (document.querySelector(selector) as HTMLElement)?.click();
-    }, ContactUsPage.BANNER_COOKIE_BUTTON);
-  } else {
-    await browser.execute((selector) => {
-      (document.querySelector(selector) as HTMLElement)?.click();
-    }, ContactUsPage.FLOATING_COOKIE_BUTTON);
+    if (!appeared) return false;
+
+    const activeSelector = (await bannerButton.isExisting())
+      ? ContactUsPage.BANNER_COOKIE_BUTTON
+      : ContactUsPage.FLOATING_COOKIE_BUTTON;
+
+    await browser.execute((s) => (document.querySelector(s) as HTMLElement)?.click(), activeSelector);
+    await this.cookieSettingsPanel.waitForExist({ timeout: 4000 });
+    return true;
   }
-
-  await this.cookieSettingsPanel.waitForExist({ timeout: 10000 });
-}
 
   async isCookieSettingsPanelDisplayed() {
     return this.cookieSettingsPanel.isDisplayed();

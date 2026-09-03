@@ -116,3 +116,4 @@ task.7/
 
 - Currently configured for Chrome only. Firefox and Edge configs are planned but not yet implemented.
 - The LEGAL footer links test (TC-12) accepts both `200` and `403` responses — Telnyx's server occasionally returns `403` to automated `fetch()` requests (bot protection), which is not a real broken-link condition; the test title reflects this.
+- TC-20 (cookie settings) passes even when the OneTrust consent widget isn't shown — this depends on the region/IP OneTrust detects for the session and isn't something the test controls. When the widget is present, TC-20 does verify the settings panel opens correctly; when it's absent, the Allure report shows this explicitly in the test's description.
