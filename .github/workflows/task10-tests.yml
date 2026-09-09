@@ -1,0 +1,112 @@
+name: task.10 e2e
+
+on:
+  push:
+    branches: [main, task.10]
+    paths:
+      - 'task.10/**'
+      - '.github/workflows/task10-tests.yml'
+  pull_request:
+    paths:
+      - 'task.10/**'
+      - '.github/workflows/task10-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: task10-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: task.10
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: task.10/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser (${{ matrix.browser }})
+        run: python -m playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run tests
+        env:
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        run: pytest -n auto --browser ${{ matrix.browser }}
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: task.10/allure-results
+          retention-days: 7
+
+  report:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect Allure results from all browsers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          merge-multiple: true
+          path: allure-results
+
+      - name: Keep trend history from previous runs
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Restore history
+        run: |
+          mkdir -p allure-results/history
+          cp -r gh-pages/last-history/* allure-results/history/ 2>/dev/null || true
+
+      - name: Generate Allure report
+        uses: simple-elf/allure-report-action@v1.9
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          allure_history: allure-history
+          gh_pages: gh-pages
+
+      - name: Publish report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history
+          keep_files: true
+
+      - name: Notify Slack
+        if: always()
+        continue-on-error: true
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "*task.10 e2e* — tests: `${{ needs.test.result }}`\nReport: https://hrehoryjj.github.io/LuxeQuality/\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
