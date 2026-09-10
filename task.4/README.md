@@ -26,19 +26,18 @@ npm install
 ## Run the tests
 Interactive (see the browser step by step):
 ```bash
-npm run cy:open
+npm run cypress:open
 ```
 Headless, all tests:
 ```bash
-npm test
+npm run cypress:run
 ```
 
-## Generate the report
-```bash
-npm run report
-```
-Open `cypress/reports/index.html` in a browser. It includes a pass/fail
-summary chart and screenshots for any failed steps.
+## View the report
+The HTML report is generated automatically as part of `cypress:run` (via
+`cypress-mochawesome-reporter`) — no separate command needed. Open
+`cypress/reports/index.html` in a browser afterwards. It includes a
+pass/fail summary chart and screenshots for any failed steps.
 
 ## CI
 Every push or Pull Request that touches this folder triggers GitHub Actions

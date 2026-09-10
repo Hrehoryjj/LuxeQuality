@@ -20,12 +20,6 @@ export class HomePage extends BasePage {
     waitForDropdownToOpen() {
         return cy.get('#main-menu-content');
     }
-    protected get submenuLink() {
-        return (linkText: string) => cy.get('#main-menu-content a:visible').contains(linkText);
-    }
-    protected get contactUsButton() {
-        return cy.get('a[href="/contact-us"]');
-    }
     protected get headerContainer() {
         return cy.get('#site-header');
     }

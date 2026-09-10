@@ -32,7 +32,6 @@ jobs:
 
       - name: Run Cypress Tests
         run: npm run cypress:run
-        continue-on-error: true
 
       - name: Deploy Report to GitHub Pages
         if: always()

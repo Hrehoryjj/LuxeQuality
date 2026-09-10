@@ -13,9 +13,13 @@ Then('the submit button should be clickable', () => {
 });
 When('I click on the {string} contact reason dropdown', (label: string) => {
   contactUsPage.getReasonForContactDropdown().focus();
+  contactUsPage.getReasonForContactDropdown().find('option').first().should('have.text', label);
 });
 Then('two options should appear', () => {
-  contactUsPage.getReasonForContactDropdown().find('option').should('have.length', 3);
+  // The first <option> is the non-selectable placeholder shown in the dropdown
+  // (asserted above against the step's label); only the remaining options are
+  // real, selectable reasons.
+  contactUsPage.getReasonForContactDropdown().find('option:not([value=""])').should('have.length', 2);
 });
 When('I input a randomly generated symbol into the contact form fields', () => {
   generatedSymbol = faker.string.alpha(1).toUpperCase();
