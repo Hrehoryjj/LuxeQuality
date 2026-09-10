@@ -23,8 +23,14 @@ export class HomePage extends BasePage {
     clickSubmenuLink(linkText: string): void {
         this.submenuLink(linkText).click();
     }
-    getTabByName(tabName: string): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.contains('button[role="tab"]', tabName);
+    protected get useCaseSectionHeading() {
+        return cy.contains('p', 'SELECT USE CASE');
+    }
+    getUseCaseButtons(): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get('button[aria-pressed]');
+    }
+    scrollToUseCaseSection(): void {
+        this.useCaseSectionHeading.scrollIntoView();
     }
     protected get contactUsButton() {
         return cy.contains('a, button', 'Contact us');

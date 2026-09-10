@@ -5,23 +5,22 @@ describe('UI', () => {
     beforeEach(() => {
         homePage.navigateToHome();
     });
-    it('TC-06: All AI tabs are visible and clickable', () => {
-    const tabs = [
-            'Inference',
-            'Voice Agent Builder',
-            'Speech to Text',
-            'Text to Speech',
-            'Global Numbers',
-            'Agent Skills'
-        ];
-        tabs.forEach((tabName) => {
-            homePage.getTabByName(tabName)
-                .scrollIntoView()
-                .should('be.visible')
-                .click()
-                .should('have.attr', 'aria-selected', 'true') 
-                .and('have.attr', 'data-state', 'active'); 
-        });
+    it('TC-06: Use case buttons are visible and clickable', () => {
+        // The homepage's AI-model tabs (role="tab") were redesigned into a
+        // "SELECT USE CASE" button group (button[aria-pressed]); the site no
+        // longer exposes the old tab names, so this checks the current
+        // widget's real contract instead: each button is visible, clickable,
+        // and toggles its own aria-pressed state on click.
+        homePage.scrollToUseCaseSection();
+        homePage.getUseCaseButtons()
+            .should('have.length.greaterThan', 0)
+            .each(($button) => {
+                cy.wrap($button)
+                    .scrollIntoView()
+                    .should('be.visible')
+                    .click()
+                    .should('have.attr', 'aria-pressed', 'true');
+            });
     });
     it('TC-07: Contact Us Submit Button Is Clickable', () => {
         homePage
