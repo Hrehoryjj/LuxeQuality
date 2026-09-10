@@ -51,7 +51,12 @@ export class HomePage extends BasePage {
         return cy.contains('p', 'SELECT USE CASE');
     }
     getUseCaseButtons() {
-        return cy.get('button[aria-pressed]');
+        // button[aria-pressed] isn't scoped to just this section - other
+        // toggle buttons elsewhere on the page can match too, and unlike
+        // this section's buttons they may not be visible/on-screen. Only
+        // the visible ones belong to the widget under test here (task.7's
+        // areAllUseCaseButtonsClickable does the same visible-only filter).
+        return cy.get('button[aria-pressed]:visible');
     }
     scrollToUseCaseSection(): void {
         this.useCaseSectionHeading.scrollIntoView();

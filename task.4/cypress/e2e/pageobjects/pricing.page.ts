@@ -12,7 +12,9 @@ export class PricingPage extends BasePage {
         this.navigateTo('/pricing');
     }
     getMessagingApiLink() {
-        return cy.get(PricingPage.MESSAGING_API_LINK);
+        // The same href appears more than once on the page (e.g. desktop
+        // nav + mobile nav) - scrollIntoView/click need exactly one target.
+        return cy.get(PricingPage.MESSAGING_API_LINK).first();
     }
     clickMessagingApiLink(): void {
         this.getMessagingApiLink().scrollIntoView().click({ force: true });
