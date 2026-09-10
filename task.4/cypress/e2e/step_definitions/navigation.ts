@@ -22,19 +22,24 @@ When('I click on the {string} navigation dropdown', (itemName: string) => {
 Then('the dropdown should appear', () => {
   homePage.waitForDropdownToOpen().should('be.visible');
 });
+// The homepage's AI-model tabs (role="tab", fixed names like Inference/
+// Voice Agent Builder/...) were redesigned into a "SELECT USE CASE" button
+// group (button[aria-pressed]) - same widget as task.7/task.3.cypress
+// already confirmed against the live site. The old tab names no longer
+// exist, so these steps check the current widget's real contract instead.
 When('I scroll to the AI agents tabs', () => {
-  homePage.getAiAgentTabs().first().scrollIntoView();
+  homePage.scrollToUseCaseSection();
 });
 Then('the tabs should be visible', () => {
-  homePage.getAiAgentTabs().should('have.length', 6);
-  homePage.getAiAgentTabs().each(($tab) => {
-    cy.wrap($tab).should('be.visible');
+  homePage.getUseCaseButtons().should('have.length.greaterThan', 0);
+  homePage.getUseCaseButtons().each(($button) => {
+    cy.wrap($button).should('be.visible');
   });
 });
 Then('the tabs should be clickable', () => {
-  const tabNames = ['Inference' , 'Voice Agent Builder', 'Speech to Text', 'Text to Speech', 'Global Numbers', 'Agent Skills'];
-  tabNames.forEach((tabName) => {
-    homePage.clickAiAgentTab(tabName);
-    homePage.getAiAgentTabByName(tabName).should('have.attr', 'aria-selected', 'true');
+  homePage.getUseCaseButtons().each(($button) => {
+    cy.wrap($button)
+      .click()
+      .should('have.attr', 'aria-pressed', 'true');
   });
 });

@@ -1,9 +1,12 @@
-import { Given, Then } from '@badeball/cypress-cucumber-preprocessor';
+import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { PricingPage } from '../pageobjects/pricing.page';
 
 const pricingPage = new PricingPage();
 Given('I navigate to the pricing page', () => {
   pricingPage.navigateToPricing();
+});
+When('I click the Messaging API pricing link', () => {
+  pricingPage.clickMessagingApiLink();
 });
 Then('the services table should be visible', () => {
   pricingPage.getServicesTable().should('be.visible');

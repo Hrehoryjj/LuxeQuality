@@ -47,16 +47,13 @@ export class HomePage extends BasePage {
     getSocialLink(hostFragment: string) {
     return this.footerContainer.find(`a[href*="${hostFragment}"]`);
     }
-    protected get aiAgentTabs() {
-        return cy.get('[role="tablist"][aria-orientation="horizontal"] button[role="tab"]');
+    protected get useCaseSectionHeading() {
+        return cy.contains('p', 'SELECT USE CASE');
     }
-    getAiAgentTabs() {
-        return this.aiAgentTabs;
+    getUseCaseButtons() {
+        return cy.get('button[aria-pressed]');
     }
-    getAiAgentTabByName(tabName: string) {
-        return this.aiAgentTabs.contains('span', tabName).parent('button[role="tab"]');
-    }
-    clickAiAgentTab(tabName: string): void {
-        this.getAiAgentTabByName(tabName).click();
+    scrollToUseCaseSection(): void {
+        this.useCaseSectionHeading.scrollIntoView();
     }
 }
