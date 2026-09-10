@@ -15,3 +15,14 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+
+// The site under test calls the Chrome "Prompt API" (document.modelContext),
+// which throws when Cypress has document.domain set for same-origin proxying.
+// This is an app/browser-level incompatibility unrelated to our tests, but
+// Cypress fails the current test on any uncaught exception by default -
+// ignore only this specific error so real app/test failures still fail.
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('document.modelContext cannot be used when document.domain is enabled')) {
+    return false;
+  }
+});
