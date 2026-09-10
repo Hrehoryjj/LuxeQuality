@@ -27,7 +27,7 @@ export class HomePage extends BasePage {
         return cy.contains('button[role="tab"]', tabName);
     }
     protected get contactUsButton() {
-        return cy.get('a[href="/contact-us"]');
+        return cy.contains('a, button', 'Contact us');
     }
     clickContactUsButton(): void {
         this.contactUsButton.click();

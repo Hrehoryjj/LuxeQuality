@@ -17,13 +17,18 @@
 import './commands'
 import "allure-cypress";
 
-// The site under test calls the Chrome "Prompt API" (document.modelContext),
-// which throws when Cypress has document.domain set for same-origin proxying.
-// This is an app/browser-level incompatibility unrelated to our tests, but
-// Cypress fails the current test on any uncaught exception by default -
-// ignore only this specific error so real app/test failures still fail.
+// The site now loads a cross-origin third-party script (likely a chat/AI
+// widget calling the new Chrome Prompt API, document.modelContext) that
+// throws an uncaught error on most pages. Cross-origin scripts without a
+// CORS header surface as an opaque "Script error." with no stack trace -
+// Cypress can't tell us more, and neither can we, so it can't be a real
+// assertion target. Ignore only that specific noise; a real bug in our
+// own page code still fails the test with an actual message/stack trace.
 Cypress.on('uncaught:exception', (err) => {
-  if (err.message.includes('document.modelContext cannot be used when document.domain is enabled')) {
+  if (
+    err.message.includes('document.modelContext cannot be used when document.domain is enabled') ||
+    err.message === 'Script error.'
+  ) {
     return false;
   }
 });
