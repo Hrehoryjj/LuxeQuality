@@ -5,9 +5,9 @@
     "passes": 0,
     "pending": 0,
     "failures": 1,
-    "start": "2026-09-10T20:00:50.380Z",
-    "end": "2026-09-10T20:00:53.454Z",
-    "duration": 3074,
+    "start": "2026-09-10T20:01:00.042Z",
+    "end": "2026-09-10T20:01:04.386Z",
+    "duration": 4344,
     "testsRegistered": 1,
     "passPercent": 0,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "d208505f-7e3e-4e0a-8f59-d068491aeb9d",
+      "uuid": "456c3b1b-f1b2-4989-8e26-5e2c3d33da2a",
       "title": "",
       "fullFile": "cypress/e2e/features/pricing.feature",
       "file": "cypress/e2e/features/pricing.feature",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "0ab6a091-d871-4cd9-b9d6-af82f33fde24",
+          "uuid": "0e77a249-d487-4aac-8197-8c36f639c530",
           "title": "Pricing page",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "Pricing Page Displays Valid Price Values",
               "fullTitle": "Pricing page Pricing Page Displays Valid Price Values",
               "timedOut": null,
-              "duration": 2898,
+              "duration": 4026,
               "state": "failed",
               "speed": null,
               "pass": false,
@@ -51,8 +51,8 @@
                 "estack": "CypressError: `cy.scrollIntoView()` can only be used to scroll to 1 element, you tried to scroll to 3 elements.\n\nhttps://on.cypress.io/scrollintoview\n    at Context.scrollIntoView (https://telnyx.com/__cypress/runner/cypress_runner.js:114246:70)\n    at wrapped (https://telnyx.com/__cypress/runner/cypress_runner.js:149556:19)\nFrom Your Spec Code:\n    at _PricingPage.clickMessagingApiLink (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:13230:38)\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:13253:21)\n    at Registry.runStepDefinition (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:9369:48)\n    at Object.fn (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:12372:42)\n    at runStepWithLogGroup (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:11321:29)\n    at Context.eval (https://telnyx.com/__cypress/tests?p=cypress/e2e/features/pricing.feature:12365:60)\n    at getRet (https://telnyx.com/__cypress/runner/cypress_runner.js:121211:20)\n    at tryCatcher (https://telnyx.com/__cypress/runner/cypress_runner.js:1780:23)\n    at Promise.attempt.Promise.try (https://telnyx.com/__cypress/runner/cypress_runner.js:4288:29)",
                 "diff": null
               },
-              "uuid": "cd269b08-adbc-48f4-b013-7bdeed96b769",
-              "parentUUID": "0ab6a091-d871-4cd9-b9d6-af82f33fde24",
+              "uuid": "1272a4d5-0a18-4b0e-aeb3-4d887482a713",
+              "parentUUID": "0e77a249-d487-4aac-8197-8c36f639c530",
               "isHook": false,
               "skipped": false
             }
@@ -60,11 +60,11 @@
           "suites": [],
           "passes": [],
           "failures": [
-            "cd269b08-adbc-48f4-b013-7bdeed96b769"
+            "1272a4d5-0a18-4b0e-aeb3-4d887482a713"
           ],
           "pending": [],
           "skipped": [],
-          "duration": 2898,
+          "duration": 4026,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
