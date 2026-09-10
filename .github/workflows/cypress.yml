@@ -2,9 +2,12 @@ name: Cypress Tests
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   cypress-run:
@@ -33,6 +36,17 @@ jobs:
         with:
           working-directory: task.3.cypress
           browser: chrome
+
+      - name: Generate Allure report
+        if: always()
+        run: npm run report:generate
+
+      - name: Deploy report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./task.3.cypress/allure-report
 
       - name: Upload screenshots on failure
         uses: actions/upload-artifact@v4
