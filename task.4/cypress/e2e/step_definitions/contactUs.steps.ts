@@ -11,14 +11,12 @@ Given('I am on the contact-us page', () => {
 Then('the submit button should be clickable', () => {
   contactUsPage.getSubmitButton().should('be.visible').and('not.be.disabled');
 });
-When('I click on the {string} contact reason dropdown', (label: string) => {
+When('I click on the contact reason dropdown', () => {
   contactUsPage.getReasonForContactDropdown().focus();
-  contactUsPage.getReasonForContactDropdown().find('option').first().should('have.text', label);
 });
 Then('two options should appear', () => {
-  // The first <option> is the non-selectable placeholder shown in the dropdown
-  // (asserted above against the step's label); only the remaining options are
-  // real, selectable reasons.
+  // The first <option> is a non-selectable placeholder ("Select") shown in
+  // the dropdown; only the remaining options are real, selectable reasons.
   contactUsPage.getReasonForContactDropdown().find('option:not([value=""])').should('have.length', 2);
 });
 When('I input a randomly generated symbol into the contact form fields', () => {

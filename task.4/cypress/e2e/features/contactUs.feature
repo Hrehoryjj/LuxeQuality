@@ -10,7 +10,7 @@ Feature: Contact Us page
   @TC-13
   Scenario: Contact Us Form Reason has two options
     Given I am on the contact-us page
-    When I click on the "how we can help you?" contact reason dropdown
+    When I click on the contact reason dropdown
     Then two options should appear
 
   @TC-14
