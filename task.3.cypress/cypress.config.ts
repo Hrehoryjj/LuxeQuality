@@ -12,6 +12,12 @@ export default defineConfig({
       allureCypress(on, config, {
         resultsDir: "allure-results",
       });
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'chromium') {
+          launchOptions.args.push('--disable-origin-trial-controlled-blink-features');
+        }
+        return launchOptions;
+      });
       return config;
     },
   },
