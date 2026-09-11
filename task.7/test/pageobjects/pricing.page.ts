@@ -6,8 +6,12 @@ private static readonly PRICE_CELLS = 'div[data-state="active"] table tbody td d
 
   private static readonly MESSAGING_API_LINK = 'a[href="/pricing/messaging"]';
 
-  private get messagingApiLink() {
-    return $(PricingPage.MESSAGING_API_LINK);
+  private async getVisibleMessagingApiLink() {
+    const links = await $$(PricingPage.MESSAGING_API_LINK);
+    for (const link of links) {
+      if (await link.isDisplayed()) return link;
+    }
+    return links[0];
   }
 
   private get servicesTable() {
@@ -23,8 +27,9 @@ private static readonly PRICE_CELLS = 'div[data-state="active"] table tbody td d
   }
 
   async clickMessagingApiLink() {
-    await this.messagingApiLink.scrollIntoView();
-    await browser.execute((el) => (el as HTMLElement).click(), await this.messagingApiLink);
+    const link = await this.getVisibleMessagingApiLink();
+    await link.scrollIntoView();
+    await browser.execute((el) => (el as HTMLElement).click(), await link);
   }
 
   async isServicesTableDisplayed() {
