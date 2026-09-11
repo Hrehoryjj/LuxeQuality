@@ -6,4 +6,3 @@ cypress/downloads/
 .env
 npm-debug.log*
 .DS_Store
-mockApi/db_stage.yaml
