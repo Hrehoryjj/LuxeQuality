@@ -1,2 +1,0 @@
-element not interactable: WebDriverError: element not interactable: https://telnyx.com/pricing/messaging has no size and location
-  (Session info: chrome=153.0.8010.36) when running "actions" with method "POST"
