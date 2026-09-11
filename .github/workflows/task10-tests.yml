@@ -63,6 +63,8 @@ jobs:
     needs: test
     if: always()
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Collect Allure results from all browsers
         uses: actions/download-artifact@v4
@@ -103,8 +105,6 @@ jobs:
         if: ${{ always() && env.SLACK_WEBHOOK_URL != '' }}
         continue-on-error: true
         uses: slackapi/slack-github-action@v2.0.0
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook

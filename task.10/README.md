@@ -74,7 +74,7 @@ pytest                                   # Chromium, everything
 pytest -k tc09                            # a single scenario
 pytest --browser firefox                 # a different browser
 pytest --browser chromium --browser firefox   # several browsers in one go
-pytest -n auto                           # in parallel
+pytest -n auto                           # in parallel (CI uses -n 2 with --reruns 2 --reruns-delay 5)
 ```
 
 ## See the report
@@ -98,8 +98,10 @@ The latest CI report is always at
 
 On every push or pull request that touches `task.10/`, GitHub Actions:
 
-1. runs the suite three times in parallel — once on **Chromium**, **Firefox**
-   and **WebKit**;
+1. runs the suite three times, once each on **Chromium**, **Firefox** and
+   **WebKit** — one browser at a time (`max-parallel: 1`, to avoid tripping the
+   site's anti-bot throttling), each with `pytest -n 2` for intra-suite
+   parallelism and `--reruns 2 --reruns-delay 5` to absorb transient flakes;
 2. merges the results into a single Allure report and publishes it to GitHub
    Pages (keeping the history trend);
 3. posts a pass/fail summary with the report link to Slack.
