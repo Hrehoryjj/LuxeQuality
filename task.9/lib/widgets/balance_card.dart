@@ -236,7 +236,6 @@ class _BalanceCardState extends State<BalanceCard> with SingleTickerProviderStat
                   Text(pct, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w700)),
                 ]),
                 const SizedBox(height: 7),
-                // Bar
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: SizedBox(

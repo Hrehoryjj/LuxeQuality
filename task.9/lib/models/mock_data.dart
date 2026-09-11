@@ -5,8 +5,7 @@ class MockData {
     final now   = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
-    return [
-      // ── Planned (future) ─────────────────────────────────────────────────
+    final planned = [
       Transaction(
         id: 'mock_1',
         title: 'Groceries',
@@ -31,8 +30,9 @@ class MockData {
         date: today.add(const Duration(days: 12)),
         categoryId: 'health',
       ),
+    ];
 
-      // ── Overdue (planned but past) ────────────────────────────────────────
+    final overdue = [
       Transaction(
         id: 'mock_4',
         title: 'Rent',
@@ -41,8 +41,9 @@ class MockData {
         date: today.subtract(const Duration(days: 2)),
         categoryId: 'housing',
       ),
+    ];
 
-      // ── Completed — today ────────────────────────────────────────────────
+    final completedToday = [
       Transaction(
         id: 'mock_5',
         title: 'Coffee',
@@ -59,8 +60,9 @@ class MockData {
         date: today,
         categoryId: 'transport',
       ),
+    ];
 
-      // ── Completed — recent ───────────────────────────────────────────────
+    final completedRecent = [
       Transaction(
         id: 'mock_7',
         title: 'Electricity Bill',
@@ -112,5 +114,7 @@ class MockData {
         categoryId: 'shopping',
       ),
     ];
+
+    return [...planned, ...overdue, ...completedToday, ...completedRecent];
   }
 }

@@ -65,7 +65,6 @@ class DeleteConfirmDialog extends StatelessWidget {
 
               IntrinsicHeight(
                 child: Row(children: [
-                  // Cancel
                   Expanded(
                     child: _DialogButton(
                       label: 'Cancel',
@@ -76,7 +75,6 @@ class DeleteConfirmDialog extends StatelessWidget {
                     ),
                   ),
                   VerticalDivider(width: 0.5, thickness: 0.5, color: cs.outlineVariant),
-                  // Delete
                   Expanded(
                     child: _DialogButton(
                       label: 'Delete',
