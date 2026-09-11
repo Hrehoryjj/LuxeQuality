@@ -78,6 +78,20 @@ This project is connected to GitHub Actions, which means the full test suite aut
 
 This means that before any code change is merged, we already know whether it broke anything on the website.
 
+## A note on occasional test flakiness
+
+Once in a while a CI run may show a test as failed even though nothing is actually broken on the website. This is a known, understood, and expected side effect of *how* the site is built — not a gap in what we test or a bug in the suite itself.
+
+**What's happening:** the Telnyx website has recently adopted some newer browser-level capabilities (for example, AI-agent integrations) and loads a number of third-party scripts (chat widgets, analytics, marketing tools). Cypress, the tool driving these tests, works by embedding the website inside its own runner window. That embedding occasionally puts the browser into a state a couple of these third-party scripts weren't written to expect, and they throw an error that has nothing to do with the page content or feature being tested — it's an interaction between the site's structure and the testing tool, not a real defect.
+
+**What we've already done about it:**
+- Root-caused and permanently fixed the most common trigger (a specific, brand-new browser API the site started using).
+- Every real assertion failure (e.g. "this price is missing" or "this link is broken") still reports clearly and separately from this kind of noise, so nothing gets hidden.
+
+**How to read a red run:** if the failure message names a specific check (a missing element, a wrong value, a broken link), that's a real result worth looking at. If it's a generic "cross-origin script error" with no further detail, it's this known, external interaction — re-running the job is enough, and it typically passes.
+
+This is a common trade-off whenever a browser-embedding test tool is pointed at a production site loaded with third-party scripts, and is not specific to this project's test code.
+
 ## Questions or issues?
 
 If a test fails and you're not sure why, check the generated report first — it usually shows exactly what the test expected versus what it found, plus a screenshot of the page at the moment of failure.
