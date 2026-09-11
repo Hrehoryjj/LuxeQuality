@@ -17,13 +17,21 @@
 import './commands'
 import "allure-cypress";
 
-// The site now loads a cross-origin third-party script (likely a chat/AI
-// widget calling the new Chrome Prompt API, document.modelContext) that
-// throws an uncaught error on most pages. Cross-origin scripts without a
-// CORS header surface as an opaque "Script error." with no stack trace -
-// Cypress can't tell us more, and neither can we, so it can't be a real
-// assertion target. Ignore only that specific noise; a real bug in our
-// own page code still fails the test with an actual message/stack trace.
+// telnyx.com serves an Origin-Trial token enabling Chrome's WebMCP API
+// (navigator.modelContext / document.modelContext). That API throws when
+// called on a document where Cypress's spec-bridge has assigned
+// document.domain, crashing tests with an opaque cross-origin "Script
+// error.". Remove the API before any page script runs, so feature-detection
+// (`if (navigator.modelContext)`) sees it as absent - same as it is for the
+// vast majority of real visitors' browsers - and never calls into it.
+Cypress.on('window:before:load', (win) => {
+  delete (win.Navigator.prototype as any).modelContext;
+  delete (win.Document.prototype as any).modelContext;
+});
+
+// Safety net in case some other page script still throws the same class of
+// cross-origin noise; a real bug in our own page code still fails the test
+// with an actual message/stack trace.
 Cypress.on('uncaught:exception', (err) => {
   if (
     err.message.includes('document.modelContext cannot be used when document.domain is enabled') ||
