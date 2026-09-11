@@ -7,4 +7,3 @@ allure-report/
 dist/
 .DS_Store
 errorShots/
-mockApi/db_stage.yaml
