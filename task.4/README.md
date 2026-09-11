@@ -43,3 +43,19 @@ pass/fail summary chart and screenshots for any failed steps.
 Every push or Pull Request that touches this folder triggers GitHub Actions
 automatically. The generated HTML report is published to GitHub Pages after
 a merge to `main`.
+
+## Known issue: occasional cross-origin flakiness (not a test gap)
+telnyx.com has recently adopted newer browser-level features (e.g. an
+AI-agent integration API) and loads several third-party scripts (chat,
+analytics, marketing). Cypress runs by embedding the site inside its own
+runner window, which can put the browser in a state a few of those
+third-party scripts weren't written to expect — they then throw an
+uncaught error unrelated to the page or feature actually under test,
+surfacing as a generic `Script error.` with no stack trace.
+
+This is an interaction between the site's own third-party scripts and
+Cypress's architecture, not a defect in this suite. The most common
+trigger (a specific new browser API) has been root-caused and fixed
+(`cypress/support/e2e.js`); any real assertion failure still reports
+with a specific message and still fails the build as expected. A run
+that fails only with a bare `Script error.` is safe to re-run.
