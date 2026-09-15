@@ -12,7 +12,7 @@ describe('TC-03: Carousel swipe', () => {
   it('should swipe carousel to next slide', async () => {
     await SwipePage.openSwipeScreen();
     await SwipePage.swipeCarouselOnce();
-    const isNextSlideVisible = await SwipePage.isDisplayed(SwipePage.slide2Text);
+    const isNextSlideVisible = await SwipePage.isSecondSlideDisplayed();
     expect(isNextSlideVisible).toBe(true);
   });
 });

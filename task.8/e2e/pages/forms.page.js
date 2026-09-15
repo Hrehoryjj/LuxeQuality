@@ -1,38 +1,51 @@
 const BasePage = require('./base.page');
 
-class FormsPage extends BasePage {
-  get navFormsButton() { return '~Forms'; }
-  get textInput() { return '~text-input'; }
-  get inputResult() { return '~input-text-result'; }
-  get switchToggle() { return '~switch'; }
-  get dropdown() { return '~Dropdown'; }
-  get dropdownOption2() { return 'android=new UiSelector().text("Appium is awesome")'; }
-  get activeButton() { return '~button-Active'; }
-  get inactiveButton() { return '~button-Inactive'; }
+const SELECTORS = {
+  navFormsButton: '~Forms',
+  textInput: '~text-input',
+  inputResult: '~input-text-result',
+  switchToggle: '~switch',
+  dropdown: '~Dropdown',
+  dropdownOption2: 'android=new UiSelector().text("Appium is awesome")',
+  activeButton: '~button-Active',
+};
 
+class FormsPage extends BasePage {
   async openFormsScreen() {
-    await this.tap(this.navFormsButton);
+    await this.tap(SELECTORS.navFormsButton);
   }
 
   async typeText(text) {
-    await this.setValue(this.textInput, text);
+    await this.setValue(SELECTORS.textInput, text);
   }
 
   async getTypedResult() {
-    return this.getText(this.inputResult);
+    return this.getText(SELECTORS.inputResult);
   }
 
   async toggleSwitch() {
-    await this.tap(this.switchToggle);
+    await this.tap(SELECTORS.switchToggle);
+  }
+
+  async isSwitchOn() {
+    return (await this.getAttribute(SELECTORS.switchToggle, 'checked')) === 'true';
   }
 
   async selectSecondDropdownOption() {
-    await this.tap(this.dropdown);
-    await this.tap(this.dropdownOption2);
+    await this.tap(SELECTORS.dropdown);
+    await this.tap(SELECTORS.dropdownOption2);
+  }
+
+  async getSelectedDropdownLabel() {
+    return this.getText(SELECTORS.dropdown);
   }
 
   async tapActiveButton() {
-    await this.tap(this.activeButton);
+    await this.tap(SELECTORS.activeButton);
+  }
+
+  async isActiveButtonSelected() {
+    return (await this.getAttribute(SELECTORS.activeButton, 'selected')) === 'true';
   }
 }
 

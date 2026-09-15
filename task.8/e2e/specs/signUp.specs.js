@@ -9,10 +9,15 @@ describe('TC-05: Sign up with random credentials', () => {
     await LoginPage.openLoginScreen();
     await LoginPage.switchToSignUp();
     await LoginPage.fillSignUpForm(email, password);
-    await LoginPage.submitSignUp();
-    await LoginPage.waitUntilDisplayed(LoginPage.successAlertTitle, 15000);
 
-    const alertVisible = await LoginPage.isDisplayed(LoginPage.successAlertTitle);
+    expect(await LoginPage.getEmailValue()).toBe(email);
+    expect(await LoginPage.getPasswordValue()).toBe(password);
+    expect(await LoginPage.getConfirmPasswordValue()).toBe(password);
+
+    await LoginPage.submitSignUp();
+    await LoginPage.waitForSuccessAlert(15000);
+
+    const alertVisible = await LoginPage.isSuccessAlertDisplayed();
     expect(alertVisible).toBe(true);
 
     const message = await LoginPage.getSuccessAlertText();

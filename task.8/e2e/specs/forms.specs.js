@@ -12,7 +12,13 @@ describe('TC-01: Forms interaction', () => {
     expect(result).toContain(randomText);
 
     await FormsPage.toggleSwitch();
+    expect(await FormsPage.isSwitchOn()).toBe(true);
+
     await FormsPage.selectSecondDropdownOption();
+    const dropdownLabel = await FormsPage.getSelectedDropdownLabel();
+    expect(dropdownLabel).toContain('awesome');
+
     await FormsPage.tapActiveButton();
+    expect(await FormsPage.isActiveButtonSelected()).toBe(true);
   });
 });

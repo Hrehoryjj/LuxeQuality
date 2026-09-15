@@ -5,7 +5,7 @@ describe('TC-04: Drag and Drop', () => {
     await DragDropPage.openDragScreen();
     await DragDropPage.completeAllDragAndDrops();
 
-    const congratsVisible = await DragDropPage.isDisplayed(DragDropPage.congratsTitle);
+    const congratsVisible = await DragDropPage.isCongratsDisplayed();
     expect(congratsVisible).toBe(true);
 
     const message = await DragDropPage.getCongratsMessage();

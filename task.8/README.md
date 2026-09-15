@@ -63,18 +63,23 @@ or both, one after another.
 
 Run on device configuration 1 (Samsung Galaxy S22 Ultra):
 ```bash
-npx wdio run wdio.conf.js
+npm run wdio
 ```
 
 Run on device configuration 2 (Google Pixel 8 Pro):
 ```bash
-npx wdio run wdio.device2.conf.js
+npm run wdio:device2
+```
+
+Run on both, one after another:
+```bash
+npm run wdio:all
 ```
 
 To run just one specific test instead of all 5, add `--spec` and the file name, for
 example:
 ```bash
-npx wdio run wdio.conf.js --spec e2e/specs/forms.specs.js
+npm run wdio -- --spec e2e/specs/forms.specs.js
 ```
 
 While the command is running, it connects to a BrowserStack device in the cloud,
