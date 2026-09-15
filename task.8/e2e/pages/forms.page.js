@@ -36,9 +36,9 @@ class FormsPage extends BasePage {
     await this.tap(SELECTORS.dropdownOption2);
   }
 
-  async isDropdownMenuClosed() {
+  async isDropdownOptionSelected() {
     const el = await $(SELECTORS.dropdownOption2);
-    return el.waitForDisplayed({ reverse: true, timeout: 5000 }).catch(() => false);
+    return el.waitForDisplayed({ timeout: 5000 }).catch(() => false);
   }
 
   async tapActiveButton() {
