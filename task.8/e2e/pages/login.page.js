@@ -32,18 +32,15 @@ class LoginPage extends BasePage {
   }
 
   async getEmailValue() {
-    const el = await $(SELECTORS.emailInput);
-    return el.getValue();
+    return this.getText(SELECTORS.emailInput);
   }
 
   async getPasswordValue() {
-    const el = await $(SELECTORS.passwordInput);
-    return el.getValue();
+    return this.getText(SELECTORS.passwordInput);
   }
 
   async getConfirmPasswordValue() {
-    const el = await $(SELECTORS.confirmPasswordInput);
-    return el.getValue();
+    return this.getText(SELECTORS.confirmPasswordInput);
   }
 
   async waitForSuccessAlert(timeout = 15000) {

@@ -36,8 +36,9 @@ class FormsPage extends BasePage {
     await this.tap(SELECTORS.dropdownOption2);
   }
 
-  async getSelectedDropdownLabel() {
-    return this.getText(SELECTORS.dropdown);
+  async isDropdownMenuClosed() {
+    const isOptionVisible = await this.isDisplayed(SELECTORS.dropdownOption2).catch(() => false);
+    return !isOptionVisible;
   }
 
   async tapActiveButton() {

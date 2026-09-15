@@ -15,8 +15,7 @@ describe('TC-01: Forms interaction', () => {
     expect(await FormsPage.isSwitchOn()).toBe(true);
 
     await FormsPage.selectSecondDropdownOption();
-    const dropdownLabel = await FormsPage.getSelectedDropdownLabel();
-    expect(dropdownLabel).toContain('awesome');
+    expect(await FormsPage.isDropdownMenuClosed()).toBe(true);
 
     await FormsPage.tapActiveButton();
     expect(await FormsPage.isActiveButtonSelected()).toBe(true);

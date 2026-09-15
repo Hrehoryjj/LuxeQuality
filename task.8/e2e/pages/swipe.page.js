@@ -58,7 +58,7 @@ class SwipePage extends BasePage {
     let slideChanged = false;
 
     while (attempts < 3 && !slideChanged) {
-      const rect = await el.getElementRect(el.elementId);
+      const rect = await el.getElementRect();
       const startX = rect.x + rect.width * 0.8;
       const endX = rect.x + rect.width * 0.2;
       const y = rect.y + rect.height / 2;

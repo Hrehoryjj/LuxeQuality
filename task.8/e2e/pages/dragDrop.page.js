@@ -16,8 +16,8 @@ class DragDropPage extends BasePage {
   async dragElementToDropZone(suffix) {
     const source = await $(`~drag-${suffix}`);
     const target = await $(`~drop-${suffix}`);
-    const sourceRect = await source.getElementRect(source.elementId);
-    const targetRect = await target.getElementRect(target.elementId);
+    const sourceRect = await source.getElementRect();
+    const targetRect = await target.getElementRect();
 
     const startX = sourceRect.x + sourceRect.width / 2;
     const startY = sourceRect.y + sourceRect.height / 2;
