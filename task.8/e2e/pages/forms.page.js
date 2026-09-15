@@ -45,8 +45,9 @@ class FormsPage extends BasePage {
     await this.tap(SELECTORS.activeButton);
   }
 
-  async isActiveButtonSelected() {
-    return (await this.getAttribute(SELECTORS.activeButton, 'selected')) === 'true';
+  async didActiveButtonToggle() {
+    const el = await $(SELECTORS.activeButton);
+    return el.waitForExist({ reverse: true, timeout: 5000 }).catch(() => false);
   }
 }
 

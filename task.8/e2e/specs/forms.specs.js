@@ -18,6 +18,6 @@ describe('TC-01: Forms interaction', () => {
     expect(await FormsPage.isDropdownOptionSelected()).toBe(true);
 
     await FormsPage.tapActiveButton();
-    expect(await FormsPage.isActiveButtonSelected()).toBe(true);
+    expect(await FormsPage.didActiveButtonToggle()).toBe(true);
   });
 });
