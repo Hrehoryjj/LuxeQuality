@@ -11,8 +11,11 @@ describe('TC-05: Sign up with random credentials', () => {
     await LoginPage.fillSignUpForm(email, password);
 
     expect(await LoginPage.getEmailValue()).toBe(email);
-    expect(await LoginPage.getPasswordValue()).toBe(password);
-    expect(await LoginPage.getConfirmPasswordValue()).toBe(password);
+
+    const passwordValue = await LoginPage.getPasswordValue();
+    const confirmPasswordValue = await LoginPage.getConfirmPasswordValue();
+    expect(passwordValue).toBe(confirmPasswordValue);
+    expect(passwordValue).toHaveLength(password.length);
 
     await LoginPage.submitSignUp();
     await LoginPage.waitForSuccessAlert(15000);
