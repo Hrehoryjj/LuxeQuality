@@ -1,9 +1,9 @@
 name: Playwright Tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, task.2 ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, task.2 ]
 
 permissions:
   contents: write
@@ -22,12 +22,15 @@ jobs:
         node-version: lts/*
 
     - name: Install dependencies
+      working-directory: task.2
       run: npm ci
 
     - name: Install Playwright Browsers
+      working-directory: task.2
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
+      working-directory: task.2
       run: npx playwright test
       continue-on-error: true
 
@@ -40,12 +43,13 @@ jobs:
 
     - name: Generate Allure Report via CLI
       if: ${{ !cancelled() }}
+      working-directory: task.2
       run: |
         npm install -g allure-commandline --save-dev
         mkdir -p allure-results
         mkdir -p allure-report
-        if [ -d "gh-pages-dir/history" ]; then
-          cp -r gh-pages-dir/history allure-results/
+        if [ -d "../gh-pages-dir/history" ]; then
+          cp -r ../gh-pages-dir/history allure-results/
         fi
         allure generate allure-results --clean -o allure-report
 
@@ -54,5 +58,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: allure-report
+        publish_dir: task.2/allure-report
         publish_branch: gh-pages

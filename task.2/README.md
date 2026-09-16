@@ -10,10 +10,10 @@ Live Allure Report with build history: https://github.io
 * Git
 
 ## Steps to Install
-Clone the repository and install all required dependencies:
+Clone the monorepo and install all required dependencies:
 ```bash
-git clone https://github.com
-cd task2
+git clone https://github.com/Hrehoryjj/LuxeQuality.git
+cd LuxeQuality/task.2
 npm install
 ```
 
