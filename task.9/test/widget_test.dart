@@ -4,23 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spendy/main.dart';
 
 Future<void> pumpApp(WidgetTester tester) async {
-  final originalOnError = FlutterError.onError;
-
-  FlutterError.onError = (FlutterErrorDetails details) {
-    final isKnownListTileWarning = details.exception
-        .toString()
-        .contains('ListTile background color or ink splashes');
-    if (!isKnownListTileWarning) {
-      originalOnError?.call(details);
-    }
-  };
-
   await tester.pumpWidget(const SpendyPro());
   await tester.pumpAndSettle();
-
-  addTearDown(() {
-    FlutterError.onError = originalOnError;
-  });
 }
 
 Future<void> openAddTransactionSheet(WidgetTester tester) async {
@@ -42,9 +27,11 @@ Future<void> fillAndSaveTransaction(
 void main() {
   setUp(() {
     SharedPreferences.setMockInitialValues({
-      'categories': '[{"id":"food","name":"Food","emoji":"🍔"}]',
+      'categories':
+          '[{"id":"food","name":"Food","emoji":"🍔"},{"id":"transport","name":"Transport","emoji":"🚌"}]',
       'transactions':
-          '[{"id":"mock_5","title":"Coffee","amount":4.5,"date":"2026-09-01T00:00:00.000","categoryId":"food","isPlanned":false}]',
+          '[{"id":"mock_5","title":"Coffee","amount":4.5,"date":"2026-09-01T00:00:00.000","categoryId":"food","isPlanned":false},'
+          '{"id":"mock_6","title":"Bus ticket","amount":2.0,"date":"2026-09-01T00:00:00.000","categoryId":"transport","isPlanned":false}]',
       'budget': 5000.0,
       'require_confirm': true,
     });
@@ -70,19 +57,21 @@ void main() {
     testWidgets('TC-06: selecting a category chip filters the list to that category',
         (tester) async {
       await pumpApp(tester);
-      await tester.tap(find.text('Food'));
+      await tester.tap(find.byKey(const Key('chip_cat_food')));
       await tester.pumpAndSettle();
       expect(find.text('Coffee'), findsOneWidget);
+      expect(find.text('Bus ticket'), findsNothing);
     });
 
     testWidgets('TC-07: tapping "All" chip after a filter clears the filter',
         (tester) async {
       await pumpApp(tester);
-      await tester.tap(find.text('Food'));
+      await tester.tap(find.byKey(const Key('chip_cat_food')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('chip_all')));
       await tester.pumpAndSettle();
       expect(find.text('Coffee'), findsOneWidget);
+      expect(find.text('Bus ticket'), findsOneWidget);
     });
 
     testWidgets('TC-10: tapping the balance edit icon switches to edit mode',

@@ -81,52 +81,55 @@ class TransactionTile extends StatelessWidget {
                       ? const Border(left: BorderSide(color: Color(0xFF5E6AD2), width: 3))
                       : null,
             ),
-            child: ListTile(
-              onTap: onTileTap,
-              contentPadding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-              leading: Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(
-                  color: leadingBg,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: cat != null
-                      ? Text(cat.emoji, style: const TextStyle(fontSize: 19))
-                      : Icon(
-                          isOverdue
-                              ? CupertinoIcons.exclamationmark_triangle_fill
-                              : CupertinoIcons.creditcard,
-                          size: 19,
-                          color: isOverdue ? const Color(0xFFFF3B30) : cs.onSurfaceVariant,
-                        ),
-                ),
-              ),
-              title: Text(transaction.title, style: TextStyle(
-                fontWeight: FontWeight.w600, fontSize: 15, color: cs.onSurface)),
-              subtitle: Text(subtitle, style: TextStyle(
-                color: isOverdue ? const Color(0xFFFF3B30) : cs.onSurfaceVariant,
-                fontSize: 12, fontWeight: FontWeight.w400,
-              )),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '${transaction.isPlanned ? "" : "−"}\$${transaction.amount.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: isOverdue
-                          ? const Color(0xFFFF3B30)
-                          : transaction.isPlanned ? const Color(0xFF5E6AD2) : cs.onSurface,
-                      fontWeight: FontWeight.w700, fontSize: 15,
-                    ),
+            child: Material(
+              color: Colors.transparent,
+              child: ListTile(
+                onTap: onTileTap,
+                contentPadding: const EdgeInsets.fromLTRB(14, 4, 14, 4),
+                leading: Container(
+                  width: 40, height: 40,
+                  decoration: BoxDecoration(
+                    color: leadingBg,
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  if (transaction.isPlanned)
-                    Text(isOverdue ? 'Overdue' : 'Planned', style: TextStyle(
-                      color: isOverdue ? const Color(0xFFFF3B30) : const Color(0xFF5E6AD2),
-                      fontSize: 11, fontWeight: FontWeight.w500,
-                    )),
-                ],
+                  child: Center(
+                    child: cat != null
+                        ? Text(cat.emoji, style: const TextStyle(fontSize: 19))
+                        : Icon(
+                            isOverdue
+                                ? CupertinoIcons.exclamationmark_triangle_fill
+                                : CupertinoIcons.creditcard,
+                            size: 19,
+                            color: isOverdue ? const Color(0xFFFF3B30) : cs.onSurfaceVariant,
+                          ),
+                  ),
+                ),
+                title: Text(transaction.title, style: TextStyle(
+                  fontWeight: FontWeight.w600, fontSize: 15, color: cs.onSurface)),
+                subtitle: Text(subtitle, style: TextStyle(
+                  color: isOverdue ? const Color(0xFFFF3B30) : cs.onSurfaceVariant,
+                  fontSize: 12, fontWeight: FontWeight.w400,
+                )),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${transaction.isPlanned ? "" : "−"}\$${transaction.amount.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: isOverdue
+                            ? const Color(0xFFFF3B30)
+                            : transaction.isPlanned ? const Color(0xFF5E6AD2) : cs.onSurface,
+                        fontWeight: FontWeight.w700, fontSize: 15,
+                      ),
+                    ),
+                    if (transaction.isPlanned)
+                      Text(isOverdue ? 'Overdue' : 'Planned', style: TextStyle(
+                        color: isOverdue ? const Color(0xFFFF3B30) : const Color(0xFF5E6AD2),
+                        fontSize: 11, fontWeight: FontWeight.w500,
+                      )),
+                  ],
+                ),
               ),
             ),
           ),

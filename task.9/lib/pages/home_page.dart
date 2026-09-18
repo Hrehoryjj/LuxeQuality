@@ -334,7 +334,7 @@ class _CategoryFilterRow extends StatelessWidget {
           ...categories.map((c) => Padding(
             padding: const EdgeInsets.only(right: 8),
             child: _Chip(
-              key: Key('chip_cat_\${c.id}'),
+              key: Key('chip_cat_${c.id}'),
               label: c.name, emoji: c.emoji,
               isSelected: selectedId == c.id,
               onTap: () => onSelected(selectedId == c.id ? null : c.id),
