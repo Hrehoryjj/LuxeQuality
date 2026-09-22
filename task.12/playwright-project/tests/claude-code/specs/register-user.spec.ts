@@ -1,0 +1,35 @@
+import { test, expect } from '../fixtures/test';
+import { LoginPage } from '../pageObjects/LoginPage';
+import { SignupPage } from '../pageObjects/SignupPage';
+import { AccountCreatedPage } from '../pageObjects/AccountCreatedPage';
+import { AccountDeletedPage } from '../pageObjects/AccountDeletedPage';
+import { generateUser } from '../testData/userData';
+
+test.describe('TC-01 Register User', () => {
+  test('a new user can register with valid data and delete the account', async ({ page }) => {
+    const user = generateUser();
+
+    const loginPage = new LoginPage(page);
+    const signupPage = new SignupPage(page);
+    const accountCreatedPage = new AccountCreatedPage(page);
+    const accountDeletedPage = new AccountDeletedPage(page);
+
+    await loginPage.open('/login');
+    await expect(loginPage.getNewUserSignupHeading()).toBeVisible();
+
+    await loginPage.signup(user.name, user.email);
+    await expect(signupPage.getAccountInformationHeading()).toBeVisible();
+
+    await signupPage.fillAccountInformation(user);
+    await signupPage.createAccount();
+
+    await expect(accountCreatedPage.getAccountCreatedHeading()).toBeVisible();
+    await accountCreatedPage.clickContinue();
+
+    await expect(accountCreatedPage.getLoggedInAsLabel()).toContainText(user.name);
+
+    await accountCreatedPage.clickDeleteAccount();
+
+    await expect(accountDeletedPage.getAccountDeletedHeading()).toBeVisible();
+  });
+});
