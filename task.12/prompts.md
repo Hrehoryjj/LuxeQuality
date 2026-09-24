@@ -43,6 +43,28 @@ an auto-use fixture (`tests/cursor/fixtures/test.ts`) that routes and aborts req
 `npx playwright test tests/cursor` — 2 passed, run twice in a row to confirm repeatability (no
 leftover cart/subscription state between runs).
 
+### Finding: the rules file was silently ignored
+
+The prompt above points at `.cursor/rules/testing.mcd` — but Cursor only loads rule files with the
+`.mdc` extension. `.mcd` is not a format Cursor recognizes, so this rules file was most likely
+never loaded for the run that produced `tests/cursor/`, despite the prompt naming it explicitly.
+
+Evidence, from the code that came out of that run:
+
+- The page objects use raw CSS/id locators — `#footer h2`, `#susbscribe_email`,
+  `.add-to-cart[data-product-id]` — although rule 4 requires locator discovery through Playwright
+  MCP and rule 7 requires preferring role/label/placeholder/test-id locators.
+- The "Locators" section above says they were "verified via curl against live HTML + `cart.js`",
+  although rule 4 says locator discovery must be performed via playwright-mcp, not curl.
+
+Lesson: a rules file silently not loading is not a loud failure — the agent just falls back to its
+own judgment and produces code that looks plausible but violates the rules nobody checked were
+active. Before trusting an agent's output against a rules file, ask the agent to quote a specific
+rule back before it starts (see Appendix A in the setup prompt) — if it can't, the rules aren't
+loaded.
+
+<!-- FILL: result after regenerating with the fixed rules -->
+
 ## Claude Code + Playwright MCP
 
 ### Prompt

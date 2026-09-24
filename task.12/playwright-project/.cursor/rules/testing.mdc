@@ -47,3 +47,9 @@ alwaysApply: true
 
 ## 10. Clean Code
 - No commented-out code, no leftover debug statements, no stray console.log calls in committed code.
+
+## 11. Scope exceptions
+- Rule 1 confines routine work to `tests/cursor`. Project-level config files at the project root
+  (`playwright.config.ts`, `tsconfig.json`, `package.json`) may be edited only when the prompt for
+  that session explicitly asks for it — never as an incidental side effect of writing specs or
+  page objects.
