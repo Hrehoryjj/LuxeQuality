@@ -15,6 +15,7 @@ export default defineConfig({
     baseURL: 'https://automationexercise.com',
     testIdAttribute: 'data-qa',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
   projects: [
     {

@@ -7,12 +7,12 @@ export class BasePage {
     await this.page.goto(path);
   }
 
-  async clickSignupLogin(): Promise<void> {
-    await this.page.getByRole('link', { name: 'Signup / Login' }).click();
-  }
-
   async clickDeleteAccount(): Promise<void> {
     await this.page.getByRole('link', { name: 'Delete Account' }).click();
+  }
+
+  async clickCartLink(): Promise<void> {
+    await this.page.getByRole('banner').getByRole('link', { name: 'Cart' }).click();
   }
 
   getLoggedInAsLabel(): Locator {

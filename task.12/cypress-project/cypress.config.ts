@@ -13,6 +13,7 @@ export default defineConfig({
   video: false,
   screenshotOnRunFailure: true,
   defaultCommandTimeout: 10_000,
+  allowCypressEnv: false,
   e2e: {
     baseUrl: 'https://automationexercise.com',
     specPattern: 'cypress/e2e/**/*.cy.ts',

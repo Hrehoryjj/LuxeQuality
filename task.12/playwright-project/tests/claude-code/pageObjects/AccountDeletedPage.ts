@@ -5,8 +5,4 @@ export class AccountDeletedPage extends BasePage {
   getAccountDeletedHeading(): Locator {
     return this.page.getByRole('heading', { name: /account deleted/i });
   }
-
-  async clickContinue(): Promise<void> {
-    await this.page.getByTestId('continue-button').click();
-  }
 }

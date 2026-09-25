@@ -3,11 +3,18 @@ import { LoginPage } from '../pageObjects/LoginPage';
 import { SignupPage } from '../pageObjects/SignupPage';
 import { AccountCreatedPage } from '../pageObjects/AccountCreatedPage';
 import { AccountDeletedPage } from '../pageObjects/AccountDeletedPage';
-import { generateUser } from '../testData/userData';
+import { generateUser, type UserData } from '../testData/userData';
+import { deleteUserIfExists } from '../api/userApi';
 
 test.describe('TC-01 Register User', () => {
+  let user: UserData;
+
+  test.afterEach(async ({ request }) => {
+    await deleteUserIfExists(request, user.email, user.password);
+  });
+
   test('a new user can register with valid data and delete the account', async ({ page }) => {
-    const user = generateUser();
+    user = generateUser();
 
     const loginPage = new LoginPage(page);
     const signupPage = new SignupPage(page);

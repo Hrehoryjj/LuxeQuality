@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "cypress": "^15.4.0",
+    "cypress": "^15.21.1",
     "cypress-mochawesome-reporter": "^3.8.2",
     "typescript": "^5.7.2"
   }

@@ -158,7 +158,7 @@ instead of just asserting a name is present).
 | Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Three: two prompt re-wordings ("current page is X", "go to the cart page") and adding consent/ad host blocking to `support/e2e.ts` |
 | Locator quality | Role/test-id/placeholder first (`data-qa` everywhere on forms), MCP-verified; CSS only for three cart elements with no accessible alternative (`.add-to-cart[data-product-id]` + `.first()`, `#product-<id>`, `.cart_quantity_delete[data-product-id]`), each justified in `prompts.md`'s TC-06 write-up | Discovered via curl instead of MCP throughout (a rule 4 violation on its own, applying to all 9 locators regardless of category). Of the 9 CSS/id locators: 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded; 3 (`#subscribe`, `.add-to-cart`, `.cart_quantity_delete`) are justified since the site exposes nothing better there; 1 (the subscribe success message) is a partial case — a `getByText` match would work but isn't one of rule 4's four named categories; 1 (cart row by id) is a reasonable compromise for a row with no useful accessible name of its own — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
 | Stability | 47/50 (94%) → 50/50 (100%) after capping `workers: 3` | 19/20 (95%) → 20/20 (100%) after the same `workers: 3` cap | Not measured with repeats (single confirmed runs only) |
-| Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
+| Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer; `CartPage.goto()` is also unused dead code (kept as-is — see "What I chose to automate and why") | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
 | External dependencies | None beyond the MCP server | None beyond the MCP server | Cypress Cloud account (`cy.prompt` requires it) |
 | Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | 27s for 4 specs (TC-03 7.1s, TC-04 7.8s, TC-06 7.5s, TC-07 5.3s), one run. Generation time (prompt to first draft) wasn't measured for any tool |
 | When I'd use it | Building and maintaining a framework under rules, multi-file changes, review and refactoring, CI setup | Interactive work in the IDE when I want to watch and steer every edit; small, targeted changes | Quick drafts and navigation steps in an existing Cypress project; never as the final oracle. Requires Cypress Cloud |
@@ -259,6 +259,11 @@ instead of a raw parse error.
 - **TC-03 and TC-04 on Cypress `cy.prompt`** — it is a different approach from the other two
   (natural-language steps executed at runtime, no Page Object Model), and read-only navigation flows
   are a good fit to evaluate it.
+- **Direct `/login` navigation for TC-01/02/07/08, but a header-link click for TC-06** — the written
+  cases for TC-01/02/07/08 say "click Signup / Login", but that click isn't what those tests verify
+  (they're about registration/login behavior, not header navigation), so I open `/login` directly.
+  TC-06 clicks the header's Cart link instead, because reaching the cart by navigating the site *is*
+  part of the flow that test is checking.
 
 ## Run locally
 
@@ -280,6 +285,9 @@ CI workflow use.
 
 Before running the Cypress tests for the first time, log in to Cypress Cloud once
 (`npx cypress open` and follow the prompt) — `cy.prompt` won't run without it.
+
+The Cypress CI workflow (`.github/workflows/task12-cypress.yml`) is `workflow_dispatch`-only and
+needs the `CYPRESS_RECORD_KEY` repository secret to run `cypress run --record`.
 
 ## Limitations
 

@@ -62,3 +62,12 @@ export async function deleteUser(request: APIRequestContext, email: string, pass
   const body = await parseJsonOrFail(response, '/api/deleteAccount');
   expect(body.responseCode, `deleteAccount failed: ${body.message}`).toBe(200);
 }
+
+export async function deleteUserIfExists(request: APIRequestContext, email: string, password: string): Promise<void> {
+  const response = await request.delete('/api/deleteAccount', {
+    form: { email, password },
+  });
+  const body = await parseJsonOrFail(response, '/api/deleteAccount');
+  if (body.responseCode === 404) return;
+  expect(body.responseCode, `deleteAccount failed: ${body.message}`).toBe(200);
+}

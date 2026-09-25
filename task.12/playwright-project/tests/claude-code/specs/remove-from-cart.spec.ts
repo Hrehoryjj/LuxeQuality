@@ -11,7 +11,7 @@ test.describe('TC-06 Remove Products From Cart', () => {
     await productsPage.addProductToCart(1);
     await productsPage.addProductToCart(2);
 
-    await cartPage.clickCartLink();
+    await productsPage.clickCartLink();
 
     await expect(cartPage.getProductRow(1)).toContainText('Blue Top');
     await expect(cartPage.getProductRow(2)).toContainText('Men Tshirt');
