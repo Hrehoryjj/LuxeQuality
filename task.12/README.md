@@ -156,9 +156,9 @@ instead of just asserting a name is present).
 | --- | --- | --- | --- |
 | Iterations to green | TC-01/TC-02: not tracked; TC-06, TC-07, TC-08: 1 each | ≥2 recorded (the first run failed on the consent overlay) | TC-03/TC-04: ≥2 recorded (the first run failed on prompt wording); TC-06: 3 real runs (failed on a consent dialog, then on a guessed URL, passed after both fixes) |
 | Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Three: two prompt re-wordings ("current page is X", "go to the cart page") and adding consent/ad host blocking to `support/e2e.ts` |
-| Locator quality | Role/test-id/placeholder first (`data-qa` everywhere on forms), MCP-verified; CSS only for three cart elements with no accessible alternative (`.add-to-cart[data-product-id]` + `.first()`, `#product-<id>`, `.cart_quantity_delete[data-product-id]`), each justified in `prompts.md`'s TC-06 write-up | Discovered via curl instead of MCP throughout (a rule 4 violation on its own, applying to all 9 locators regardless of category). Of the 9 CSS/id locators: 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded; 3 (`#subscribe`, `.add-to-cart`, `.cart_quantity_delete`) are justified since the site exposes nothing better there; 1 (the subscribe success message) is a partial case — a `getByText` match would work but isn't one of rule 4's four named categories; 1 (cart row by id) is a reasonable compromise for a row with no useful accessible name of its own — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
+| Locator quality | Role/test-id/placeholder first (`data-qa` everywhere on forms), MCP-verified; CSS only for three cart elements with no accessible alternative (`.add-to-cart[data-product-id]` + `.first()`, `#product-<id>`, `.cart_quantity_delete[data-product-id]`), each justified in `prompts.md`'s TC-06 write-up | Discovered via curl instead of MCP throughout (a rule 4 violation on its own, applying to all 9 locators regardless of category). Of the 9 CSS/id locators: 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded; 3 (`#subscribe`, `.add-to-cart`, `.cart_quantity_delete`) are justified since the site exposes nothing better there; 1 (the subscribe success message) is a partial case — a `getByText` match would work but isn't on rule 4's preferred locator list; 1 (cart row by id) is a reasonable compromise for a row with no useful accessible name of its own — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
 | Stability | 47/50 (94%) → 50/50 (100%) after capping `workers: 3` | 19/20 (95%) → 20/20 (100%) after the same `workers: 3` cap | Not measured with repeats (single confirmed runs only) |
-| Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer; `CartPage.goto()` is also unused dead code (kept as-is — see "What I chose to automate and why") | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
+| Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer; `CartPage.goto()` is also unused dead code (kept as-is — see Limitations) | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
 | External dependencies | None beyond the MCP server | None beyond the MCP server | Cypress Cloud account (`cy.prompt` requires it) |
 | Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | 27s for 4 specs (TC-03 7.1s, TC-04 7.8s, TC-06 7.5s, TC-07 5.3s), one run. Generation time (prompt to first draft) wasn't measured for any tool |
 | When I'd use it | Building and maintaining a framework under rules, multi-file changes, review and refactoring, CI setup | Interactive work in the IDE when I want to watch and steer every edit; small, targeted changes | Quick drafts and navigation steps in an existing Cypress project; never as the final oracle. Requires Cypress Cloud |
@@ -182,10 +182,9 @@ instead of just asserting a name is present).
 - **Ignored rules file.** Cursor's rules lived at `.cursor/rules/testing.mcd` — Cursor only loads
   `.mdc` — so they were most likely never applied. Discovering every locator via curl instead of
   Playwright MCP violates rule 4 outright, regardless of what those locators turned out to be. The
-  locators themselves are a more mixed picture: some CSS was genuinely justified (the site exposes
-  nothing better), some used CSS where an accessible alternative existed (a second rule 4 violation,
-  see Locator quality above) — not the uniform "exactly what the rules forbid" it would be if every
-  locator were equally bad. Lesson: ask the agent to quote a rule back before trusting a
+  locators themselves are a mixed picture: some CSS was justified because the site exposes nothing
+  better, and some used CSS where an accessible alternative existed, which is a second rule 4
+  violation (see Locator quality above). Lesson: ask the agent to quote a rule back before trusting a
   rules-file-driven run.
 - **`cy.prompt` URL misinterpretation.** A step like "verify the current page is the All Products
   page" was interpreted as a literal `cy.url().should('eq', 'All Products page')`, which can never
@@ -230,12 +229,14 @@ found and fixed a genuine concurrency issue against the public target site; and 
 **v3 — the real Cypress run.** Running the actual suite (not just reviewing the code) surfaced two
 more bugs `cy.prompt` alone never would have caught: TC-06 first failed on a cookie-consent dialog
 Cypress didn't block (Playwright already did), then failed again for an unrelated reason — a step
-asking to "go to the cart page" made `cy.prompt` guess a URL that doesn't exist on the site. Both are
-now fixed by making the step concrete instead of open to interpretation. I also went back over the
-whole comparison for consistency: fixed the locator-quality claims against what's actually
-accessible on the page (checked live, not assumed), corrected the stability arithmetic, aligned
-TC-06's steps with the written test case, and hardened the API helper to fail with a readable message
-instead of a raw parse error.
+asking to "go to the cart page" made `cy.prompt` guess a URL that doesn't exist on the site. The
+consent dialog is now blocked the same way Playwright blocks it, and the cart step now names a
+concrete UI element instead of a destination. I also went back over the whole comparison for
+consistency: fixed the locator-quality claims against what's actually accessible on the page
+(checked live, not assumed), corrected the stability arithmetic, aligned TC-06's steps with the
+written test case, and hardened the API helper to fail with a readable message instead of a raw
+parse error. TC-01 also got an `afterEach` safety cleanup that deletes its account through the API
+if a failed run left it behind, treating the API's `404 "Account not found!"` as already deleted.
 
 ## Lessons learned
 

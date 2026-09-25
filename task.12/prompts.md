@@ -67,7 +67,7 @@ are a mixed picture, not uniformly bad. Checked each one live via MCP for whethe
 | `#footer h2` | `HomePage.ts` | Yes — `getByRole('heading', {name: 'Subscription'})`; confirmed the only `<h2>` with that text on the page |
 | `#susbscribe_email` | `HomePage.ts` | Yes — `getByPlaceholder('Your email address')` |
 | `#subscribe` | `HomePage.ts` | No — icon-only `<button>`, no text/aria-label of any kind |
-| `#success-subscribe .alert-success` | `HomePage.ts` | Partial — the text is unique in the DOM (`getByText('You have been successfully subscribed!')` would work, matching the precedent `BasePage.getLoggedInAsLabel()` already sets elsewhere in this repo), but "match by visible text" isn't one of rule 4's four named categories |
+| `#success-subscribe .alert-success` | `HomePage.ts` | Partial — the text is unique in the DOM (`getByText('You have been successfully subscribed!')` would work, matching the precedent `BasePage.getLoggedInAsLabel()` already sets elsewhere in this repo), but "match by visible text" isn't on rule 4's preferred locator list |
 | `#header a[href="/view_cart"]` | `CartPage.ts` | Yes, with a caveat — a naive `getByRole('link', {name: 'Cart', exact: true})` actually times out: the link's icon (`<i class="fa fa-shopping-cart">`) exposes its CSS icon-font glyph to the accessibility tree, so the real accessible name isn't the literal string "Cart". Scoping to the page's `banner` landmark first (`getByRole('banner').getByRole('link', {name: 'Cart'})`, non-exact) does work and is unambiguous, since the add-to-cart modal's "View Cart" link lives outside the banner |
 | `.add-to-cart[data-product-id]` | `ProductsPage.ts` | No — generic clickable element, no role or accessible name |
 | `#cartModal.show .close-modal` | `ProductsPage.ts` | Yes — `getByRole('button', {name: 'Continue Shopping'})`; this is a real button with real text |
@@ -135,9 +135,8 @@ non-functional file issues around them (rules file extension, missing trailing n
 
 TC-02 as written ends with **Delete Account**, but the only seeded credentials
 (`test@te.si` / `Test1234!`) are shared/fixed, so deleting that account on the first run would break
-every subsequent run. At my direction, I originally implemented TC-02 as **login-only** against
-the seeded account: "Login to your account" heading, log in, assert "Logged in as ..." — no delete
-step.
+every subsequent run. I decided to implement TC-02 as **login-only** against the seeded account:
+"Login to your account" heading, log in, assert "Logged in as ..." — no delete step.
 
 That still left a weak oracle (the assertion would pass even if the wrong account logged in) and a
 dependency on a shared account on a public site anyone can delete. I later fixed this: TC-02 now uses
@@ -150,6 +149,15 @@ loudly instead of silently. The spec then asserts `Logged in as <exact generated
 that some "Logged in as" text is visible — confirmed against the live "Logged in as <b>Name</b>"
 markup via MCP first. `existingUserCredentials` was removed from `testData/userData.ts` since
 nothing uses it anymore. TC-01 is unaffected — it already registered and deleted its own account.
+
+TC-01 still deletes its account through the UI as its last step, so a failure before that step would
+leave a throwaway account behind. To guard against that, `register-user.spec.ts` added a
+`test.afterEach` that calls a new `deleteUserIfExists()` (`tests/claude-code/api/userApi.ts`). It
+hits the same `DELETE /api/deleteAccount` endpoint and treats `responseCode: 404` as already deleted
+— the normal case when the test passes and the UI step already removed the account — while still
+asserting `200` for any other response. Confirmed via curl for a nonexistent account: HTTP 200,
+`Content-Type: text/html; charset=utf-8`, body `{"responseCode": 404, "message": "Account not
+found!"}`.
 
 ### Result
 
@@ -218,7 +226,8 @@ confirmed it failed (`Expected: 1, Received: 0`), then reverted.
 
 ## Cypress cy.prompt
 
-TC-03 and TC-04 are driven by `cy.prompt`, Cypress's AI natural-language command. Requires
+All four Cypress specs (TC-03, TC-04, TC-06 and TC-07) are driven by `cy.prompt`, Cypress's AI
+natural-language command. Requires
 Cypress 15.4.0+ and a linked Cypress Cloud project — the project was upgraded from 13.17.0 to
 15.21.1 and a Cloud project connected (`projectId: 'wrecjm'` in `cypress.config.ts`). No Page
 Object Model is used here: `cy.prompt` resolves elements itself from the natural-language
@@ -238,11 +247,19 @@ is plain deterministic Cypress code (`cy.get(...).should(...)`) reading real DOM
 
 Originally asserted that the detail page *has* a name/category/price/etc., which would pass even if
 clicking "View Product" opened the wrong product. Fixed by reading the first product's name with
-plain Cypress before navigating, then asserting the detail page's `<h2>` equals that exact name:
+plain Cypress before navigating, then asserting the detail page's `<h2>` equals that exact name
+(verbatim from `view-all-products.cy.ts`):
 
 ```ts
-cy.get('.product-image-wrapper .productinfo p').first().invoke('text').as('firstProductName');
-// ... cy.prompt clicks View Product on the first product ...
+cy.get('.product-image-wrapper .productinfo p')
+  .first()
+  .invoke('text')
+  .then((firstProductName) => {
+    cy.wrap(firstProductName).as('firstProductName');
+  });
+
+cy.prompt(['click the View Product link on the first product in the list']);
+
 cy.get('@firstProductName').then((firstProductName) => {
   cy.get('.product-information h2').should('have.text', firstProductName);
 });
