@@ -307,6 +307,41 @@ coding session's environment (see the Phase 2 Cypress note and the session's fin
 Selectors and product names were confirmed live via Playwright MCP by driving the same add/remove
 flow manually before writing the spec. -->
 
+## Phase 4: negative control
+
+For each test below, one expected value was temporarily changed, the test was run alone, the
+failure was confirmed, and the change was reverted (`git diff --quiet` confirmed a clean tree after
+each revert — none of this was committed).
+
+| Test | What was changed | Failed as expected | Failure message |
+| --- | --- | --- | --- |
+| TC-01 (claude-code) | Appended `'BROKEN'` to the expected name in `toContainText(user.name)` | Yes | `Expected substring: "QA Tester …BROKEN" Received string: " Logged in as QA Tester …"` |
+| TC-02 (claude-code) | Appended `'BROKEN'` to the expected name in `toContainText(registeredUser.name)` | Yes | `Expected substring: "QA Tester …BROKEN" Received string: " Logged in as QA Tester …"` |
+| TC-06 (claude-code) | Changed the remaining-product assertion to `toContainText('BROKEN')` | Yes | `expect(locator).toContainText(expected) failed` — received `"…Rs. 400…"` instead of `"BROKEN"` |
+| TC-06 (cursor) | Changed the last assertion's product id from `2` to `1` (asserts the removed product is still visible) | Yes | `Error: element(s) not found` — `locator('#product-1')` timed out waiting to be visible |
+
+## Phase 4: stability
+
+`npx playwright test --repeat-each=10 --retries=0` (70 runs: 7 specs × 10) was run twice.
+
+**Before** (default config, 8 parallel workers): 66/70 passed (94.3%). 4 failures, one each in
+TC-01, TC-02, TC-07 (claude-code) and TC-05 (cursor) — never the same spec twice, and never on the
+same repeat number. Failure modes: a heading not appearing within the 10s expect timeout, and one
+`deleteAccount` call getting back an HTML error page instead of JSON
+(`SyntaxError: Unexpected token '<', "<h2>This w"...`). Investigated root cause: this is a single
+public demo instance under `fullyParallel: true` with the default (CPU-count) worker pool — 8
+browser contexts hitting the same free site simultaneously in a tight loop is enough to make it
+occasionally respond slowly or with an error page. This is not test-code flakiness (no shared
+fixtures/state was involved — TC-01/TC-02/TC-08 each use their own throwaway account) and retries
+would only have hidden it.
+
+**Fix:** capped `workers: 3` in `playwright.config.ts` (root cause fix — less concurrent load on the
+shared target — not a retry). Re-ran twice after the fix: **70/70 passed (100%) both times.**
+
+Also changed `retries` to `process.env.CI ? 1 : 0` (was a flat `1`) so a local run never silently
+retries away a real failure; CI keeps one retry as a safety net against the same public-site
+capacity limits under whatever concurrency GitHub Actions runners allow.
+
 ## Negative tests (Phase 3, claude-code only)
 
 TC-07 and TC-08 don't have Cursor/Cypress counterparts — they were only required in
