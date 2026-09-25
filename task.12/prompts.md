@@ -186,16 +186,19 @@ Iterations until green: 1 (single write-and-run cycle, no manual fixes). Result:
 `npx playwright test tests/claude-code/specs/remove-from-cart.spec.ts` — 1 passed.
 
 Later revisited to match the test case's literal step ("click the Cart button") instead of
-navigating straight to `/view_cart`: added `clickCartLink()`. First attempt,
-`getByRole('link', { name: 'Cart', exact: true })`, timed out — the header's cart link has an icon
-(`<i class="fa fa-shopping-cart">`) whose CSS icon-font glyph gets exposed to the accessibility
-tree, so its real accessible name isn't the literal string "Cart". Scoping to the page's `banner`
-landmark first, `getByRole('banner').getByRole('link', { name: 'Cart' })` (non-exact), resolved
-correctly and stays unambiguous against the add-to-cart modal's "View Cart" link, which lives
-outside the banner. 2 iterations for this one locator, confirmed by re-running the spec after each.
-The method now lives on `BasePage` rather than `CartPage`, since the header nav (and the Cart link
-in it) is available from any page, not just the cart page — `remove-from-cart.spec.ts` calls it as
-`productsPage.clickCartLink()`, while still on the products page.
+navigating straight to `/view_cart`: added `clickCartLink()`. Validated the locator live via MCP
+before writing it into the page object, per rule 4 — a naive
+`getByRole('link', { name: 'Cart', exact: true })` timed out when tried: the header's cart link has
+an icon (`<i class="fa fa-shopping-cart">`) whose CSS icon-font glyph gets exposed to the
+accessibility tree, so its real accessible name isn't the literal string "Cart". Scoping to the
+page's `banner` landmark first, `getByRole('banner').getByRole('link', { name: 'Cart' })`
+(non-exact), resolved correctly and stays unambiguous against the add-to-cart modal's "View Cart"
+link, which lives outside the banner. This was MCP-side locator discovery before the spec was
+written, not a failed test run — once the validated locator went in, the spec still only needed the
+one write-and-run cycle noted above. The method now lives on `BasePage` rather than `CartPage`,
+since the header nav (and the Cart link in it) is available from any page, not just the cart page —
+`remove-from-cart.spec.ts` calls it as `productsPage.clickCartLink()`, while still on the products
+page.
 
 ### TC-07 Login with incorrect email/password
 
