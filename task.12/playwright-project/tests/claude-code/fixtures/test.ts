@@ -7,6 +7,7 @@ const BLOCKED_AD_HOSTS = [
   'doubleclick.net',
   'googletagservices.com',
   'adtrafficquality.google',
+  'fundingchoicesmessages.google.com',
 ];
 
 type Fixtures = {

@@ -67,7 +67,7 @@ are a mixed picture, not uniformly bad. Checked each one live via MCP for whethe
 | `#footer h2` | `HomePage.ts` | Yes — `getByRole('heading', {name: 'Subscription'})`; confirmed the only `<h2>` with that text on the page |
 | `#susbscribe_email` | `HomePage.ts` | Yes — `getByPlaceholder('Your email address')` |
 | `#subscribe` | `HomePage.ts` | No — icon-only `<button>`, no text/aria-label of any kind |
-| `#success-subscribe .alert-success` | `HomePage.ts` | Partial — the text is unique in the DOM (`getByText('You have been successfully subscribed!')` would work, matching the precedent `BasePage.getLoggedInAsLabel()` already sets elsewhere in this repo), but "match by visible text" isn't one of rule 7's four named categories |
+| `#success-subscribe .alert-success` | `HomePage.ts` | Partial — the text is unique in the DOM (`getByText('You have been successfully subscribed!')` would work, matching the precedent `BasePage.getLoggedInAsLabel()` already sets elsewhere in this repo), but "match by visible text" isn't one of rule 4's four named categories |
 | `#header a[href="/view_cart"]` | `CartPage.ts` | Yes, with a caveat — a naive `getByRole('link', {name: 'Cart', exact: true})` actually times out: the link's icon (`<i class="fa fa-shopping-cart">`) exposes its CSS icon-font glyph to the accessibility tree, so the real accessible name isn't the literal string "Cart". Scoping to the page's `banner` landmark first (`getByRole('banner').getByRole('link', {name: 'Cart'})`, non-exact) does work and is unambiguous, since the add-to-cart modal's "View Cart" link lives outside the banner |
 | `.add-to-cart[data-product-id]` | `ProductsPage.ts` | No — generic clickable element, no role or accessible name |
 | `#cartModal.show .close-modal` | `ProductsPage.ts` | Yes — `getByRole('button', {name: 'Continue Shopping'})`; this is a real button with real text |
@@ -77,11 +77,12 @@ are a mixed picture, not uniformly bad. Checked each one live via MCP for whethe
 So the real story isn't "all CSS, therefore all wrong": `#subscribe`, `.add-to-cart` and
 `.cart_quantity_delete` land on CSS because the site genuinely exposes nothing better there, and
 `#product-<id>` is a reasonable practical compromise for a row with no useful accessible name of its
-own — none of those four are rule 7 violations. The success message is a partial case. But
-`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]` and `#cartModal .close-modal` each
-had a real accessible alternative and used CSS anyway, with no comment or note explaining why —
-that's the actual rule 7 violation, on top of the rule 4 violation (curl instead of MCP) that
-applies to all nine locators regardless of which category they fall into.
+own — none of those four violate rule 4's locator-preference guidance. The success message is a
+partial case. But `#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]` and
+`#cartModal .close-modal` each had a real accessible alternative and used CSS anyway, with no
+comment or note explaining why — that's a second rule 4 violation (CSS over an available accessible
+locator), on top of the rule 4 violation (curl instead of MCP for discovery) that applies to all
+nine locators regardless of which category they fall into.
 
 Lesson: a rules file silently not loading is not a loud failure — the agent just falls back to its
 own judgment and produces code that looks plausible but violates the rules nobody checked were
@@ -134,7 +135,7 @@ non-functional file issues around them (rules file extension, missing trailing n
 
 TC-02 as written ends with **Delete Account**, but the only seeded credentials
 (`test@te.si` / `Test1234!`) are shared/fixed, so deleting that account on the first run would break
-every subsequent run. Per user direction, TC-02 was originally implemented as **login-only** against
+every subsequent run. At my direction, I originally implemented TC-02 as **login-only** against
 the seeded account: "Login to your account" heading, log in, assert "Logged in as ..." — no delete
 step.
 
@@ -154,9 +155,6 @@ nothing uses it anymore. TC-01 is unaffected — it already registered and delet
 
 `npx playwright test tests/claude-code` — 2 passed, run twice in a row to confirm repeatability (no
 leftover accounts: both TC-01 and TC-02 now create and delete their own user via the API).
-
-Also flagged to the user (not applied without confirmation): the MCP server writes browser snapshots to
-`playwright-project/.playwright-mcp/`, which `task.12/.gitignore` doesn't currently exclude.
 
 ### Shared case: TC-06 Remove Products From Cart
 
@@ -338,9 +336,11 @@ the deterministic assertion after it caught that the state it depended on never 
 Fixed by replacing the step with a concrete UI action:
 [`remove-from-cart.cy.ts`](cypress-project/cypress/e2e/remove-from-cart.cy.ts) now says
 `'click the "Cart" link in the header navigation'` instead of `'go to the cart page'` — matching
-what Cursor's Playwright version already does (`#header a[href="/view_cart"]`). Confirmed via MCP
-that the header's "Cart" link has that exact accessible name and is unambiguous (the modal's own
-cart link is named "View Cart", not "Cart"). No assertion in any spec was weakened in either fix.
+what Cursor's Playwright version already does (`#header a[href="/view_cart"]`). `cy.prompt` is
+natural language, not a role/name lookup, so this isn't an accessible-name match the way a
+Playwright `getByRole` call would be — it works because the step now names a concrete, visible
+element ("the Cart link in the header navigation") instead of an abstract destination ("the cart
+page"), leaving `cy.prompt` nothing to guess. No assertion in any spec was weakened in either fix.
 
 **Run 3, after both fixes.** `npx cypress run` — TC-06 passed in 7.5 s. 3 real runs to green for this
 test: consent dialog, then a guessed URL, then passing once both were fixed at the root.

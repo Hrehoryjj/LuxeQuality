@@ -43,8 +43,8 @@ the same public demo e-commerce site, [automationexercise.com](https://automatio
 - **Cursor + Playwright MCP** — `playwright-project/tests/cursor/`
 - **Cypress `cy.prompt`** (Cypress's own AI test-writing command) — `cypress-project/`
 
-The point isn't to build a production suite for this site — it's to see, with real prompts and real
-commit history, how each tool behaves when asked to follow the same rules: discover locators live
+The point isn't to build a production suite for this site — it's to see, with real prompts, how
+each tool behaves when asked to follow the same rules: discover locators live
 instead of guessing, build page objects before specs, write specific assertions, and get to a
 passing test with the fewest surprises. A reviewer should look at three things: whether the
 locators and assertions in the code actually match what the live site does (not just whether the
@@ -156,8 +156,8 @@ instead of just asserting a name is present).
 | --- | --- | --- | --- |
 | Iterations to green | TC-01/TC-02: not tracked; TC-06, TC-07, TC-08: 1 each | ≥2 recorded (the first run failed on the consent overlay) | TC-03/TC-04: ≥2 recorded (the first run failed on prompt wording); TC-06: 3 real runs (failed on a consent dialog, then on a guessed URL, passed after both fixes) |
 | Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Three: two prompt re-wordings ("current page is X", "go to the cart page") and adding consent/ad host blocking to `support/e2e.ts` |
-| Locator quality | Role/test-id first (`data-qa` everywhere on forms), MCP-verified | Discovered via curl instead of MCP throughout (a rule 4 violation on its own); of the 9 CSS/id locators, 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded, 3 (`.add-to-cart`, `.cart_quantity_delete`, `#subscribe`) are justified since the site exposes nothing better there, 1 (cart row by id) is a reasonable compromise — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
-| Stability | Claude Code: 47/50 (94%) → 50/50 (100%) after capping `workers: 3`. Cursor: 19/20 (95%) → 20/20 (100%) after the same fix | 19/20 (95%) → 20/20 (100%), see Claude Code column for the shared fix | Not measured — Cypress specs weren't included in the `--repeat-each=10` run |
+| Locator quality | Role/test-id/placeholder first (`data-qa` everywhere on forms), MCP-verified; CSS only for three cart elements with no accessible alternative (`.add-to-cart[data-product-id]` + `.first()`, `#product-<id>`, `.cart_quantity_delete[data-product-id]`), each justified in `prompts.md`'s TC-06 write-up | Discovered via curl instead of MCP throughout (a rule 4 violation on its own, applying to all 9 locators regardless of category). Of the 9 CSS/id locators: 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded; 3 (`#subscribe`, `.add-to-cart`, `.cart_quantity_delete`) are justified since the site exposes nothing better there; 1 (the subscribe success message) is a partial case — a `getByText` match would work but isn't one of rule 4's four named categories; 1 (cart row by id) is a reasonable compromise for a row with no useful accessible name of its own — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
+| Stability | 47/50 (94%) → 50/50 (100%) after capping `workers: 3` | 19/20 (95%) → 20/20 (100%) after the same `workers: 3` cap | Not measured with repeats (single confirmed runs only) |
 | Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
 | External dependencies | None beyond the MCP server | None beyond the MCP server | Cypress Cloud account (`cy.prompt` requires it) |
 | Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | 27s for 4 specs (TC-03 7.1s, TC-04 7.8s, TC-06 7.5s, TC-07 5.3s), one run. Generation time (prompt to first draft) wasn't measured for any tool |
@@ -180,9 +180,13 @@ instead of just asserting a name is present).
 
 **AI failure modes** (each one changed how a later test case was built):
 - **Ignored rules file.** Cursor's rules lived at `.cursor/rules/testing.mcd` — Cursor only loads
-  `.mdc` — so they were most likely never applied; the resulting code (CSS/id locators, curl-based
-  "verification") is exactly what the rules forbid. Lesson: ask the agent to quote a rule back
-  before trusting a rules-file-driven run.
+  `.mdc` — so they were most likely never applied. Discovering every locator via curl instead of
+  Playwright MCP violates rule 4 outright, regardless of what those locators turned out to be. The
+  locators themselves are a more mixed picture: some CSS was genuinely justified (the site exposes
+  nothing better), some used CSS where an accessible alternative existed (a second rule 4 violation,
+  see Locator quality above) — not the uniform "exactly what the rules forbid" it would be if every
+  locator were equally bad. Lesson: ask the agent to quote a rule back before trusting a
+  rules-file-driven run.
 - **`cy.prompt` URL misinterpretation.** A step like "verify the current page is the All Products
   page" was interpreted as a literal `cy.url().should('eq', 'All Products page')`, which can never
   pass. Rephrasing to reference visible text fixed it.
