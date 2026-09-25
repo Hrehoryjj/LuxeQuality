@@ -109,14 +109,26 @@ non-functional file issues around them (rules file extension, missing trailing n
 
 TC-02 as written ends with **Delete Account**, but the only seeded credentials
 (`test@te.si` / `Test1234!`) are shared/fixed, so deleting that account on the first run would break
-every subsequent run. Per user direction, TC-02 was implemented as **login-only**: it asserts
-"Login to your account", logs in, and asserts "Logged in as ..." — no delete step. TC-01 keeps its
-Delete Account step since it registers its own throwaway account per run and stays repeatable.
+every subsequent run. Per user direction, TC-02 was originally implemented as **login-only** against
+the seeded account: "Login to your account" heading, log in, assert "Logged in as ..." — no delete
+step.
+
+That still left a weak oracle (the assertion would pass even if the wrong account logged in) and a
+dependency on a shared account on a public site anyone can delete. Fixed in Phase 2: TC-02 now uses
+a `registeredUser` fixture (`tests/claude-code/fixtures/test.ts`) that creates a throwaway user
+through the site's own `POST /api/createAccount` before the test and deletes it through
+`DELETE /api/deleteAccount` after, via a small helper (`tests/claude-code/api/userApi.ts`). Both
+endpoints were confirmed with `curl` first: HTTP 200 with a JSON body carrying `responseCode`
+(`201` create / `200` delete) and a `message`, asserted with `expect(...)` so a broken fixture fails
+loudly instead of silently. The spec then asserts `Logged in as <exact generated name>`, not just
+that some "Logged in as" text is visible — confirmed against the live "Logged in as <b>Name</b>"
+markup via MCP first. `existingUserCredentials` was removed from `testData/userData.ts` since
+nothing uses it anymore. TC-01 is unaffected — it already registered and deleted its own account.
 
 ### Result
 
-`npx playwright test` — 2 passed, run twice in a row to confirm repeatability (no leftover state issue
-from TC-01's self-cleanup; TC-02 no longer mutates the seeded account).
+`npx playwright test tests/claude-code` — 2 passed, run twice in a row to confirm repeatability (no
+leftover accounts: both TC-01 and TC-02 now create and delete their own user via the API).
 
 Also flagged to the user (not applied without confirmation): the MCP server writes browser snapshots to
 `playwright-project/.playwright-mcp/`, which `task.12/.gitignore` doesn't currently exclude.
@@ -129,7 +141,21 @@ Cypress 15.4.0+ and a linked Cypress Cloud project — the project was upgraded 
 Object Model is used here: `cy.prompt` resolves elements itself from the natural-language
 description, so there's nothing for a POM layer to wrap.
 
+### Hybrid approach: AI for navigation, deterministic code for the oracle
+
+`cy.prompt` evaluates its own "verify" steps with an AI judgment call, not a fixed assertion. That
+is fine for steps like "the heading text is visible" where there's one obvious right answer, but it
+is the wrong tool for the actual pass/fail oracle of a test: an AI-evaluated assertion can be talked
+into passing on the wrong behaviour by a loosely worded prompt (see the two findings below — both
+are exactly that failure mode). So from Phase 2 on, `cy.prompt` is used only for navigation and
+simple visibility checks; every assertion that actually decides whether the test caught a real bug
+is plain deterministic Cypress code (`cy.get(...).should(...)`) reading real DOM state.
+
 ### TC-03 Verify All Products and product detail page — `view-all-products.cy.ts`
+
+Originally asserted that the detail page *has* a name/category/price/etc., which would pass even if
+clicking "View Product" opened the wrong product. Fixed by reading the first product's name with
+plain Cypress before navigating, then asserting the detail page's `<h2>` equals that exact name:
 
 ```ts
 cy.visit('/');
@@ -137,8 +163,17 @@ cy.prompt([
   'click the Products link in the navigation menu',
   'verify the page heading text "All Products" is visible',
   'verify a list of products is visible',
-  'click the View Product link on the first product in the list',
-  'verify the product detail page shows the product name',
+]);
+
+cy.get('.product-image-wrapper .productinfo p').first().invoke('text').as('firstProductName');
+
+cy.prompt(['click the View Product link on the first product in the list']);
+
+cy.get('@firstProductName').then((firstProductName) => {
+  cy.get('.product-information h2').should('have.text', firstProductName);
+});
+
+cy.prompt([
   'verify the product detail page shows the product category',
   'verify the product detail page shows the product price',
   'verify the product detail page shows the product availability',
@@ -149,6 +184,11 @@ cy.prompt([
 
 ### TC-04 Search Product — `search-product.cy.ts`
 
+Originally used a vague AI oracle ("verify most of the displayed products are related to ...")
+that could pass even with a broken search. Replaced with two deterministic assertions: the result
+set is non-empty, and it contains a specific product name confirmed live to contain "Top"
+(`Blue Top`, product id 1):
+
 ```ts
 cy.visit('/');
 cy.prompt([
@@ -156,19 +196,22 @@ cy.prompt([
   'type "Top" into the product search input',
   'click the search button',
   'verify the page heading text "Searched Products" is visible',
-  'verify a list of products is visible',
-  'verify most of the displayed products are related to the search term "Top", allowing for the site\'s known loose/fuzzy search matching',
 ]);
+
+cy.get('.product-image-wrapper .productinfo p').should('have.length.greaterThan', 0);
+cy.contains('.product-image-wrapper .productinfo p', 'Blue Top').should('be.visible');
 ```
 
 ### Finding: the site's search is not a strict name-substring match
 
-Searching "Top" returns 14 products, but 2 of them ("Little Girls Mr. Panda Shirt",
-"Colour Blocked Shirt – Sky Blue") don't contain "Top" in their name — the site's search matches
-loosely (likely across category/other fields too). This was baked directly into the TC-04 prompt
-wording ("most of the displayed products", "allowing for the site's known loose/fuzzy search
-matching") rather than asserted as a strict 100%-substring match, which would be a false negative
-against the real site.
+Searching "Top" returns 14 products (confirmed live via MCP), but 2 of them ("Little Girls Mr.
+Panda Shirt", "Colour Blocked Shirt – Sky Blue") don't contain "Top" in their name — the site's
+search matches loosely (likely across category/other fields too). The original TC-04 prompt worked
+around this with a vague AI oracle ("most of the displayed products", "allowing for the site's known
+loose/fuzzy search matching"); that oracle is gone now (see "Hybrid approach" above) and the
+loose-search behaviour is documented here instead of baked into a prompt or a code comment. The
+replacement assertion (`have.length.greaterThan(0)` + one confirmed matching name) doesn't need to
+know about the loose matches at all.
 
 ### Finding: ambiguous prompt phrasing produces wrong assertions
 
@@ -180,5 +223,8 @@ specs. Rephrased to reference visible text instead of the ambiguous "current pag
 
 ### Result
 
-`npx cypress run` — 2 specs, 2 passing (`view-all-products.cy.ts` for TC-03,
-`search-product.cy.ts` for TC-04), both via `cy.prompt`.
+<!-- FILL: `npx cypress run` output for view-all-products.cy.ts / search-product.cy.ts after the
+Phase 2 hybrid-oracle changes — could not be executed in the coding session's environment, see the
+note to the user in this session's final report. Selectors and product data used in the new
+deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
+`Blue Top`, "Searched Products" heading) were confirmed live via Playwright MCP, not guessed. -->

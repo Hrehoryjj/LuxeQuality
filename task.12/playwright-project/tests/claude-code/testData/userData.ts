@@ -36,16 +36,6 @@ function generatePassword(): string {
   return [...required, ...rest].sort(() => Math.random() - 0.5).join('');
 }
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export const existingUserCredentials: LoginCredentials = {
-  email: 'test@te.si',
-  password: 'Test1234!',
-};
-
 export function generateUser(): UserData {
   const unique = `${Date.now()}${Math.floor(Math.random() * 10_000)}`;
 

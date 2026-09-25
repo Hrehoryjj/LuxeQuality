@@ -1,5 +1,5 @@
 describe('TC-04 Search Product', () => {
-  it('returns products matching the search query', () => {
+  it('returns a non-empty result set that includes a known matching product', () => {
     cy.visit('/');
 
     cy.prompt([
@@ -7,8 +7,9 @@ describe('TC-04 Search Product', () => {
       'type "Top" into the product search input',
       'click the search button',
       'verify the page heading text "Searched Products" is visible',
-      'verify a list of products is visible',
-      'verify most of the displayed products are related to the search term "Top", allowing for the site\'s known loose/fuzzy search matching',
     ]);
+
+    cy.get('.product-image-wrapper .productinfo p').should('have.length.greaterThan', 0);
+    cy.contains('.product-image-wrapper .productinfo p', 'Blue Top').should('be.visible');
   });
 });
