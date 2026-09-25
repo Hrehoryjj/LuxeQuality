@@ -63,7 +63,12 @@ active. Before trusting an agent's output against a rules file, ask the agent to
 rule back before it starts (see Appendix A in the setup prompt) — if it can't, the rules aren't
 loaded.
 
-<!-- FILL: result after regenerating with the fixed rules -->
+Decision: `tests/cursor/` was deliberately **not** regenerated after the fix. TC-05 and TC-06
+above are kept exactly as they were produced under the broken `.mcd` rules file, so they remain
+the evidence for this finding — CSS/id locators, curl-based verification, and all. Only the
+non-functional file issues around them (rules file extension, missing trailing newlines in
+`.cursor/mcp.json` / `testing.mdc`) were fixed; the tests themselves still pass unchanged
+(`npx playwright test tests/cursor` — 2 passed).
 
 ## Claude Code + Playwright MCP
 
