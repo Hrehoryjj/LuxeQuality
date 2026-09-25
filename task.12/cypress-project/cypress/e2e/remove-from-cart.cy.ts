@@ -7,7 +7,7 @@ describe('TC-06 Remove Products From Cart', () => {
       'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
       'add the second product in the list to the cart',
       'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
-      'go to the cart page',
+      'click the "Cart" link in the header navigation',
     ]);
 
     cy.get('#product-1').should('contain.text', 'Blue Top');

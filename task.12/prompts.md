@@ -244,10 +244,12 @@ specs. Rephrased to reference visible text instead of the ambiguous "current pag
 
 ### Result
 
-My real `npx cypress run`: `view-all-products.cy.ts` (TC-03) passed in 12 s, `search-product.cy.ts`
-(TC-04) passed in 11 s. Every selector and piece of product data used in the deterministic
-assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`, `Blue Top`,
-"Searched Products" heading) was confirmed live via Playwright MCP before it went into the spec.
+My real `npx cypress run`: `view-all-products.cy.ts` (TC-03) passed in 8 s, `search-product.cy.ts`
+(TC-04) passed in 11 s, confirmed on two separate runs (12 s/11 s the first time, 8 s/11 s the
+second — normal run-to-run variance, both green). Every selector and piece of product data used in
+the deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
+`Blue Top`, "Searched Products" heading) was confirmed live via Playwright MCP before it went into
+the spec.
 
 ### Shared case: TC-06 Remove Products From Cart — [remove-from-cart.cy.ts](cypress-project/cypress/e2e/remove-from-cart.cy.ts)
 
@@ -265,27 +267,45 @@ cy.get('#product-1').should('not.exist');
 cy.get('#product-2').should('contain.text', 'Men Tshirt');
 ```
 
-### Finding: the AI steps completed while a consent dialog blocked the action
+### Finding: the AI steps completed while something else blocked the actual result — twice
 
-My real `npx cypress run`: TC-03 passed (12 s), TC-04 passed (11 s), TC-06 failed —
+**Run 1.** My real `npx cypress run`: TC-03 passed, TC-04 passed, TC-06 failed —
 `Expected to find element: #product-1, but never found it` — and the failure screenshot showed a
 cookie-consent dialog on screen. The `cy.prompt` steps reported as completed (add to cart, dismiss
 the confirmation, go to the cart) even though the consent dialog was blocking the click that was
 supposed to add the first product, so the product was never added and the cart page never had a
-`#product-1` row. `cy.prompt` had no way to know its own click didn't land; only the deterministic
-assertion after it caught that the state it depended on never happened.
+`#product-1` row.
 
 Root cause: both Playwright projects already block ad/consent hosts in their fixtures
 ([claude-code](playwright-project/tests/claude-code/fixtures/test.ts),
 [cursor](playwright-project/tests/cursor/fixtures/test.ts), including
 `fundingchoicesmessages.google.com`) — the Cypress project blocked nothing. Confirmed via MCP that
 `fundingchoicesmessages.google.com` traffic is active on `/products` (the dialog itself is
-geography-dependent — see Limitations in the README).
+geography-dependent — see Limitations in the README). Fixed at the root, the same way Playwright
+already does it: [cypress/support/e2e.ts](cypress-project/cypress/support/e2e.ts) got a global
+`beforeEach` that intercepts requests to the same host list and destroys them with
+`cy.intercept(...)`, so the dialog never renders.
 
-Fixed at the root, the same way Playwright already does it:
-[cypress/support/e2e.ts](cypress-project/cypress/support/e2e.ts) now has a global `beforeEach` that
-intercepts requests to the same host list and destroys them with `cy.intercept(...)`, so the dialog
-never renders. No assertion in any spec was weakened.
+**Run 2, after that fix.** I ran `npx cypress run` again: TC-07, TC-03 and TC-04 all passed, but
+**TC-06 failed the exact same way** — `#product-1` still never found. This time the failure
+screenshot had no consent dialog. The command log explained it: a step
+`Prompt Step go to the cart page` had run as `visit /cart -> 302: https://automationexercise.com/`.
+The site has no `/cart` route — `cy.prompt` guessed that URL for "go to the cart page" and got
+redirected straight back to the homepage, so `#product-1` was never going to be there regardless of
+whether the products were actually added. This is the same failure mode as "ambiguous prompt
+phrasing produces wrong assertions" above: `cy.prompt` will guess a URL or action instead of using a
+concrete UI element when the step text leaves it room to.
+
+In both runs, `cy.prompt` had no way to know its own step hadn't achieved what it described; only
+the deterministic assertion after it caught that the state it depended on never happened.
+
+Fixed by replacing the step with a concrete UI action:
+[`remove-from-cart.cy.ts`](cypress-project/cypress/e2e/remove-from-cart.cy.ts) now says
+`'click the "Cart" link in the header navigation'` instead of `'go to the cart page'` — matching
+what Cursor's Playwright version already does (`#header a[href="/view_cart"]`). Confirmed via MCP
+that the header's "Cart" link has that exact accessible name and is unambiguous (the modal's own
+cart link is named "View Cart", not "Cart"). No assertion in any spec was weakened in either fix. I
+haven't re-run Cypress after this second fix yet — see the TC-06 row in the test-case table.
 
 ### TC-07 Login with incorrect email or password — [login-invalid.cy.ts](cypress-project/cypress/e2e/login-invalid.cy.ts)
 
@@ -301,6 +321,8 @@ cy.get('[data-qa="login-password"]')
   .should('contain.text', 'Your email or password is incorrect!');
 cy.contains(/Logged in as/i).should('not.exist');
 ```
+
+My real `npx cypress run`: passed in 20 s.
 
 ## Phase 4: negative control
 

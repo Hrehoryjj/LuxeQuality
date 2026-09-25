@@ -34,11 +34,11 @@ whether the failure modes documented below are real (reproducible) or asserted.
 | --- | --- | --- | --- | --- |
 | TC-01 | Register User | Positive | Claude Code | ✅ Passing |
 | TC-02 | Login User with correct email and password | Positive | Claude Code | ✅ Passing |
-| TC-03 | Verify All Products and product detail page | Positive | Cypress `cy.prompt` | ✅ Passing (12 s) |
+| TC-03 | Verify All Products and product detail page | Positive | Cypress `cy.prompt` | ✅ Passing (8 s) |
 | TC-04 | Search Product | Positive | Cypress `cy.prompt` | ✅ Passing (11 s) |
 | TC-05 | Verify Subscription in home page | Positive | Cursor | ✅ Passing |
 | TC-06 | Remove Products From Cart | Positive | Claude Code, Cursor, Cypress `cy.prompt` | ✅ Passing (Claude Code, Cursor). Cypress: **✏️ TODO-AUTHOR: rerun npx cypress run** |
-| TC-07 | Login with incorrect email or password | Negative | Claude Code, Cypress `cy.prompt` | ✅ Passing (Claude Code). Cypress: **✏️ TODO-AUTHOR: rerun npx cypress run** |
+| TC-07 | Login with incorrect email or password | Negative | Claude Code, Cypress `cy.prompt` | ✅ Passing (Claude Code, Cypress 20 s) |
 | TC-08 | Register with an already existing email | Negative | Claude Code | ✅ Passing |
 
 Full test case list (steps, expected results) lives in a Google Sheet:
@@ -170,13 +170,17 @@ instead of just asserting a name is present).
   name/price/etc., not that it's the *right* product; TC-04's original assertion
   ("most of the displayed products are related…") could pass on a broken search. Both were
   replaced with deterministic assertions (see Hybrid-oracle approach above).
-- **AI steps "completed" while a consent dialog blocked the action.** My real `npx cypress run` on
-  TC-06 failed with `Expected to find element: #product-1, but never found it`; the failure
-  screenshot showed a cookie-consent dialog on screen. The `cy.prompt` steps reported success even
-  though the dialog was blocking the click that was supposed to add the product to the cart — only
-  the deterministic assertion after it caught that the state it depended on never happened. Fixed at
-  the root by blocking the consent host in Cypress the same way both Playwright projects already
-  did (see `prompts.md`).
+- **AI steps "completed" while something else blocked the actual result — twice.** My real
+  `npx cypress run` on TC-06 failed with `Expected to find element: #product-1, but never found it`
+  on two separate runs, for two different reasons: first a cookie-consent dialog blocked the
+  add-to-cart click (fixed by blocking the consent host in Cypress, the same way both Playwright
+  projects already did); then, after that fix, `cy.prompt`'s "go to the cart page" step guessed a
+  `/cart` URL that doesn't exist on the site and got redirected to the homepage instead of clicking
+  the actual "Cart" link — the same guessing-instead-of-acting failure mode as the "current page is
+  X" bug below. In both cases `cy.prompt` reported success while the real state it depended on never
+  happened; only the deterministic assertion after it caught the gap. Fixed by making the step name
+  a concrete UI element ("click the Cart link in the header navigation") — see `prompts.md` for
+  both fixes.
 
 ## What I chose to automate and why
 
