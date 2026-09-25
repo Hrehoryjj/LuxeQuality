@@ -4,12 +4,35 @@
 
 ## TL;DR
 
-<!-- FILL: three bullets with your own conclusions from this comparison. Draft prompts below,
-replace with what you actually think:
-- <!-- FILL: which tool got to a passing, trustworthy test fastest, and why -->
-- <!-- FILL: which tool's output you'd trust least without a human review pass, and why -->
-- <!-- FILL: what you'd change about the setup (rules, prompts, MCP) before doing this again -->
--->
+**How each tool performed**
+- **Claude Code + Playwright MCP** — its rules file actually loaded and it verified every locator
+  through MCP; the later test cases (TC-06, TC-07, TC-08) passed on the first iteration with no manual
+  fixes. In my setup it was the fastest route to tests I could trust.
+- **Cursor + Playwright MCP** — its rules file was silently ignored because of a wrong file extension.
+  The tests still passed, but with CSS/id locators checked via curl, weaker assertions and one skipped
+  test-case step: plausible-looking code that broke the agreed rules.
+- **Cypress `cy.prompt`** — quick to write in natural language, but it needed the most correction: an
+  ambiguous phrase became a wrong URL assertion, its AI-evaluated checks were too vague to serve as the
+  oracle, and in TC-06 its steps "completed" while a cookie-consent dialog blocked the action — caught
+  only by a deterministic assertion.
+
+This is not a controlled benchmark: Cursor ran with a broken rules file, and I used Claude Code for
+the review and fixes.
+
+**How I would use each**
+- **Claude Code** — building and maintaining a framework under rules, multi-file changes, review and
+  refactoring, CI setup.
+- **Cursor** — interactive work in the IDE when I want to watch and steer every edit; small, targeted
+  changes.
+- **Cypress `cy.prompt`** — quick drafts and navigation steps in an existing Cypress project; never as
+  the final oracle. Requires Cypress Cloud.
+
+**What I would change next time**
+- Run several agents in parallel, each in its own isolated folder, with explicit verification gates in
+  the prompt: the agent quotes the rules before starting, and a test only counts as done after a
+  negative control and a 10× stability run.
+- Write the expected assertion into every test case, not only the steps, and make the agent log
+  iterations and manual fixes after every run.
 
 ## Why this project
 
@@ -41,11 +64,6 @@ whether the failure modes documented below are real (reproducible) or asserted.
 | TC-07 | Login with incorrect email or password | Negative | Claude Code, Cypress `cy.prompt` | ✅ Passing (Claude Code, Cypress 20 s) |
 | TC-08 | Register with an already existing email | Negative | Claude Code | ✅ Passing |
 
-Full test case list (steps, expected results) lives in a Google Sheet:
-<!-- FILL: paste the Google Sheet link here if you want it in the public README, or leave this
-line out — the sheet URL was in an earlier draft of this README and is omitted here pending your
-confirmation that it's fine to publish. --> The private Jira board is intentionally not linked here.
-
 ## AI setup
 
 **MCP configs** — both tools point at the same [`@playwright/mcp`](https://github.com/microsoft/playwright-mcp) server, run over stdio via `npx`:
@@ -74,7 +92,7 @@ why:
 | 8. Assertions | `expect(...)`, never `console.log` | A test that only logs never fails |
 | 9. Config | `baseURL` in config, relative `page.goto('/path')` in tests | Environment-portable tests |
 | 10. Clean code | No commented-out code/debug statements | Committed code stays real code |
-| 11. Scope exceptions (added this session) | Project-level config files editable only when a prompt explicitly asks | Closes a real conflict: rule 1 said "don't touch files outside this folder" while an earlier setup prompt required editing the root `playwright.config.ts` |
+| 11. Scope exceptions | Project-level config files editable only when a prompt explicitly asks | Closes a real conflict: rule 1 said "don't touch files outside this folder" while I still needed to edit the root `playwright.config.ts` to set it up in the first place |
 
 ## Workflow: from prompt to passing test
 
@@ -97,9 +115,9 @@ being accepted. Exact prompts, MCP findings, iteration counts and every manual f
 - Are all locators inside page objects, none in the spec file?
 - No hardcoded waits (`waitForTimeout`, `cy.wait(<ms>)`) — only condition-based waits?
 
-**Negative control** (proves the tests can actually fail, not just pass by accident) — Phase 4:
-one expected value was temporarily broken per test, the test was run alone, the failure was
-confirmed, then the change was reverted (nothing broken was committed):
+**Negative control** (proves the tests can actually fail, not just pass by accident): for each test
+below I temporarily broke one expected value, ran the test alone, confirmed the failure, then
+reverted the change (nothing broken was committed):
 
 | Test | What was changed | Failed as expected | Failure message |
 | --- | --- | --- | --- |
@@ -107,9 +125,10 @@ confirmed, then the change was reverted (nothing broken was committed):
 | TC-02 (Claude Code) | Appended `'BROKEN'` to the expected logged-in name | Yes | `Expected substring: "...BROKEN" Received string: " Logged in as ..."` |
 | TC-06 (Claude Code) | Changed the remaining-product assertion to expect `'BROKEN'` | Yes | `expect(locator).toContainText(expected) failed` |
 | TC-06 (Cursor) | Swapped the final assertion's product id (2 → 1) | Yes | `element(s) not found` — the removed row's locator timed out |
+| TC-08 (Claude Code) | Changed the "account creation not reached" assertion from `toHaveCount(0)` to `toHaveCount(1)` | Yes | `Expected: 1, Received: 0` |
 
-**Stability** — Phase 4, `npx playwright test --repeat-each=10 --retries=0` (70 runs: 7 specs ×
-10), run twice:
+**Stability** — I ran `npx playwright test --repeat-each=10 --retries=0` (70 runs: 7 specs × 10)
+twice:
 
 | Run | Workers | Result |
 | --- | --- | --- |
@@ -125,7 +144,7 @@ run can't silently retry away a real failure.
 **Hybrid-oracle approach**: `cy.prompt` evaluates its own "verify" steps with an AI judgment call,
 which is fine for "is this heading visible" but is the wrong tool for the actual pass/fail oracle —
 an AI-evaluated assertion can be talked into passing on the wrong behaviour by a loosely worded
-prompt (this happened twice, see Findings). From Phase 2 on, `cy.prompt` is used only for
+prompt (this happened twice, see Findings). So `cy.prompt` is used only for
 navigation/simple visibility checks in TC-03, TC-04 and TC-06; every assertion that decides whether
 the test caught a real bug is plain deterministic Cypress code reading real DOM state (e.g. TC-03
 asserts the detail page's product name equals the name read from the list before navigating,
@@ -135,13 +154,14 @@ instead of just asserting a name is present).
 
 | | Claude Code + MCP | Cursor + MCP | Cypress `cy.prompt` |
 | --- | --- | --- | --- |
-| Iterations to green | TC-01/02: <!-- FILL: not logged for the original Phase 1 run -->; TC-06/07/08: 1 each, 0 manual fixes (Phase 3) | <!-- FILL: original TC-05/06 run happened outside this session --> | <!-- FILL: not logged --> |
-| Manual fixes | 0 in Phase 2/3 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | <!-- FILL --> | Two prompt-wording fixes needed (ambiguous "current page is X" phrasing; see Findings) |
-| Locator quality | Role/test-id first (`data-qa` everywhere on forms), MCP-verified | CSS/id selectors (`#footer h2`, `.add-to-cart[data-product-id]`) — a direct result of the rules file not loading, see Findings | N/A — `cy.prompt` resolves its own elements, no locators to review |
-| Stability | 100% after the Phase 4 concurrency fix (0% before, in the specific parallel-overload scenario) | 100% after the same fix | <!-- FILL: could not be run in this session's environment --> |
+| Iterations to green | TC-01/TC-02: not tracked; TC-06, TC-07, TC-08: 1 each | ≥2 recorded (the first run failed on the consent overlay) | TC-03/TC-04: ≥2 recorded (the first run failed on prompt wording); TC-06: failed on its first real run (a consent dialog), then failed again on a second real run (URL-guessing), fixed at the root both times — see the test-case table for the confirmed result |
+| Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Two prompt-wording fixes needed (ambiguous "current page is X" phrasing; see Findings) |
+| Locator quality | Role/test-id first (`data-qa` everywhere on forms), MCP-verified | Discovered via curl instead of MCP throughout (a rule 4 violation on its own); of the 9 CSS/id locators, 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded, 3 (`.add-to-cart`, `.cart_quantity_delete`, `#subscribe`) are justified since the site exposes nothing better there, 1 (cart row by id) is a reasonable compromise — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
+| Stability | Claude Code: 47/50 (94%) → 50/50 (100%) after capping `workers: 3`. Cursor: 19/20 (95%) → 20/20 (100%) after the same fix | 19/20 (95%) → 20/20 (100%), see Claude Code column for the shared fix | Not measured — Cypress specs weren't included in the `--repeat-each=10` run |
+| Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
 | External dependencies | None beyond the MCP server | None beyond the MCP server | Cypress Cloud account (`cy.prompt` requires it) |
-| Speed | <!-- FILL: subjective --> | <!-- FILL: subjective --> | <!-- FILL: subjective --> |
-| When I'd use it | <!-- FILL: your call --> | <!-- FILL: your call --> | <!-- FILL: your call --> |
+| Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | TC-03 8s, TC-04 11s, TC-07 20s (my runs); TC-06 not yet confirmed. Generation time (prompt to first draft) wasn't measured for any tool |
+| When I'd use it | Building and maintaining a framework under rules, multi-file changes, review and refactoring, CI setup | Interactive work in the IDE when I want to watch and steer every edit; small, targeted changes | Quick drafts and navigation steps in an existing Cypress project; never as the final oracle. Requires Cypress Cloud |
 
 ## Findings
 
@@ -177,33 +197,81 @@ instead of just asserting a name is present).
   projects already did); then, after that fix, `cy.prompt`'s "go to the cart page" step guessed a
   `/cart` URL that doesn't exist on the site and got redirected to the homepage instead of clicking
   the actual "Cart" link — the same guessing-instead-of-acting failure mode as the "current page is
-  X" bug below. In both cases `cy.prompt` reported success while the real state it depended on never
+  X" bug above. In both cases `cy.prompt` reported success while the real state it depended on never
   happened; only the deterministic assertion after it caught the gap. Fixed by making the step name
   a concrete UI element ("click the Cart link in the header navigation") — see `prompts.md` for
   both fixes.
+- **Weaker oracle when the rules file didn't load.** Beyond the locator choices above, Cursor's
+  TC-06 asserts the removed row is gone and the other row is *visible*, but never checks *which*
+  product that row actually is — a name swap would pass the same assertion. Cursor's TC-05 also has
+  no assertion that the home page loaded before scrolling to the footer and reading the Subscription
+  heading, unlike every other spec in this repo, which asserts on a landing heading first.
+
+## Iteration history
+
+**v1 — initial generation.** I asked each tool to build its slice: Claude Code got TC-01/TC-02,
+Cursor got TC-05/TC-06, Cypress got TC-03/TC-04. Everything ran green, but a review turned up real
+problems: Cursor's rules file had the wrong extension and never loaded, so its locators came from
+curl instead of MCP; TC-02 depended on a shared seeded account and only checked that *some* "Logged
+in as" text appeared; TC-03/TC-04 either asserted the wrong thing (that a product page has a name,
+not that it's the *right* product) or used a vague AI-judged oracle that could pass on a broken
+search; there was no negative test, no evidence any test could actually fail, and no CI.
+
+**v2 — fixes.** I created a throwaway user via the site's own API for TC-02 (and later TC-08)
+instead of relying on the shared account; rewrote TC-03/TC-04 as a hybrid of `cy.prompt` navigation
+and deterministic assertions; added TC-06 to all three tools as a shared, apples-to-apples case;
+added negative tests (TC-07, TC-08); ran a real negative control and a 10×-repeat stability check,
+found and fixed a genuine concurrency issue against the public target site; and wired up CI.
+
+**v3 — the real Cypress run.** Running the actual suite (not just reviewing the code) surfaced two
+more bugs `cy.prompt` alone never would have caught: TC-06 first failed on a cookie-consent dialog
+Cypress didn't block (Playwright already did), then failed again for an unrelated reason — a step
+asking to "go to the cart page" made `cy.prompt` guess a URL that doesn't exist on the site. Both are
+now fixed by making the step concrete instead of open to interpretation. I also went back over the
+whole comparison for consistency: fixed the locator-quality claims against what's actually
+accessible on the page (checked live, not assumed), corrected the stability arithmetic, aligned
+TC-06's steps with the written test case, and hardened the API helper to fail with a readable message
+instead of a raw parse error.
+
+## Lessons learned
+
+1. Check that agent rules are actually loaded — ask the agent to quote a rule before it starts.
+2. Put the expected assertion into every test case, not only the steps.
+3. Make a negative control and a 10× stability run part of the Definition of Done.
+4. Have the agent log iterations and manual fixes after every run.
+5. Never depend on shared external state (e.g. a seeded account on a public site) — create and clean
+   up test data via the API.
+6. Give every tool the same test case from the start if the goal is a comparison.
+7. Run agents in parallel only in isolated folders with their own rules.
+8. AI-driven steps can "complete" without achieving their effect — the oracle must be deterministic.
 
 ## What I chose to automate and why
 
-<!-- FILL: your reasoning — e.g. why TC-06 was picked as the shared cross-tool case, why TC-07/
-TC-08 were added only to Claude Code, why TC-03/TC-04 stayed on Cypress specifically. -->
+- **TC-06 as the shared case for all three tools** — it combines several actions (adding products,
+  handling the confirmation modal, navigation, removal) and a state check, so it shows the
+  differences between tools better than a single-step case.
+- **Negative tests in Claude Code and Cypress, not in Cursor** — when I added them, Cursor was not
+  available (plan usage limit).
+- **TC-03 and TC-04 on Cypress `cy.prompt`** — it is a different approach from the other two
+  (natural-language steps executed at runtime, no Page Object Model), and read-only navigation flows
+  are a good fit to evaluate it.
 
 ## Run locally
 
-Every command below was run from `task.12/` during this session (Cypress commands could not be
-executed in the authoring session's environment — see Limitations — but the commands themselves are
-correct and unchanged from what `cypress-project/package.json` and the CI workflow use).
+Every command below runs from `task.12/` and is exactly what `cypress-project/package.json` and the
+CI workflow use.
 
 ```bash
 # Playwright (Claude Code + Cursor specs)
-cd playwright-project && npm ci && npx playwright test
-npx playwright test tests/claude-code   # Claude Code specs only
-npx playwright test tests/cursor        # Cursor specs only
-npx playwright test --repeat-each=10 --retries=0   # stability check
-npx playwright show-report
+(cd playwright-project && npm ci && npx playwright test)
+(cd playwright-project && npm run test:claude)      # Claude Code specs only
+(cd playwright-project && npm run test:cursor)      # Cursor specs only
+(cd playwright-project && npm run test:stability)   # stability check
+(cd playwright-project && npm run report)
 
 # Cypress (cy.prompt specs)
-cd cypress-project && npm ci && npx cypress run
-# report: open cypress/reports/html/index.html
+(cd cypress-project && npm ci && npx cypress run)
+# report: open cypress-project/cypress/reports/html/index.html
 ```
 
 Before running the Cypress tests for the first time, log in to Cypress Cloud once
@@ -216,12 +284,18 @@ Before running the Cypress tests for the first time, log in to Cypress Cloud onc
   overlays) is outside this project's control.
 - `cy.prompt` requires a linked Cypress Cloud project; there's no fully offline way to run the
   Cypress suite.
-- `npx cypress run` could not be executed in the coding session's environment for this update
-  (Electron failed to launch — `STATUS_ILLEGAL_INSTRUCTION`; `cypress verify` reported
-  `bad option: --smoke-test`, consistent with the sandbox blocking the Electron GUI binary while
-  headless Playwright/Chromium ran without issue). Every Cypress selector and product name used in
-  Phase 2/3's new deterministic assertions was confirmed live via Playwright MCP, but the actual
-  `npx cypress run` pass/fail result for TC-03, TC-04 and TC-06 needs to be confirmed locally or in
-  CI (`.github/workflows/task12-cypress.yml`, `workflow_dispatch`).
+- TC-06's second Cypress fix (the "Cart" link step, see Findings) hasn't been confirmed by an actual
+  `npx cypress run` yet — see the test-case table.
+- The cookie-consent dialog that caused TC-06's first Cypress failure didn't show up on every visit
+  in my testing — it may depend on the visitor's region (it appeared for me in Poland). The fix
+  blocks its known hosts regardless of whether the dialog renders.
+- TC-06's assertions are tied to specific catalog entries (product ids 1 and 2, named "Blue Top" and
+  "Men Tshirt") — if the site's catalog changes, the test breaks on a mismatch, not a real bug.
+- The site is a single public instance with real capacity limits — running many tests in parallel
+  against it caused real failures until I capped Playwright's `workers` (see Stability); the same
+  ceiling applies to anything else that hits it concurrently.
+- Cursor's tests are exactly as they came out of the run where its rules file didn't load — I chose
+  not to regenerate them, partly to keep them as evidence for that finding and partly because Cursor
+  wasn't available to me at the time (plan usage limit).
 - This project stops at 8 test cases across three tools — it's a comparison exercise, not
   full coverage of the site.

@@ -45,9 +45,10 @@ leftover cart/subscription state between runs).
 
 ### Shared case: TC-06 Remove Products From Cart
 
-TC-06 above is also the case implemented identically in `tests/claude-code/` and in Cypress
-(Phase 3), to make the three-tool comparison apples-to-apples. Number of iterations until green and
-any manual fixes for this Cursor run: <!-- FILL -->.
+TC-06 above is also the case I implemented identically in `tests/claude-code/` and in Cypress,
+to make the three-tool comparison apples-to-apples. Number of iterations until green and any manual
+fixes for this Cursor run: ≥2 recorded (the first run failed on the consent overlay); manual fixes
+by me: none.
 
 ### Finding: the rules file was silently ignored
 
@@ -55,19 +56,37 @@ The prompt above points at `.cursor/rules/testing.mcd` — but Cursor only loads
 `.mdc` extension. `.mcd` is not a format Cursor recognizes, so this rules file was most likely
 never loaded for the run that produced `tests/cursor/`, despite the prompt naming it explicitly.
 
-Evidence, from the code that came out of that run:
+Evidence, from the code that came out of that run: every locator was verified via curl against live
+HTML + `cart.js` (see "Locators" above), although rule 4 requires discovery through Playwright MCP —
+that alone is a rule violation regardless of which locators it produced. But the locators themselves
+are a mixed picture, not uniformly bad. Checked each one live via MCP for whether an accessible
+(role/label/placeholder/test-id) alternative actually exists:
 
-- The page objects use raw CSS/id locators — `#footer h2`, `#susbscribe_email`,
-  `.add-to-cart[data-product-id]` — although rule 4 requires locator discovery through Playwright
-  MCP and rule 7 requires preferring role/label/placeholder/test-id locators.
-- The "Locators" section above says they were "verified via curl against live HTML + `cart.js`",
-  although rule 4 says locator discovery must be performed via playwright-mcp, not curl.
+| Locator | Used in | Accessible alternative? |
+| --- | --- | --- |
+| `#footer h2` | `HomePage.ts` | Yes — `getByRole('heading', {name: 'Subscription'})`; confirmed the only `<h2>` with that text on the page |
+| `#susbscribe_email` | `HomePage.ts` | Yes — `getByPlaceholder('Your email address')` |
+| `#subscribe` | `HomePage.ts` | No — icon-only `<button>`, no text/aria-label of any kind |
+| `#success-subscribe .alert-success` | `HomePage.ts` | Partial — the text is unique in the DOM (`getByText('You have been successfully subscribed!')` would work, matching the precedent `BasePage.getLoggedInAsLabel()` already sets elsewhere in this repo), but "match by visible text" isn't one of rule 7's four named categories |
+| `#header a[href="/view_cart"]` | `CartPage.ts` | Yes, with a caveat — a naive `getByRole('link', {name: 'Cart', exact: true})` actually times out: the link's icon (`<i class="fa fa-shopping-cart">`) exposes its CSS icon-font glyph to the accessibility tree, so the real accessible name isn't the literal string "Cart". Scoping to the page's `banner` landmark first (`getByRole('banner').getByRole('link', {name: 'Cart'})`, non-exact) does work and is unambiguous, since the add-to-cart modal's "View Cart" link lives outside the banner |
+| `.add-to-cart[data-product-id]` | `ProductsPage.ts` | No — generic clickable element, no role or accessible name |
+| `#cartModal.show .close-modal` | `ProductsPage.ts` | Yes — `getByRole('button', {name: 'Continue Shopping'})`; this is a real button with real text |
+| `#product-<id>` | `CartPage.ts` | Borderline — the cart is a native `<table>`, so each row does get an implicit `row` role, and its accessible name would include the product name, but that name is the concatenation of every cell in the row (image, description, price, quantity input, total), so an exact role/name match is impractical; scoping by id and asserting on visible text is a reasonable compromise, not the same kind of miss as the other cases |
+| `.cart_quantity_delete[data-product-id]` | `CartPage.ts` | No — icon-only `<a>`, no accessible name |
+
+So the real story isn't "all CSS, therefore all wrong": `#subscribe`, `.add-to-cart` and
+`.cart_quantity_delete` land on CSS because the site genuinely exposes nothing better there, and
+`#product-<id>` is a reasonable practical compromise for a row with no useful accessible name of its
+own — none of those four are rule 7 violations. The success message is a partial case. But
+`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]` and `#cartModal .close-modal` each
+had a real accessible alternative and used CSS anyway, with no comment or note explaining why —
+that's the actual rule 7 violation, on top of the rule 4 violation (curl instead of MCP) that
+applies to all nine locators regardless of which category they fall into.
 
 Lesson: a rules file silently not loading is not a loud failure — the agent just falls back to its
 own judgment and produces code that looks plausible but violates the rules nobody checked were
 active. Before trusting an agent's output against a rules file, ask the agent to quote a specific
-rule back before it starts (see Appendix A in the setup prompt) — if it can't, the rules aren't
-loaded.
+rule back before it starts — if it can't, the rules aren't loaded.
 
 Decision: `tests/cursor/` was deliberately **not** regenerated after the fix. TC-05 and TC-06
 above are kept exactly as they were produced under the broken `.mcd` rules file, so they remain
@@ -120,7 +139,7 @@ the seeded account: "Login to your account" heading, log in, assert "Logged in a
 step.
 
 That still left a weak oracle (the assertion would pass even if the wrong account logged in) and a
-dependency on a shared account on a public site anyone can delete. Fixed in Phase 2: TC-02 now uses
+dependency on a shared account on a public site anyone can delete. I later fixed this: TC-02 now uses
 a `registeredUser` fixture (`tests/claude-code/fixtures/test.ts`) that creates a throwaway user
 through the site's own `POST /api/createAccount` before the test and deletes it through
 `DELETE /api/deleteAccount` after, via a small helper (`tests/claude-code/api/userApi.ts`). Both
@@ -139,7 +158,7 @@ leftover accounts: both TC-01 and TC-02 now create and delete their own user via
 Also flagged to the user (not applied without confirmation): the MCP server writes browser snapshots to
 `playwright-project/.playwright-mcp/`, which `task.12/.gitignore` doesn't currently exclude.
 
-### Shared case: TC-06 Remove Products From Cart (Phase 3)
+### Shared case: TC-06 Remove Products From Cart
 
 Instructions followed: implement the same TC-06 case that already exists in `tests/cursor/`
 (add two products to the cart, open the cart, remove one via its "X" button, verify the removed
@@ -160,7 +179,16 @@ objects: `pageObjects/ProductsPage.ts`, `pageObjects/CartPage.ts`; spec:
 Iterations until green: 1 (single write-and-run cycle, no manual fixes). Result:
 `npx playwright test tests/claude-code/specs/remove-from-cart.spec.ts` — 1 passed.
 
-### TC-07 Login with incorrect email/password (Phase 3)
+Later revisited to match the test case's literal step ("click the Cart button") instead of
+navigating straight to `/view_cart`: added `CartPage.clickCartLink()`. First attempt,
+`getByRole('link', { name: 'Cart', exact: true })`, timed out — the header's cart link has an icon
+(`<i class="fa fa-shopping-cart">`) whose CSS icon-font glyph gets exposed to the accessibility
+tree, so its real accessible name isn't the literal string "Cart". Scoping to the page's `banner`
+landmark first, `getByRole('banner').getByRole('link', { name: 'Cart' })` (non-exact), resolved
+correctly and stays unambiguous against the add-to-cart modal's "View Cart" link, which lives
+outside the banner. 2 iterations for this one locator, confirmed by re-running the spec after each.
+
+### TC-07 Login with incorrect email/password
 
 Confirmed the exact error text live via MCP: submitting a non-existent email/password on `/login`
 renders `<p style="color: red;">Your email or password is incorrect!</p>` inside the login form
@@ -169,14 +197,22 @@ renders `<p style="color: red;">Your email or password is incorrect!</p>` inside
 error is visible and `getLoggedInAsLabel()` has zero matches. 1 iteration, no manual fixes.
 `npx playwright test tests/claude-code/specs/login-invalid.spec.ts` — 1 passed.
 
-### TC-08 Register with an already existing email (Phase 3)
+### TC-08 Register with an already existing email
 
 Confirmed the exact error text live via MCP: signing up with an email that already has an account
 renders `Email Address already exist!` inside the signup form (`LoginPage.getSignupErrorMessage()`,
 scoped to the form containing `data-qa="signup-email"`). Spec
-`specs/register-existing-email.spec.ts` uses the `registeredUser` fixture from Phase 2 to create its
+`specs/register-existing-email.spec.ts` uses the `registeredUser` fixture (introduced for TC-02) to create its
 own throwaway user (cleaned up afterward by the same fixture), then attempts to sign up again with
 that user's email and asserts the error is visible. 1 iteration, no manual fixes.
+
+The test's title promises "does not create a second account", but the original version only checked
+the error message, not that account creation was actually skipped. Confirmed via MCP: after the
+failed signup, the URL stays on `/signup` and the "Enter Account Information" heading never
+appears — added `expect(signupPage.getAccountInformationHeading()).toHaveCount(0)` so the test
+actually verifies its own title. Negative-controlled by flipping that assertion to `toHaveCount(1)`,
+confirmed it failed (`Expected: 1, Received: 0`), then reverted.
+
 `npx playwright test tests/claude-code/specs/register-existing-email.spec.ts` — 1 passed.
 
 ## Cypress cy.prompt
@@ -193,7 +229,7 @@ description, so there's nothing for a POM layer to wrap.
 is fine for steps like "the heading text is visible" where there's one obvious right answer, but it
 is the wrong tool for the actual pass/fail oracle of a test: an AI-evaluated assertion can be talked
 into passing on the wrong behaviour by a loosely worded prompt (see the two findings below — both
-are exactly that failure mode). So from Phase 2 on, `cy.prompt` is used only for navigation and
+are exactly that failure mode). So `cy.prompt` is used only for navigation and
 simple visibility checks; every assertion that actually decides whether the test caught a real bug
 is plain deterministic Cypress code (`cy.get(...).should(...)`) reading real DOM state.
 
@@ -324,7 +360,7 @@ cy.contains(/Logged in as/i).should('not.exist');
 
 My real `npx cypress run`: passed in 20 s.
 
-## Phase 4: negative control
+## Negative control
 
 For each test below, one expected value was temporarily changed, the test was run alone, the
 failure was confirmed, and the change was reverted (`git diff --quiet` confirmed a clean tree after
@@ -336,14 +372,16 @@ each revert — none of this was committed).
 | TC-02 (claude-code) | Appended `'BROKEN'` to the expected name in `toContainText(registeredUser.name)` | Yes | `Expected substring: "QA Tester …BROKEN" Received string: " Logged in as QA Tester …"` |
 | TC-06 (claude-code) | Changed the remaining-product assertion to `toContainText('BROKEN')` | Yes | `expect(locator).toContainText(expected) failed` — received `"…Rs. 400…"` instead of `"BROKEN"` |
 | TC-06 (cursor) | Changed the last assertion's product id from `2` to `1` (asserts the removed product is still visible) | Yes | `Error: element(s) not found` — `locator('#product-1')` timed out waiting to be visible |
+| TC-08 (claude-code) | Changed the "account creation not reached" assertion from `toHaveCount(0)` to `toHaveCount(1)` | Yes | `Expected: 1, Received: 0` — the "Enter Account Information" heading never appears |
 
-## Phase 4: stability
+## Stability
 
 `npx playwright test --repeat-each=10 --retries=0` (70 runs: 7 specs × 10) was run twice.
 
-**Before** (default config, 8 parallel workers): 66/70 passed (94.3%). 4 failures, one each in
-TC-01, TC-02, TC-07 (claude-code) and TC-05 (cursor) — never the same spec twice, and never on the
-same repeat number. Failure modes: a heading not appearing within the 10s expect timeout, and one
+**Before** (default config, 8 parallel workers): 66/70 passed (94.3%) overall — Claude Code
+(5 specs × 10 = 50 runs): 47/50 (94%), one failure each in TC-01, TC-02, TC-07; Cursor
+(2 specs × 10 = 20 runs): 19/20 (95%), one failure in TC-05. Never the same spec twice, and never on
+the same repeat number. Failure modes: a heading not appearing within the 10s expect timeout, and one
 `deleteAccount` call getting back an HTML error page instead of JSON
 (`SyntaxError: Unexpected token '<', "<h2>This w"...`). Investigated root cause: this is a single
 public demo instance under `fullyParallel: true` with the default (CPU-count) worker pool — 8

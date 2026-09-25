@@ -1,5 +1,18 @@
-import { expect, type APIRequestContext } from '@playwright/test';
+import { expect, type APIRequestContext, type APIResponse } from '@playwright/test';
 import type { UserData } from '../testData/userData';
+
+async function parseJsonOrFail(response: APIResponse, endpoint: string): Promise<{ responseCode: number; message: string }> {
+  const bodyText = await response.text();
+  const bodyPreview = bodyText.slice(0, 200);
+
+  expect(response.ok(), `${endpoint} returned HTTP ${response.status()}: ${bodyPreview}`).toBe(true);
+
+  try {
+    return JSON.parse(bodyText);
+  } catch {
+    throw new Error(`${endpoint} returned HTTP ${response.status()} with a non-JSON body: ${bodyPreview}`);
+  }
+}
 
 const MONTH_INDEX: Record<string, string> = {
   January: '1',
@@ -38,7 +51,7 @@ export async function createUser(request: APIRequestContext, user: UserData): Pr
       mobile_number: user.mobileNumber,
     },
   });
-  const body = await response.json();
+  const body = await parseJsonOrFail(response, '/api/createAccount');
   expect(body.responseCode, `createAccount failed: ${body.message}`).toBe(201);
 }
 
@@ -46,6 +59,6 @@ export async function deleteUser(request: APIRequestContext, email: string, pass
   const response = await request.delete('/api/deleteAccount', {
     form: { email, password },
   });
-  const body = await response.json();
+  const body = await parseJsonOrFail(response, '/api/deleteAccount');
   expect(body.responseCode, `deleteAccount failed: ${body.message}`).toBe(200);
 }
