@@ -197,38 +197,21 @@ are exactly that failure mode). So from Phase 2 on, `cy.prompt` is used only for
 simple visibility checks; every assertion that actually decides whether the test caught a real bug
 is plain deterministic Cypress code (`cy.get(...).should(...)`) reading real DOM state.
 
-### TC-03 Verify All Products and product detail page — `view-all-products.cy.ts`
+### TC-03 Verify All Products and product detail page — [`view-all-products.cy.ts`](cypress-project/cypress/e2e/view-all-products.cy.ts)
 
 Originally asserted that the detail page *has* a name/category/price/etc., which would pass even if
 clicking "View Product" opened the wrong product. Fixed by reading the first product's name with
 plain Cypress before navigating, then asserting the detail page's `<h2>` equals that exact name:
 
 ```ts
-cy.visit('/');
-cy.prompt([
-  'click the Products link in the navigation menu',
-  'verify the page heading text "All Products" is visible',
-  'verify a list of products is visible',
-]);
-
 cy.get('.product-image-wrapper .productinfo p').first().invoke('text').as('firstProductName');
-
-cy.prompt(['click the View Product link on the first product in the list']);
-
+// ... cy.prompt clicks View Product on the first product ...
 cy.get('@firstProductName').then((firstProductName) => {
   cy.get('.product-information h2').should('have.text', firstProductName);
 });
-
-cy.prompt([
-  'verify the product detail page shows the product category',
-  'verify the product detail page shows the product price',
-  'verify the product detail page shows the product availability',
-  'verify the product detail page shows the product condition',
-  'verify the product detail page shows the product brand',
-]);
 ```
 
-### TC-04 Search Product — `search-product.cy.ts`
+### TC-04 Search Product — [`search-product.cy.ts`](cypress-project/cypress/e2e/search-product.cy.ts)
 
 Originally used a vague AI oracle ("verify most of the displayed products are related to ...")
 that could pass even with a broken search. Replaced with two deterministic assertions: the result
@@ -236,14 +219,6 @@ set is non-empty, and it contains a specific product name confirmed live to cont
 (`Blue Top`, product id 1):
 
 ```ts
-cy.visit('/');
-cy.prompt([
-  'click the Products link in the navigation menu',
-  'type "Top" into the product search input',
-  'click the search button',
-  'verify the page heading text "Searched Products" is visible',
-]);
-
 cy.get('.product-image-wrapper .productinfo p').should('have.length.greaterThan', 0);
 cy.contains('.product-image-wrapper .productinfo p', 'Blue Top').should('be.visible');
 ```
@@ -269,43 +244,63 @@ specs. Rephrased to reference visible text instead of the ambiguous "current pag
 
 ### Result
 
-<!-- FILL: `npx cypress run` output for view-all-products.cy.ts / search-product.cy.ts after the
-Phase 2 hybrid-oracle changes — could not be executed in the coding session's environment, see the
-note to the user in this session's final report. Selectors and product data used in the new
-deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
-`Blue Top`, "Searched Products" heading) were confirmed live via Playwright MCP, not guessed. -->
+My real `npx cypress run`: `view-all-products.cy.ts` (TC-03) passed in 12 s, `search-product.cy.ts`
+(TC-04) passed in 11 s. Every selector and piece of product data used in the deterministic
+assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`, `Blue Top`,
+"Searched Products" heading) was confirmed live via Playwright MCP before it went into the spec.
 
-### Shared case: TC-06 Remove Products From Cart — `remove-from-cart.cy.ts` (Phase 3)
+### Shared case: TC-06 Remove Products From Cart — [remove-from-cart.cy.ts](cypress-project/cypress/e2e/remove-from-cart.cy.ts)
 
 Same hybrid approach as TC-03/TC-04: `cy.prompt` drives adding two products to the cart and
 navigating there, deterministic Cypress code is the oracle. Confirmed via MCP that the cart page
-renders each product as `<tr id="product-<id}">` containing an `<h4><a>` with the exact product
+renders each product as `<tr id="product-<id>">` containing an `<h4><a>` with the exact product
 name (`Blue Top` for product 1, `Men Tshirt` for product 2), so the assertions check by name, not
 just by id count:
 
 ```ts
-cy.visit('/products');
-cy.prompt([
-  'add the first product in the list to the cart',
-  'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
-  'add the second product in the list to the cart',
-  'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
-  'go to the cart page',
-]);
-
 cy.get('#product-1').should('contain.text', 'Blue Top');
 cy.get('#product-2').should('contain.text', 'Men Tshirt');
-
-cy.prompt(['remove the first product from the cart by clicking its "X" button']);
-
+// cy.prompt removes the first product from the cart
 cy.get('#product-1').should('not.exist');
 cy.get('#product-2').should('contain.text', 'Men Tshirt');
 ```
 
-<!-- FILL: `npx cypress run` output for remove-from-cart.cy.ts — could not be executed in the
-coding session's environment (see the Phase 2 Cypress note and the session's final report).
-Selectors and product names were confirmed live via Playwright MCP by driving the same add/remove
-flow manually before writing the spec. -->
+### Finding: the AI steps completed while a consent dialog blocked the action
+
+My real `npx cypress run`: TC-03 passed (12 s), TC-04 passed (11 s), TC-06 failed —
+`Expected to find element: #product-1, but never found it` — and the failure screenshot showed a
+cookie-consent dialog on screen. The `cy.prompt` steps reported as completed (add to cart, dismiss
+the confirmation, go to the cart) even though the consent dialog was blocking the click that was
+supposed to add the first product, so the product was never added and the cart page never had a
+`#product-1` row. `cy.prompt` had no way to know its own click didn't land; only the deterministic
+assertion after it caught that the state it depended on never happened.
+
+Root cause: both Playwright projects already block ad/consent hosts in their fixtures
+([claude-code](playwright-project/tests/claude-code/fixtures/test.ts),
+[cursor](playwright-project/tests/cursor/fixtures/test.ts), including
+`fundingchoicesmessages.google.com`) — the Cypress project blocked nothing. Confirmed via MCP that
+`fundingchoicesmessages.google.com` traffic is active on `/products` (the dialog itself is
+geography-dependent — see Limitations in the README).
+
+Fixed at the root, the same way Playwright already does it:
+[cypress/support/e2e.ts](cypress-project/cypress/support/e2e.ts) now has a global `beforeEach` that
+intercepts requests to the same host list and destroys them with `cy.intercept(...)`, so the dialog
+never renders. No assertion in any spec was weakened.
+
+### TC-07 Login with incorrect email or password — [login-invalid.cy.ts](cypress-project/cypress/e2e/login-invalid.cy.ts)
+
+Same hybrid approach: `cy.prompt` types a non-existent email and a wrong password into the login
+form specifically (the page has two forms, login and signup — the same ambiguity already documented
+for Playwright) and clicks Login. Confirmed via MCP that the exact error text
+`Your email or password is incorrect!` renders inside the same `<form>` as the password field, with
+no id/class of its own, so the assertion scopes to that form:
+
+```ts
+cy.get('[data-qa="login-password"]')
+  .parents('form')
+  .should('contain.text', 'Your email or password is incorrect!');
+cy.contains(/Logged in as/i).should('not.exist');
+```
 
 ## Phase 4: negative control
 
@@ -342,8 +337,9 @@ Also changed `retries` to `process.env.CI ? 1 : 0` (was a flat `1`) so a local r
 retries away a real failure; CI keeps one retry as a safety net against the same public-site
 capacity limits under whatever concurrency GitHub Actions runners allow.
 
-## Negative tests (Phase 3, claude-code only)
+## Negative tests (claude-code and Cypress)
 
-TC-07 and TC-08 don't have Cursor/Cypress counterparts — they were only required in
-`tests/claude-code/`. See "TC-07 Login with incorrect email/password" and "TC-08 Register with an
-already existing email" under the Claude Code section above.
+TC-07 exists in both `tests/claude-code/` and Cypress (`login-invalid.cy.ts`, above). TC-08 has no
+Cursor/Cypress counterpart — it was only required in `tests/claude-code/`. See "TC-07 Login with
+incorrect email/password" and "TC-08 Register with an already existing email" under the Claude Code
+section above.
