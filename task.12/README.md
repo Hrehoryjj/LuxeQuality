@@ -57,11 +57,11 @@ whether the failure modes documented below are real (reproducible) or asserted.
 | --- | --- | --- | --- | --- |
 | TC-01 | Register User | Positive | Claude Code | ✅ Passing |
 | TC-02 | Login User with correct email and password | Positive | Claude Code | ✅ Passing |
-| TC-03 | Verify All Products and product detail page | Positive | Cypress `cy.prompt` | ✅ Passing (8 s) |
-| TC-04 | Search Product | Positive | Cypress `cy.prompt` | ✅ Passing (11 s) |
+| TC-03 | Verify All Products and product detail page | Positive | Cypress `cy.prompt` | ✅ Passing |
+| TC-04 | Search Product | Positive | Cypress `cy.prompt` | ✅ Passing |
 | TC-05 | Verify Subscription in home page | Positive | Cursor | ✅ Passing |
-| TC-06 | Remove Products From Cart | Positive | Claude Code, Cursor, Cypress `cy.prompt` | ✅ Passing (Claude Code, Cursor). Cypress: **✏️ TODO-AUTHOR: rerun npx cypress run** |
-| TC-07 | Login with incorrect email or password | Negative | Claude Code, Cypress `cy.prompt` | ✅ Passing (Claude Code, Cypress 20 s) |
+| TC-06 | Remove Products From Cart | Positive | Claude Code, Cursor, Cypress `cy.prompt` | ✅ Passing |
+| TC-07 | Login with incorrect email or password | Negative | Claude Code, Cypress `cy.prompt` | ✅ Passing |
 | TC-08 | Register with an already existing email | Negative | Claude Code | ✅ Passing |
 
 ## AI setup
@@ -154,13 +154,13 @@ instead of just asserting a name is present).
 
 | | Claude Code + MCP | Cursor + MCP | Cypress `cy.prompt` |
 | --- | --- | --- | --- |
-| Iterations to green | TC-01/TC-02: not tracked; TC-06, TC-07, TC-08: 1 each | ≥2 recorded (the first run failed on the consent overlay) | TC-03/TC-04: ≥2 recorded (the first run failed on prompt wording); TC-06: failed on its first real run (a consent dialog), then failed again on a second real run (URL-guessing), fixed at the root both times — see the test-case table for the confirmed result |
-| Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Two prompt-wording fixes needed (ambiguous "current page is X" phrasing; see Findings) |
+| Iterations to green | TC-01/TC-02: not tracked; TC-06, TC-07, TC-08: 1 each | ≥2 recorded (the first run failed on the consent overlay) | TC-03/TC-04: ≥2 recorded (the first run failed on prompt wording); TC-06: 3 real runs (failed on a consent dialog, then on a guessed URL, passed after both fixes) |
+| Manual fixes | 0 (ad-overlay blocking was fixed proactively via an MCP-derived fixture, not a post-failure patch) | None — I did not edit the generated code | Three: two prompt re-wordings ("current page is X", "go to the cart page") and adding consent/ad host blocking to `support/e2e.ts` |
 | Locator quality | Role/test-id first (`data-qa` everywhere on forms), MCP-verified | Discovered via curl instead of MCP throughout (a rule 4 violation on its own); of the 9 CSS/id locators, 4 (`#footer h2`, `#susbscribe_email`, `#header a[href="/view_cart"]`, `.close-modal`) had a real accessible alternative and used CSS anyway with no justification recorded, 3 (`.add-to-cart`, `.cart_quantity_delete`, `#subscribe`) are justified since the site exposes nothing better there, 1 (cart row by id) is a reasonable compromise — see `prompts.md` for the full locator table | N/A — `cy.prompt` resolves its own elements, no locators to review |
 | Stability | Claude Code: 47/50 (94%) → 50/50 (100%) after capping `workers: 3`. Cursor: 19/20 (95%) → 20/20 (100%) after the same fix | 19/20 (95%) → 20/20 (100%), see Claude Code column for the shared fix | Not measured — Cypress specs weren't included in the `--repeat-each=10` run |
 | Assertion specificity | TC-06 checks the exact remaining product's name, not just that a row exists | TC-06 checks row visibility/count by id only, never a name; TC-05 has no "home page loaded" assertion before scrolling to the footer | Deterministic assertions are the oracle for every test (see Hybrid-oracle approach) |
 | External dependencies | None beyond the MCP server | None beyond the MCP server | Cypress Cloud account (`cy.prompt` requires it) |
-| Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | TC-03 8s, TC-04 11s, TC-07 20s (my runs); TC-06 not yet confirmed. Generation time (prompt to first draft) wasn't measured for any tool |
+| Test execution time | 15.8s for 5 specs (TC-01 5.0s, TC-02 2.7s, TC-06 4.0s, TC-07 2.4s, TC-08 1.7s), one run, `--workers=1` | 6.9s for 2 specs (TC-05 2.7s, TC-06 4.2s), same run | 27s for 4 specs (TC-03 7.1s, TC-04 7.8s, TC-06 7.5s, TC-07 5.3s), one run. Generation time (prompt to first draft) wasn't measured for any tool |
 | When I'd use it | Building and maintaining a framework under rules, multi-file changes, review and refactoring, CI setup | Interactive work in the IDE when I want to watch and steer every edit; small, targeted changes | Quick drafts and navigation steps in an existing Cypress project; never as the final oracle. Requires Cypress Cloud |
 
 ## Findings
@@ -284,8 +284,6 @@ Before running the Cypress tests for the first time, log in to Cypress Cloud onc
   overlays) is outside this project's control.
 - `cy.prompt` requires a linked Cypress Cloud project; there's no fully offline way to run the
   Cypress suite.
-- TC-06's second Cypress fix (the "Cart" link step, see Findings) hasn't been confirmed by an actual
-  `npx cypress run` yet — see the test-case table.
 - The cookie-consent dialog that caused TC-06's first Cypress failure didn't show up on every visit
   in my testing — it may depend on the visitor's region (it appeared for me in Poland). The fix
   blocks its known hosts regardless of whether the dialog renders.

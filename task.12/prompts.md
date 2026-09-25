@@ -280,10 +280,10 @@ specs. Rephrased to reference visible text instead of the ambiguous "current pag
 
 ### Result
 
-My real `npx cypress run`: `view-all-products.cy.ts` (TC-03) passed in 8 s, `search-product.cy.ts`
-(TC-04) passed in 11 s, confirmed on two separate runs (12 s/11 s the first time, 8 s/11 s the
-second — normal run-to-run variance, both green). Every selector and piece of product data used in
-the deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
+`npx cypress run`: `view-all-products.cy.ts` (TC-03) and `search-product.cy.ts` (TC-04) have passed
+on every run — 12 s/11 s, then 8 s/11 s, then 7.1 s/7.8 s in the latest full-suite run (normal
+run-to-run variance, always green). Every selector and piece of product data used in the
+deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
 `Blue Top`, "Searched Products" heading) was confirmed live via Playwright MCP before it went into
 the spec.
 
@@ -340,8 +340,10 @@ Fixed by replacing the step with a concrete UI action:
 `'click the "Cart" link in the header navigation'` instead of `'go to the cart page'` — matching
 what Cursor's Playwright version already does (`#header a[href="/view_cart"]`). Confirmed via MCP
 that the header's "Cart" link has that exact accessible name and is unambiguous (the modal's own
-cart link is named "View Cart", not "Cart"). No assertion in any spec was weakened in either fix. I
-haven't re-run Cypress after this second fix yet — see the TC-06 row in the test-case table.
+cart link is named "View Cart", not "Cart"). No assertion in any spec was weakened in either fix.
+
+**Run 3, after both fixes.** `npx cypress run` — TC-06 passed in 7.5 s. 3 real runs to green for this
+test: consent dialog, then a guessed URL, then passing once both were fixed at the root.
 
 ### TC-07 Login with incorrect email or password — [login-invalid.cy.ts](cypress-project/cypress/e2e/login-invalid.cy.ts)
 
@@ -358,7 +360,8 @@ cy.get('[data-qa="login-password"]')
 cy.contains(/Logged in as/i).should('not.exist');
 ```
 
-My real `npx cypress run`: passed in 20 s.
+`npx cypress run`: passed on every run — 20 s the first time, 4 s, then 5.3 s in the latest
+full-suite run.
 
 ## Negative control
 

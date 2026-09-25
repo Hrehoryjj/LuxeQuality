@@ -7,3 +7,4 @@ cypress-project/cypress/screenshots/
 cypress-project/cypress/reports/
 .env
 .env.*
+.idea/
