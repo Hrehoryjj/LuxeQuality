@@ -21,4 +21,16 @@ export class LoginPage extends BasePage {
     await this.page.getByTestId('login-password').fill(password);
     await this.page.getByTestId('login-button').click();
   }
+
+  getLoginErrorMessage(): Locator {
+    return this.page
+      .locator('form', { has: this.page.getByTestId('login-password') })
+      .getByText(/your email or password is incorrect/i);
+  }
+
+  getSignupErrorMessage(): Locator {
+    return this.page
+      .locator('form', { has: this.page.getByTestId('signup-email') })
+      .getByText(/email address already exist/i);
+  }
 }

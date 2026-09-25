@@ -43,6 +43,12 @@ an auto-use fixture (`tests/cursor/fixtures/test.ts`) that routes and aborts req
 `npx playwright test tests/cursor` — 2 passed, run twice in a row to confirm repeatability (no
 leftover cart/subscription state between runs).
 
+### Shared case: TC-06 Remove Products From Cart
+
+TC-06 above is also the case implemented identically in `tests/claude-code/` and in Cypress
+(Phase 3), to make the three-tool comparison apples-to-apples. Number of iterations until green and
+any manual fixes for this Cursor run: <!-- FILL -->.
+
 ### Finding: the rules file was silently ignored
 
 The prompt above points at `.cursor/rules/testing.mcd` — but Cursor only loads rule files with the
@@ -132,6 +138,46 @@ leftover accounts: both TC-01 and TC-02 now create and delete their own user via
 
 Also flagged to the user (not applied without confirmation): the MCP server writes browser snapshots to
 `playwright-project/.playwright-mcp/`, which `task.12/.gitignore` doesn't currently exclude.
+
+### Shared case: TC-06 Remove Products From Cart (Phase 3)
+
+Instructions followed: implement the same TC-06 case that already exists in `tests/cursor/`
+(add two products to the cart, open the cart, remove one via its "X" button, verify the removed
+product is gone and the other remains), in `tests/claude-code/`, deriving every locator via
+Playwright MCP and following CLAUDE.md.
+
+MCP exploration of `/products`, the "Added!" confirmation modal, and `/view_cart` confirmed:
+`.add-to-cart[data-product-id]` (two DOM matches per product — one visible, one in the hover
+overlay — hence `.first()`), the modal's `Continue Shopping` button has an accessible role/name
+(`getByRole('button', { name: 'Continue Shopping' })`, unlike the "Add to cart" links which expose
+no role/name), `#product-<id>` cart rows contain the product name in an `<h4><a>` (e.g. `Blue Top`,
+`Men Tshirt` for products 1/2), and `.cart_quantity_delete[data-product-id]` removes a row. New page
+objects: `pageObjects/ProductsPage.ts`, `pageObjects/CartPage.ts`; spec:
+`specs/remove-from-cart.spec.ts`, asserting the removed row's product name is gone
+(`toHaveCount(0)`) and the remaining row's exact product name is still present
+(`toContainText('Men Tshirt')`) — not just an id count.
+
+Iterations until green: 1 (single write-and-run cycle, no manual fixes). Result:
+`npx playwright test tests/claude-code/specs/remove-from-cart.spec.ts` — 1 passed.
+
+### TC-07 Login with incorrect email/password (Phase 3)
+
+Confirmed the exact error text live via MCP: submitting a non-existent email/password on `/login`
+renders `<p style="color: red;">Your email or password is incorrect!</p>` inside the login form
+(no id/class on the paragraph, so `LoginPage.getLoginErrorMessage()` scopes to the form containing
+`data-qa="login-password"` and matches that text). Spec `specs/login-invalid.spec.ts` asserts the
+error is visible and `getLoggedInAsLabel()` has zero matches. 1 iteration, no manual fixes.
+`npx playwright test tests/claude-code/specs/login-invalid.spec.ts` — 1 passed.
+
+### TC-08 Register with an already existing email (Phase 3)
+
+Confirmed the exact error text live via MCP: signing up with an email that already has an account
+renders `Email Address already exist!` inside the signup form (`LoginPage.getSignupErrorMessage()`,
+scoped to the form containing `data-qa="signup-email"`). Spec
+`specs/register-existing-email.spec.ts` uses the `registeredUser` fixture from Phase 2 to create its
+own throwaway user (cleaned up afterward by the same fixture), then attempts to sign up again with
+that user's email and asserts the error is visible. 1 iteration, no manual fixes.
+`npx playwright test tests/claude-code/specs/register-existing-email.spec.ts` — 1 passed.
 
 ## Cypress cy.prompt
 
@@ -228,3 +274,41 @@ Phase 2 hybrid-oracle changes — could not be executed in the coding session's 
 note to the user in this session's final report. Selectors and product data used in the new
 deterministic assertions (`.product-image-wrapper .productinfo p`, `.product-information h2`,
 `Blue Top`, "Searched Products" heading) were confirmed live via Playwright MCP, not guessed. -->
+
+### Shared case: TC-06 Remove Products From Cart — `remove-from-cart.cy.ts` (Phase 3)
+
+Same hybrid approach as TC-03/TC-04: `cy.prompt` drives adding two products to the cart and
+navigating there, deterministic Cypress code is the oracle. Confirmed via MCP that the cart page
+renders each product as `<tr id="product-<id}">` containing an `<h4><a>` with the exact product
+name (`Blue Top` for product 1, `Men Tshirt` for product 2), so the assertions check by name, not
+just by id count:
+
+```ts
+cy.visit('/products');
+cy.prompt([
+  'add the first product in the list to the cart',
+  'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
+  'add the second product in the list to the cart',
+  'dismiss the "Added!" confirmation by clicking "Continue Shopping"',
+  'go to the cart page',
+]);
+
+cy.get('#product-1').should('contain.text', 'Blue Top');
+cy.get('#product-2').should('contain.text', 'Men Tshirt');
+
+cy.prompt(['remove the first product from the cart by clicking its "X" button']);
+
+cy.get('#product-1').should('not.exist');
+cy.get('#product-2').should('contain.text', 'Men Tshirt');
+```
+
+<!-- FILL: `npx cypress run` output for remove-from-cart.cy.ts — could not be executed in the
+coding session's environment (see the Phase 2 Cypress note and the session's final report).
+Selectors and product names were confirmed live via Playwright MCP by driving the same add/remove
+flow manually before writing the spec. -->
+
+## Negative tests (Phase 3, claude-code only)
+
+TC-07 and TC-08 don't have Cursor/Cypress counterparts — they were only required in
+`tests/claude-code/`. See "TC-07 Login with incorrect email/password" and "TC-08 Register with an
+already existing email" under the Claude Code section above.
